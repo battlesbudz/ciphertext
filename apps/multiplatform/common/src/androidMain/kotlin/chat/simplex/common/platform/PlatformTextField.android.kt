@@ -129,7 +129,7 @@ actual fun PlatformTextField(
     }
     editText.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     editText.maxLines = 16
-    editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or editText.inputType
+    editText.inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or editText.inputType
     editText.setTextColor(textColor.toArgb())
     editText.textSize = textStyle.value.fontSize.value * appPrefs.fontScale.get()
     editText.background = ColorDrawable(Color.Transparent.toArgb())
