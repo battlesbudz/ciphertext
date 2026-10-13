@@ -1510,6 +1510,8 @@ processChatCommand' cxt nm = \case
     reconnectToken <- liftIO (randomRIO (minBound, maxBound) :: IO Word64)
     now <- liftIO getCurrentTime
     lastPing <- liftIO $ newTVarIO now
+    lastPeerPing <- liftIO $ newTVarIO now
+    peerToken <- liftIO $ newTVarIO Nothing
     let session =
           LiveSession
             { lsSessionId = sessionId,
@@ -1517,7 +1519,9 @@ processChatCommand' cxt nm = \case
               lsContactName = localDisplayName ct,
               lsStartedAt = now,
               lsReconnectToken = reconnectToken,
-              lsLastPingSent = lastPing
+              lsPeerReconnectToken = peerToken,
+              lsLastPingSent = lastPing,
+              lsLastPeerPing = lastPeerPing
             }
     liftIO . atomically $ modifyTVar' liveSessions (M.insert uId session)
     pure $ CRLiveSessionStarted user (toLiveSessionInfo session)
@@ -1541,8 +1545,21 @@ processChatCommand' cxt nm = \case
     now <- liftIO getCurrentTime
     liftIO . atomically $ writeTVar (lsLastPingSent session) now
     -- Heartbeat marker message; mobile clients filter these (never display).
-    void $ processChatCommand' cxt nm $ SendLiveMessage (lsContactName session) (mkHeartbeatMsg $ lsSessionId session)
+    void $ processChatCommand' cxt nm $ SendLiveMessage (lsContactName session) (mkHeartbeatMsg (lsSessionId session) (lsReconnectToken session))
     pure $ CRLiveSessionPingSent user (lsSessionId session)
+  APILiveSessionPeerPing userId sessionId peerToken -> withUserId userId $ \user@User {userId = uId} -> do
+    ChatController {liveSessions} <- ask
+    maybeSession <- liftIO $ M.lookup uId <$> readTVarIO liveSessions
+    case maybeSession of
+      Just session@LiveSession {lsSessionId = sid}
+        | sid == sessionId -> do
+            now <- liftIO getCurrentTime
+            liftIO . atomically $ do
+              writeTVar (lsLastPeerPing session) now
+              writeTVar (lsPeerReconnectToken session) (Just peerToken)
+            pure $ CRLiveSessionInfo user (Just $ toLiveSessionInfo session)
+        | otherwise -> throwChatError $ CECommandError "heartbeat for unknown session"
+      Nothing -> throwChatError $ CECommandError "no active live session"
   APIGetLiveSession userId -> withUserId userId $ \user -> do
     ChatController {liveSessions} <- ask
     session <- liftIO $ M.lookup userId <$> readTVarIO liveSessions
