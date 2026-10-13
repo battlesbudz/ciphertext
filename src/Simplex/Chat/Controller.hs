@@ -242,11 +242,20 @@ data ChatHooks = ChatHooks
     -- it is called before the event is sent to the user (or to the UI).
     eventHook :: Maybe (ChatController -> Either ChatError ChatEvent -> IO (Either ChatError ChatEvent)),
     -- acceptMember hook can be used to accept or reject member connecting via group link without API calls
-    acceptMember :: Maybe (GroupInfo -> GroupLinkInfo -> Profile -> IO (Either GroupRejectionReason (GroupAcceptance, GroupMemberRole)))
+    acceptMember :: Maybe (GroupInfo -> GroupLinkInfo -> Profile -> IO (Either GroupRejectionReason (GroupAcceptance, GroupMemberRole))),
+    -- liveSessionHooks for ephemeral 1:1 sessions (private fork Phase 2).
+    -- onLiveSessionEnded is where relay teardown happens (deployment implements it).
+    liveSessionHooks :: Maybe LiveSessionHooks
+  }
+
+-- | Hooks for live (ephemeral) session lifecycle (private fork Phase 2).
+data LiveSessionHooks = LiveSessionHooks
+  { onLiveSessionStarted :: LiveSessionInfo -> IO (),
+    onLiveSessionEnded :: LiveSessionId -> LiveSessionEndReason -> IO ()
   }
 
 defaultChatHooks :: ChatHooks
-defaultChatHooks = ChatHooks Nothing Nothing Nothing Nothing Nothing
+defaultChatHooks = ChatHooks Nothing Nothing Nothing Nothing Nothing Nothing
 
 data PresetServers = PresetServers
   { operators :: NonEmpty PresetOperator,
