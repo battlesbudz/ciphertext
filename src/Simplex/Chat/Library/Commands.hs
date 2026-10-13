@@ -1502,7 +1502,7 @@ processChatCommand' cxt nm = \case
     _ -> throwCmdError "not supported"
   -- Live (ephemeral) sessions: 1:1 only, die on disconnect, auto-reconnect to NEW session.
   APIStartLiveSession userId contactId -> withUserId userId $ \user@User {userId = uId} -> do
-    ChatController {liveSessions} <- ask
+    ChatController {liveSessions, config = ChatConfig {chatHooks = ChatHooks {liveSessionHooks}}} <- ask
     sessions <- liftIO $ readTVarIO liveSessions
     when (M.member uId sessions) $ throwChatError $ CECommandError "live session already active"
     ct <- withFastStore $ \db -> getContact db cxt user contactId
@@ -1524,9 +1524,11 @@ processChatCommand' cxt nm = \case
               lsLastPeerPing = lastPeerPing
             }
     liftIO . atomically $ modifyTVar' liveSessions (M.insert uId session)
-    pure $ CRLiveSessionStarted user (toLiveSessionInfo session)
+    let info = toLiveSessionInfo session
+    liftIO $ forM_ liveSessionHooks $ \hooks -> onLiveSessionStarted hooks info
+    pure $ CRLiveSessionStarted user info
   APIEndLiveSession userId endReason -> withUserId userId $ \user@User {userId = uId} -> do
-    ChatController {liveSessions} <- ask
+    ChatController {liveSessions, config = ChatConfig {chatHooks = ChatHooks {liveSessionHooks}}} <- ask
     session <- liftIO . atomically $ do
       sessions <- readTVar liveSessions
       case M.lookup uId sessions of
@@ -1537,6 +1539,7 @@ processChatCommand' cxt nm = \case
       Just LiveSession {lsSessionId, lsContactId} -> do
         -- Full wipe: delete contact, messages, files, keys.
         void $ processChatCommand' cxt nm $ APIDeleteChat (ChatRef CTDirect lsContactId Nothing) (CDMFull True)
+        liftIO $ forM_ liveSessionHooks $ \hooks -> onLiveSessionEnded hooks lsSessionId endReason
         pure $ CRLiveSessionEnded user lsSessionId endReason
   APILiveSessionPing userId -> withUserId userId $ \user@User {userId = uId} -> do
     ChatController {liveSessions} <- ask
