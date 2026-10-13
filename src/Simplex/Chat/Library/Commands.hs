@@ -410,9 +410,117 @@ handleCommandError a = runExceptT a `E.catches` ioErrors
 parseChatCommand :: ByteString -> Either String ChatCommand
 parseChatCommand = A.parseOnly chatCommandP . B.dropWhileEnd isSpace
 
+-- | Group and multi-party commands are disabled in this build.
+-- This is a 1:1 live-session-only messenger: groups cannot be created,
+-- joined, or used, even programmatically. Added for the private fork (Phase 2).
+isGroupCommand :: ChatCommand -> Bool
+isGroupCommand = \case
+  APIAbortSwitchGroupMember {} -> True
+  APIAcceptMember {} -> True
+  APIAcceptMemberContact {} -> True
+  APIAddGroupRelays {} -> True
+  APIAddGroupShortLink {} -> True
+  APIAddMember {} -> True
+  APIAllowRelayGroup {} -> True
+  APIArchiveReceivedReports {} -> True
+  APIBlockMembersForAll {} -> True
+  APIChangePreparedGroupUser {} -> True
+  APIConnectPreparedGroup {} -> True
+  APICreateGroupLink {} -> True
+  APICreateMemberContact {} -> True
+  APIDeleteGroupLink {} -> True
+  APIDeleteMemberChatItem {} -> True
+  APIDeleteMemberSupportChat {} -> True
+  APIDeleteReceivedReports {} -> True
+  APIEnableGroupMember {} -> True
+  APIGetGroupLink {} -> True
+  APIGetGroupMemberCode {} -> True
+  APIGetGroupRelays {} -> True
+  APIGetReactionMembers {} -> True
+  APIGetUpdatedGroupLinkData {} -> True
+  APIGroupInfo {} -> True
+  APIGroupLinkMemberRole {} -> True
+  APIGroupMemberInfo {} -> True
+  APIGroupMemberQueueInfo {} -> True
+  APIJoinGroup {} -> True
+  APILeaveGroup {} -> True
+  APIListGroups {} -> True
+  APIListMembers {} -> True
+  APIMembersRole {} -> True
+  APINewGroup {} -> True
+  APINewPublicGroup {} -> True
+  APIPrepareGroup {} -> True
+  APIRemoveMembers {} -> True
+  APIReportMessage {} -> True
+  APISendMemberContactInvitation {} -> True
+  APISetGroupAlias {} -> True
+  APISetGroupCustomData {} -> True
+  APISetMemberSettings {} -> True
+  APISetPublicGroupAccess {} -> True
+  APISetUserAutoAcceptMemberContacts {} -> True
+  APISetUserGroupReceipts {} -> True
+  APISwitchGroupMember {} -> True
+  APISyncGroupMemberRatchet {} -> True
+  APIUpdateGroupProfile {} -> True
+  APIVerifyGroupDomain {} -> True
+  APIVerifyGroupMember {} -> True
+  AbortSwitchGroupMember {} -> True
+  AcceptMember {} -> True
+  AcceptMemberContact {} -> True
+  AddMember {} -> True
+  AllowRelayGroup {} -> True
+  ClearGroup {} -> True
+  CreateGroupLink {} -> True
+  DeleteGroup {} -> True
+  DeleteGroupLink {} -> True
+  DeleteMemberMessage {} -> True
+  EnableGroupMember {} -> True
+  ForwardGroupMessage {} -> True
+  GetGroupMemberCode {} -> True
+  GroupLinkMemberRole {} -> True
+  GroupMemberInfo {} -> True
+  GroupMemberQueueInfo {} -> True
+  JoinGroup {} -> True
+  LeaveGroup {} -> True
+  ListGroups {} -> True
+  ListMemberSupportChats {} -> True
+  ListMembers {} -> True
+  MemberRole {} -> True
+  NewGroup {} -> True
+  NewPublicGroup {} -> True
+  RemoveMembers {} -> True
+  ReportMessage {} -> True
+  SendGroupMessageQuote {} -> True
+  SendMemberContactMessage {} -> True
+  SendMessageBroadcast {} -> True
+  SetGroupFeature {} -> True
+  SetGroupFeatureRole {} -> True
+  SetGroupMemberAdmissionReview {} -> True
+  SetGroupTimedMessages {} -> True
+  SetPublicGroupAccess {} -> True
+  SetShowMemberMessages {} -> True
+  SetUserAutoAcceptMemberContacts {} -> True
+  SetUserGroupReceipts {} -> True
+  SharePublicGroup {} -> True
+  ShowGroupDescription {} -> True
+  ShowGroupInfo {} -> True
+  ShowGroupLink {} -> True
+  ShowGroupProfile {} -> True
+  SwitchGroupMember {} -> True
+  SyncGroupMemberRatchet {} -> True
+  UpdateGroupDescription {} -> True
+  UpdateGroupNames {} -> True
+  VerifyGroupMember {} -> True
+  _ -> False
+
 -- | Chat API commands interpreted in context of a local zone
 processChatCommand :: StoreCxt -> NetworkRequestMode -> ChatCommand -> CM ChatResponse
-processChatCommand cxt nm = \case
+processChatCommand cxt nm cmd
+  | isGroupCommand cmd = throwChatError $ CECommandError "group chats are disabled in this build (1:1 live sessions only)"
+  | otherwise = processChatCommand' cxt nm cmd
+
+processChatCommand' :: StoreCxt -> NetworkRequestMode -> ChatCommand -> CM ChatResponse
+processChatCommand' cxt nm = \case
   ShowActiveUser -> withUser' $ pure . CRActiveUser
   CreateActiveUser NewUser {profile, pastTimestamp, userChatRelay, clientService} -> do
     forM_ profile $ \p@Profile {displayName, image} -> do
