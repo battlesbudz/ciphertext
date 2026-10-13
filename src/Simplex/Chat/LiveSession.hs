@@ -47,8 +47,11 @@ data LiveSession = LiveSession
     lsStartedAt :: UTCTime,
     -- | Proof-of-liveness token for deterministic reconnect initiation.
     -- The party with the smaller token initiates the reconnect; the other waits.
+    -- Tokens are exchanged via heartbeat messages.
     lsReconnectToken :: Word64,
-    lsLastPingSent :: TVar UTCTime
+    lsPeerReconnectToken :: TVar (Maybe Word64),
+    lsLastPingSent :: TVar UTCTime,
+    lsLastPeerPing :: TVar UTCTime
   }
 
 -- | Public session info sent to UI clients.
@@ -70,13 +73,20 @@ type LiveSessionMap = Map Int64 LiveSession
 liveHeartbeatPrefix :: Text
 liveHeartbeatPrefix = "\x1fLIVE_HB:"
 
--- | Build a heartbeat message for a session.
-mkHeartbeatMsg :: LiveSessionId -> Text
-mkHeartbeatMsg sessionId = liveHeartbeatPrefix <> sessionId
+-- | Build a heartbeat message for a session (includes reconnect token).
+mkHeartbeatMsg :: LiveSessionId -> Word64 -> Text
+mkHeartbeatMsg sessionId token = liveHeartbeatPrefix <> sessionId <> ":" <> T.pack (show token)
 
--- | Parse a heartbeat message, returning the session ID if it matches.
-parseHeartbeatMsg :: Text -> Maybe LiveSessionId
-parseHeartbeatMsg = T.stripPrefix liveHeartbeatPrefix
+-- | Parse a heartbeat message, returning (session ID, reconnect token).
+parseHeartbeatMsg :: Text -> Maybe (LiveSessionId, Word64)
+parseHeartbeatMsg t = do
+  rest <- T.stripPrefix liveHeartbeatPrefix t
+  case T.breakOn ":" rest of
+    (sid, tok) | not (T.null sid) && not (T.null tok) ->
+      case reads (T.unpack $ T.drop 1 tok) of
+        [(n, "")] -> Just (sid, n)
+        _ -> Nothing
+    _ -> Nothing
 
 -- | Check if a message is a live-session heartbeat.
 isHeartbeatMsg :: Text -> Bool
