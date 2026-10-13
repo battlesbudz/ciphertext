@@ -74,6 +74,7 @@ import Simplex.Chat.Protocol
 import Simplex.Chat.Remote
 import Simplex.Chat.Remote.Types
 import Simplex.Chat.Library.Internal
+import Simplex.Chat.LiveSession
 import Simplex.Chat.Stats
 import Simplex.Chat.Store
 import Simplex.Chat.Store.AppSettings
@@ -123,6 +124,7 @@ import Simplex.RemoteControl.Types (RCCtrlAddress (..))
 import System.Exit (ExitCode, exitSuccess)
 import System.FilePath (takeExtension, takeFileName, (</>))
 import System.IO (Handle, IOMode (..))
+import Data.Word (Word64)
 import System.Random (randomRIO)
 import System.Timeout (timeout)
 import UnliftIO.Async
@@ -1498,6 +1500,53 @@ processChatCommand' cxt nm = \case
       withFastStore' $ \db -> deleteNoteFolderCIs db user nf
       pure $ CRChatCleared user (AChatInfo SCTLocal $ LocalChat nf)
     _ -> throwCmdError "not supported"
+  -- Live (ephemeral) sessions: 1:1 only, die on disconnect, auto-reconnect to NEW session.
+  APIStartLiveSession userId contactId -> withUserId userId $ \user@User {userId = uId} -> do
+    ChatController {liveSessions} <- ask
+    sessions <- liftIO $ readTVarIO liveSessions
+    when (M.member uId sessions) $ throwChatError $ CECommandError "live session already active"
+    ct <- withFastStore $ \db -> getContact db cxt user contactId
+    sessionId <- UUID.toText <$> liftIO V4.nextRandom
+    reconnectToken <- liftIO (randomRIO (minBound, maxBound) :: IO Word64)
+    now <- liftIO getCurrentTime
+    lastPing <- liftIO $ newTVarIO now
+    let session =
+          LiveSession
+            { lsSessionId = sessionId,
+              lsContactId = contactId,
+              lsContactName = localDisplayName ct,
+              lsStartedAt = now,
+              lsReconnectToken = reconnectToken,
+              lsLastPingSent = lastPing
+            }
+    liftIO . atomically $ modifyTVar' liveSessions (M.insert uId session)
+    pure $ CRLiveSessionStarted user (toLiveSessionInfo session)
+  APIEndLiveSession userId endReason -> withUserId userId $ \user@User {userId = uId} -> do
+    ChatController {liveSessions} <- ask
+    session <- liftIO . atomically $ do
+      sessions <- readTVar liveSessions
+      case M.lookup uId sessions of
+        Nothing -> pure Nothing
+        Just s -> writeTVar liveSessions (M.delete uId sessions) >> pure (Just s)
+    case session of
+      Nothing -> throwChatError $ CECommandError "no active live session"
+      Just LiveSession {lsSessionId, lsContactId} -> do
+        -- Full wipe: delete contact, messages, files, keys.
+        void $ processChatCommand' cxt nm $ APIDeleteChat (ChatRef CTDirect lsContactId Nothing) (CDMFull True)
+        pure $ CRLiveSessionEnded user lsSessionId endReason
+  APILiveSessionPing userId -> withUserId userId $ \user@User {userId = uId} -> do
+    ChatController {liveSessions} <- ask
+    maybeSession <- liftIO $ M.lookup uId <$> readTVarIO liveSessions
+    session <- maybe (throwChatError $ CECommandError "no active live session") pure maybeSession
+    now <- liftIO getCurrentTime
+    liftIO . atomically $ writeTVar (lsLastPingSent session) now
+    -- Heartbeat marker message; mobile clients filter these (never display).
+    void $ processChatCommand' cxt nm $ SendLiveMessage (lsContactName session) (mkHeartbeatMsg $ lsSessionId session)
+    pure $ CRLiveSessionPingSent user (lsSessionId session)
+  APIGetLiveSession userId -> withUserId userId $ \user -> do
+    ChatController {liveSessions} <- ask
+    session <- liftIO $ M.lookup userId <$> readTVarIO liveSessions
+    pure $ CRLiveSessionInfo user (toLiveSessionInfo <$> session)
   APIAcceptContact incognito connReqId -> withUser $ \user@User {userId} -> do
     uclData_ <- withFastStore $ \db -> do
       uclId_ <- getUserContactLinkIdByCReq db connReqId
