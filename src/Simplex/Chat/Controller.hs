@@ -64,6 +64,7 @@ import Simplex.Chat.Remote.AppVersion
 import Simplex.Chat.Remote.Types
 import Simplex.Chat.Stats (PresentedServersSummary)
 import Simplex.Chat.Store (AddressSettings, ChatLockEntity, GroupLinkInfo, StoreError (..), UserContactLink, UserMsgReceiptSettings)
+import Simplex.Chat.LiveSession (LiveSession, LiveSessionEndReason (..), LiveSessionInfo (..), LiveSessionMap)
 import Simplex.Chat.Types
 import Simplex.Chat.Types.Preferences
 import Simplex.Chat.Types.Shared
@@ -314,6 +315,7 @@ data ChatController = ChatController
     chatActivated :: TVar Bool,
     timedItemThreads :: TMap (ChatRef, ChatItemId) (TVar (Maybe (Weak ThreadId))),
     showLiveItems :: TVar Bool,
+    liveSessions :: TVar (Map UserId LiveSession),
     encryptLocalFiles :: TVar Bool,
     tempDirectory :: TVar (Maybe FilePath),
     assetsDirectory :: TVar (Maybe FilePath),
@@ -407,6 +409,10 @@ data ChatCommand
   | APIChatUnread {chatRef :: ChatRef, unreadChat :: Bool}
   | APIDeleteChat {chatRef :: ChatRef, chatDeleteMode :: ChatDeleteMode} -- currently delete mode settings are only applied to direct chats
   | APIClearChat {chatRef :: ChatRef}
+  | APIStartLiveSession {userId :: UserId, contactId :: ContactId}
+  | APIEndLiveSession {userId :: UserId, endReason :: LiveSessionEndReason}
+  | APILiveSessionPing {userId :: UserId}
+  | APIGetLiveSession {userId :: UserId}
   | APIAcceptContact {incognito :: IncognitoEnabled, contactReqId :: Int64}
   | APIRejectContact {contactReqId :: Int64}
   | APISendCallInvitation ContactId CallType
@@ -852,6 +858,10 @@ data ChatResponse
   | CRItemsReadForChat {user :: User, chatInfo :: AChatInfo}
   | CRContactDeleted {user :: User, contact :: Contact}
   | CRChatCleared {user :: User, chatInfo :: AChatInfo}
+  | CRLiveSessionStarted {user :: User, session :: LiveSessionInfo}
+  | CRLiveSessionEnded {user :: User, sessionId :: Text, reason :: LiveSessionEndReason}
+  | CRLiveSessionPingSent {user :: User, sessionId :: Text}
+  | CRLiveSessionInfo {user :: User, session :: Maybe LiveSessionInfo}
   | CRUserContactLinkCreated {user :: User, connLinkContact :: CreatedLinkContact}
   | CRUserContactLinkDeleted {user :: User}
   | CRAcceptingContactRequest {user :: User, contact :: Contact}
