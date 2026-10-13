@@ -412,6 +412,7 @@ data ChatCommand
   | APIStartLiveSession {userId :: UserId, contactId :: ContactId}
   | APIEndLiveSession {userId :: UserId, endReason :: LiveSessionEndReason}
   | APILiveSessionPing {userId :: UserId}
+  | APILiveSessionPeerPing {userId :: UserId, sessionId :: Text, peerToken :: Word64}
   | APIGetLiveSession {userId :: UserId}
   | APIAcceptContact {incognito :: IncognitoEnabled, contactReqId :: Int64}
   | APIRejectContact {contactReqId :: Int64}
