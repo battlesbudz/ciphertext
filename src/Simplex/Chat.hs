@@ -204,6 +204,7 @@ newChatController
         timedItemThreads <- TM.emptyIO
         chatActivated <- newTVarIO True
         showLiveItems <- newTVarIO False
+        liveSessions <- newTVarIO M.empty
         encryptLocalFiles <- newTVarIO False
         tempDirectory <- newTVarIO optTempDirectory
         assetsDirectory <- newTVarIO Nothing
@@ -249,6 +250,7 @@ newChatController
               timedItemThreads,
               chatActivated,
               showLiveItems,
+              liveSessions,
               encryptLocalFiles,
               tempDirectory,
               assetsDirectory,
