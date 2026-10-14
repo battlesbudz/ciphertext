@@ -575,7 +575,7 @@ private fun LinkStepView(
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
       Text(link, modifier = Modifier.padding(bottom = DEFAULT_PADDING))
-      SimpleButton("Done", click = close)
+      SimpleButton("Done", icon = painterResource(MR.images.ic_check), click = close)
     }
   }
 }
