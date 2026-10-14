@@ -49,6 +49,7 @@ object LiveSessionManager {
   private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
   private var heartbeatJob: Job? = null
   private var watchdogJob: Job? = null
+  private var reconnectTimeoutJob: Job? = null
 
   // Set when a session died and we are establishing a brand-new one.
   // Visible for the auto-accept / auto-start hooks in SimpleXAPI.
@@ -80,14 +81,12 @@ object LiveSessionManager {
   private fun randomSessionId(): String =
     Random.nextBytes(16).joinToString("") { "%02x".format(it) }
 
-  private suspend fun currentUserId(): Long? = try {
-    chatController.apiGetActiveUser(null)?.userId
-  } catch (e: Exception) { null }
+  private fun currentUserId(): Long? = chatModel.currentUser.value?.userId
 
   // Start a live session with an existing 1:1 contact. Called from the UI.
   suspend fun startSession(contactId: Long, contactName: String) {
     if (sessionState.value != null) return
-    val userId = currentUserId() ?: return
+    currentUserId() ?: return
 
     val sessionId = randomSessionId()
     val myToken = Random.nextULong()
@@ -212,6 +211,8 @@ object LiveSessionManager {
     )
     pendingReconnect = null
     reconnecting.value = false
+    reconnectTimeoutJob?.cancel()
+    reconnectTimeoutJob = null
     statusText.value = "Live session active — everything wipes on exit"
     startTimers()
   }
@@ -243,6 +244,16 @@ object LiveSessionManager {
         pendingReconnect = PendingReconnect(s.myToken, peerToken, peerLink, iAmInitiator)
         reconnecting.value = true
         statusText.value = "Session lost — starting a brand-new session…"
+        // Give up on the reconnect after 90s if the peer never comes back.
+        reconnectTimeoutJob?.cancel()
+        reconnectTimeoutJob = scope.launch {
+          delay(90_000L)
+          if (pendingReconnect != null) {
+            pendingReconnect = null
+            reconnecting.value = false
+            statusText.value = "Could not reconnect — peer unavailable"
+          }
+        }
         if (iAmInitiator) initiateReconnect()
         // Waiter: auto-accept hook handles the incoming contact request.
       } else {
@@ -303,6 +314,8 @@ object LiveSessionManager {
   fun clearReconnectState() {
     pendingReconnect = null
     reconnecting.value = false
+    reconnectTimeoutJob?.cancel()
+    reconnectTimeoutJob = null
   }
 
   private fun startTimers() {
