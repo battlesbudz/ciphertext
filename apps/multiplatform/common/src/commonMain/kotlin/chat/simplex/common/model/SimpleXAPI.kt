@@ -2858,7 +2858,7 @@ object ChatController {
         // Live session auto-reconnect (private fork): auto-accept if we are
         // the waiter in a pending reconnect; skip the normal request UI.
         if (active(r.user) && LiveSessionManager.onContactRequest(contactRequest.apiId)) {
-          return@withBGApi
+          return
         }
         if (active(r.user)) {
           withContext(Dispatchers.Main) {
