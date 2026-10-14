@@ -5654,6 +5654,13 @@ chatCommandP =
       "/_unread chat " *> (APIChatUnread <$> chatRefP <* A.space <*> onOffP),
       "/_delete " *> (APIDeleteChat <$> chatRefP <*> chatDeleteMode),
       "/_clear chat " *> (APIClearChat <$> chatRefP),
+      -- Live (ephemeral) 1:1 sessions (private fork Phase 2): terminal parsers
+      -- so mobile clients can invoke the LiveSession API.
+      "/_live start " *> (APIStartLiveSession <$> A.decimal <* A.space <*> A.decimal),
+      "/_live end " *> (APIEndLiveSession <$> A.decimal <* A.space <*> liveSessionEndReasonP),
+      "/_live ping " *> (APILiveSessionPing <$> A.decimal),
+      "/_live peer_ping " *> (APILiveSessionPeerPing <$> A.decimal <* A.space <*> text1P <* A.space <*> A.decimal),
+      "/_live get " *> (APIGetLiveSession <$> A.decimal),
       "/_accept" *> (APIAcceptContact <$> incognitoOnOffP <* A.space <*> A.decimal),
       "/_reject " *> (APIRejectContact <$> A.decimal),
       "/_call invite @" *> (APISendCallInvitation <$> A.decimal <* A.space <*> jsonP),
@@ -6195,6 +6202,11 @@ chatCommandP =
     quotedP = safeDecodeUtf8 <$> (A.char '"' *> A.takeTill (== '"') <* A.char '"')
     text1P = safeDecodeUtf8 <$> A.takeTill (== ' ')
     char_ = optional . A.char
+    -- Live session end reasons (private fork Phase 2).
+    liveSessionEndReasonP =
+      ("peer" $> LSEndPeerDisconnect)
+        <|> ("timeout" $> LSEndHeartbeatTimeout)
+        <|> ("user" $> LSEndUserEnded)
 
 displayNameP :: Parser Text
 displayNameP = safeDecodeUtf8 <$> displayNameP_
