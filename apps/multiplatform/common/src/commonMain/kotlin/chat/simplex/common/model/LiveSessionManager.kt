@@ -81,7 +81,7 @@ object LiveSessionManager {
   private fun randomSessionId(): String =
     Random.nextBytes(16).joinToString("") { "%02x".format(it) }
 
-  private fun currentUserId(): Long? = chatModel.currentUser.value?.userId
+  private fun currentUserId(): Long? = ChatController.chatModel.currentUser.value?.userId
 
   // Start a live session with an existing 1:1 contact. Called from the UI.
   suspend fun startSession(contactId: Long, contactName: String) {
@@ -89,16 +89,16 @@ object LiveSessionManager {
     currentUserId() ?: return
 
     val sessionId = randomSessionId()
-    val myToken = Random.nextULong()
+    val myToken = Random.nextLong().toULong()
     val initiatorId = randomSessionId()
 
     // One-time invitation for the NEXT session (used on auto-reconnect).
-    val (invPair, _) = chatController.apiAddContact(null, incognito = false)
+    val (invPair, _) = ChatController.apiAddContact(null, incognito = false)
     val myLink = invPair?.first?.connFullLink ?: return
 
     // Send INVITE to the peer over the current contact.
     val inviteText = "$INVITE_PREFIX$sessionId:$initiatorId:$myToken:$myLink"
-    chatController.apiSendMessages(
+    ChatController.apiSendMessages(
       rh = null,
       type = ChatType.Direct,
       id = contactId,
@@ -180,15 +180,15 @@ object LiveSessionManager {
     if (sessionState.value != null) return
     currentUserId() ?: return
 
-    val myToken = Random.nextULong()
+    val myToken = Random.nextLong().toULong()
     val initiatorId = randomSessionId()
 
-    val (invPair, _) = chatController.apiAddContact(null, incognito = false)
+    val (invPair, _) = ChatController.apiAddContact(null, incognito = false)
     val myLink = invPair?.first?.connFullLink ?: return
 
     // Respond with our INVITE (token + next-session invitation).
     val inviteText = "$INVITE_PREFIX$sessionId:$initiatorId:$myToken:$myLink"
-    chatController.apiSendMessages(
+    ChatController.apiSendMessages(
       rh = null,
       type = ChatType.Direct,
       id = contactId,
@@ -196,7 +196,7 @@ object LiveSessionManager {
       composedMessages = listOf(ComposedMessage(null, null, MsgContent.MCText(inviteText), emptyMap()))
     )
 
-    val contactName = (chatModel.chatsContext.getContactChat(contactId)?.chatInfo as? ChatInfo.Direct)?.contact?.localDisplayName ?: "?"
+    val contactName = (ChatController.chatModel.chatsContext.getContactChat(contactId)?.chatInfo as? ChatInfo.Direct)?.contact?.localDisplayName ?: "?"
     val now = Clock.System.now().toEpochMilliseconds()
     sessionState.value = LiveSessionState(
       sessionId = sessionId,
@@ -227,7 +227,7 @@ object LiveSessionManager {
     // Wipe: full delete destroys the contact, all messages, keys, and queues.
     // Nothing carries over: no messages, no keys, no relay state, no history.
     try {
-      chatController.apiDeleteChat(null, ChatType.Direct, s.contactId, ChatDeleteMode.Full(notify = true))
+      ChatController.apiDeleteChat(null, ChatType.Direct, s.contactId, ChatDeleteMode.Full(notify = true))
     } catch (e: Exception) {
       // Best effort: state is already cleared.
     }
@@ -275,7 +275,7 @@ object LiveSessionManager {
     if (!pending.iAmInitiator) return
     try {
       val connLink = CreatedConnLink(pending.peerNextInvitation, null)
-      val connection = chatController.apiConnect(null, incognito = false, connLink = connLink)
+      val connection = ChatController.apiConnect(null, incognito = false, connLink = connLink)
       if (connection == null) {
         // Reconnect failed: stop.
         pendingReconnect = null
@@ -296,7 +296,7 @@ object LiveSessionManager {
     val pending = pendingReconnect ?: return false
     if (pending.iAmInitiator) return false
     return try {
-      chatController.apiAcceptContactRequest(null, incognito = false, contactReqId = contactReqId) != null
+      ChatController.apiAcceptContactRequest(null, incognito = false, contactReqId = contactReqId) != null
     } catch (e: Exception) { false }
   }
 
@@ -304,12 +304,12 @@ object LiveSessionManager {
   // initiator's reconnect request may have arrived before we timed out).
   private suspend fun acceptPendingContactRequest() {
     try {
-      val reqChat = chatModel.chatsContext.chats.value
+      val reqChat = ChatController.chatModel.chatsContext.chats.value
         .filter { it.chatInfo is ChatInfo.ContactRequest }
         .maxByOrNull { (it.chatInfo as ChatInfo.ContactRequest).contactRequest.createdAt }
       val reqId = (reqChat?.chatInfo as? ChatInfo.ContactRequest)?.contactRequest?.apiId
       if (reqId != null) {
-        chatController.apiAcceptContactRequest(null, incognito = false, contactReqId = reqId)
+        ChatController.apiAcceptContactRequest(null, incognito = false, contactReqId = reqId)
       }
     } catch (e: Exception) { /* best effort */ }
   }
@@ -363,7 +363,7 @@ object LiveSessionManager {
   private suspend fun sendHeartbeat() {
     val s = sessionState.value ?: return
     val text = "$HEARTBEAT_PREFIX${s.sessionId}:${s.myToken}"
-    chatController.apiSendMessages(
+    ChatController.apiSendMessages(
       rh = null,
       type = ChatType.Direct,
       id = s.contactId,
@@ -383,7 +383,7 @@ object LiveSessionManager {
 
   private suspend fun deleteProtocolMessage(contactId: Long, chatItemId: Long) {
     try {
-      chatController.apiDeleteChatItems(null, ChatType.Direct, contactId, null, listOf(chatItemId), CIDeleteMode.cidmInternal)
+      ChatController.apiDeleteChatItems(null, ChatType.Direct, contactId, null, listOf(chatItemId), CIDeleteMode.cidmInternal)
     } catch (e: Exception) {
       // Best effort: the session-end wipe removes everything anyway.
     }
