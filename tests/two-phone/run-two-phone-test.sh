@@ -120,6 +120,25 @@ for avd in "$AVD_A" "$AVD_B"; do
   fi
 done
 
+# KVM: x86_64 emulation REQUIRES hardware acceleration. The runner user
+# is not in the kvm group on this image (group line shows no members), so
+# grant /dev/kvm access directly. Group membership would need a re-login;
+# chmod takes effect immediately in this shell. sudo is passwordless on
+# GitHub-hosted runners.
+if [ -e /dev/kvm ]; then
+  sudo chmod 666 /dev/kvm 2>/dev/null || sudo chown "$USER" /dev/kvm 2>/dev/null || true
+  if [ -w /dev/kvm ]; then
+    log "KVM available (/dev/kvm writable)"
+  else
+    fail "KVM NOT available: /dev/kvm not writable even after chmod; x86_64 emulation cannot start"
+    ls -la /dev/kvm || true
+    exit 1
+  fi
+else
+  fail "KVM NOT available: /dev/kvm does not exist on this runner"
+  exit 1
+fi
+
 emulator -avd "$AVD_A" -port 5554 -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -memory 2048 >"$OUT_DIR/emu-a.log" 2>&1 &
 EMU_A_PID=$!
 emulator -avd "$AVD_B" -port 5556 -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -memory 2048 >"$OUT_DIR/emu-b.log" 2>&1 &
