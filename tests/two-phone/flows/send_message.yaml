@@ -1,12 +1,17 @@
 # Send a message in the currently open chat and assert it appears.
 # Env: TEXT
+# The send button has no visible text; matched via its contentDescription
+# ("Send Message") through the text: selector (accessibilityText).
 appId: chat.simplex.app
 ---
 - tapOn:
     text: "Message"
 - inputText: "${TEXT}"
 - tapOn:
-    contentDescription: "Send Message"
+    text: "Send Message"
+- extendedWaitUntil:
+    visible:
+      text: "${TEXT}"
+    timeout: 90000
 - assertVisible:
     text: "${TEXT}"
-    timeout: 90000
