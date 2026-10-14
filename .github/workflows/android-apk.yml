@@ -27,22 +27,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Extract native libraries from upstream APK (arm64-v8a)
+      - name: Extract native libraries from upstream APKs (arm64-v8a + armeabi-v7a)
         # The prebuilt CI zips (ci.zw3rk.com) are no longer available (404).
-        # Extract libsimplex.so and libsupport.so from the upstream release APK
+        # Extract libsimplex.so and libsupport.so from the upstream release APKs
         # instead. The JNI interface is stable, so the v7.0.3 libs work with
-        # this fork's Kotlin code.
+        # this fork's Kotlin code. Both ABIs are needed: the Gradle build sets
+        # abiFilters("arm64-v8a", "armeabi-v7a"), so CMake requires prebuilt
+        # libs for each ABI or ninja fails with "no known rule to make" errors.
         run: |
           set -euo pipefail
-          LIBS_DIR="apps/multiplatform/common/src/commonMain/cpp/android/libs/arm64-v8a"
-          mkdir -p "$LIBS_DIR"
-          curl -sSL --fail -o /tmp/simplex.apk \
-            "https://github.com/simplex-chat/simplex-chat/releases/download/v7.0.3/simplex-aarch64.apk"
-          unzip -o /tmp/simplex.apk "lib/arm64-v8a/*" -d /tmp/sx-libs/
-          cp /tmp/sx-libs/lib/arm64-v8a/libsimplex.so /tmp/sx-libs/lib/arm64-v8a/libsupport.so "$LIBS_DIR/"
-          test -f "$LIBS_DIR/libsimplex.so"
-          test -f "$LIBS_DIR/libsupport.so"
-          ls -la "$LIBS_DIR"
+          extract_abi() {
+            local apk_url="$1" abi="$2"
+            local libs_dir="apps/multiplatform/common/src/commonMain/cpp/android/libs/$abi"
+            mkdir -p "$libs_dir"
+            curl -sSL --fail -o /tmp/simplex-abi.apk "$apk_url"
+            rm -rf /tmp/sx-libs && mkdir -p /tmp/sx-libs
+            unzip -o /tmp/simplex-abi.apk "lib/$abi/*" -d /tmp/sx-libs/
+            cp "/tmp/sx-libs/lib/$abi/libsimplex.so" "/tmp/sx-libs/lib/$abi/libsupport.so" "$libs_dir/"
+            test -f "$libs_dir/libsimplex.so"
+            test -f "$libs_dir/libsupport.so"
+            ls -la "$libs_dir"
+          }
+          extract_abi "https://github.com/simplex-chat/simplex-chat/releases/download/v7.0.3/simplex-aarch64.apk" "arm64-v8a"
+          extract_abi "https://github.com/simplex-chat/simplex-chat/releases/download/v7.0.3/simplex-armv7a.apk" "armeabi-v7a"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
