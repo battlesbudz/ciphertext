@@ -26,12 +26,10 @@ import chat.simplex.common.ui.theme.*
 import androidx.compose.ui.layout.ContentScale
 import chat.simplex.common.BuildConfigCommon
 import chat.simplex.common.views.*
-import chat.simplex.common.views.chat.group.GroupLinkView
 import chat.simplex.common.views.chatlist.openGroupChat
 import chat.simplex.common.views.helpers.*
 import chat.simplex.common.views.usersettings.*
 import chat.simplex.common.views.usersettings.networkAndServers.NetworkAndServersView
-import chat.simplex.common.views.chat.group.hostFromRelayLink
 import chat.simplex.res.MR
 import java.net.URI
 import dev.icerock.moko.resources.compose.painterResource
@@ -67,9 +65,6 @@ fun AddChannelView(chatModel: ChatModel, rh: RemoteHostInfo?, close: () -> Unit,
           closeAll()
           withBGApi {
             openGroupChat(rhId, gInfo.groupId)
-            ModalManager.end.showModalCloseable(showClose = true, cardScreen = true) { close ->
-              GroupLinkView(chatModel, rhId = rhId, groupInfo = gInfo, groupLink = groupLink.value, onGroupLinkUpdated = null, creatingGroup = true, isChannel = true, shareGroupInfo = gInfo, close = close)
-            }
           }
         }
       } else {
@@ -326,7 +321,8 @@ private fun ProfileStepView(
           iconColor = if (hasRelays.value) MaterialTheme.colors.primary else WarningOrange
         )
 
-        val canCreate = canCreateProfile(displayName.value) && hasRelays.value && !creationInProgress.value
+        val profileName = displayName.value.trim()
+        val canCreate = profileName.isNotEmpty() && mkValidName(profileName) == profileName && hasRelays.value && !creationInProgress.value
         SettingsActionItem(
           painterResource(MR.images.ic_check),
           generalGetString(MR.strings.create_channel_button),
@@ -572,17 +568,24 @@ private fun LinkStepView(
     }
   }
   ModalView(close = close, showClose = false, cardScreen = true) {
-    GroupLinkView(
-      chatModel = chatModel,
-      rhId = rhId,
-      groupInfo = gInfo,
-      groupLink = groupLink.value,
-      onGroupLinkUpdated = { groupLink.value = it },
-      creatingGroup = true,
-      isChannel = true,
-      close = close
-    )
+    // 1:1-only: simplified channel link display (GroupLinkView removed)
+    val link = groupLink.value?.connLinkContact?.connFullLink ?: ""
+    Column(
+      Modifier.fillMaxWidth().padding(DEFAULT_PADDING),
+      horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+      Text(link, modifier = Modifier.padding(bottom = DEFAULT_PADDING))
+      SimpleButton("Done", click = close)
+    }
   }
+}
+
+fun hostFromRelayLink(link: String): String {
+  // Extract host from an SMP relay link (smp://[<auth>@]<host>[:<port>][/...]).
+  // Pure string parsing: no java.net dependency, safe fallback to the raw link.
+  val afterScheme = link.substringAfter("://", link)
+  val authority = afterScheme.substringAfter("@", afterScheme).substringBefore("/")
+  return authority.substringBefore(":").ifEmpty { link }
 }
 
 fun relayDisplayName(relay: GroupRelay): String {
