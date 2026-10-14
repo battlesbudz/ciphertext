@@ -85,6 +85,10 @@ deliver_invite() {
 # Phase 0: emulators
 # =====================================================================
 log "=== Phase 0: create + boot emulators (arm64, slow) ==="
+# Pin the AVD home BEFORE creating anything, so avdmanager and the
+# emulator binary agree on where AVDs live.
+export ANDROID_AVD_HOME="$HOME/.android/avd"
+mkdir -p "$ANDROID_AVD_HOME"
 sdkmanager --install "emulator" "platform-tools" "system-images;android-30;default;arm64-v8a" >"$OUT_DIR/sdkmanager.log" 2>&1 || {
   fail "sdkmanager install of emulator + system image"
   cat "$OUT_DIR/sdkmanager.log"
@@ -96,7 +100,21 @@ echo "no" | avdmanager create avd -n "$AVD_A" -k "system-images;android-30;defau
 echo "no" | avdmanager create avd -n "$AVD_B" -k "system-images;android-30;default;arm64-v8a" --device "pixel_5" --force >"$OUT_DIR/avd-b.log" 2>&1 || {
   fail "avdmanager create AVD B"; cat "$OUT_DIR/avd-b.log"; exit 1
 }
-avdmanager list avd >>"$OUT_DIR/avd-a.log" 2>&1
+# Verify the AVD .ini files actually landed in the pinned home.
+# (A previous run had avdmanager exit 0 while the emulator still reported
+# "Unknown AVD name", so trust the files on disk, not the exit code.)
+avdmanager list avd >"$OUT_DIR/avd-list.log" 2>&1 || true
+cat "$OUT_DIR/avd-list.log"
+ls -la "$ANDROID_AVD_HOME" || true
+for avd in "$AVD_A" "$AVD_B"; do
+  if [ ! -f "$ANDROID_AVD_HOME/${avd}.ini" ]; then
+    fail "AVD ${avd}.ini missing from $ANDROID_AVD_HOME after avdmanager exit 0"
+    echo "--- avd-a.log ---"; cat "$OUT_DIR/avd-a.log"
+    echo "--- avd-b.log ---"; cat "$OUT_DIR/avd-b.log"
+    echo "--- avd-list.log ---"; cat "$OUT_DIR/avd-list.log"
+    exit 1
+  fi
+done
 
 emulator -avd "$AVD_A" -port 5554 -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -memory 2048 >"$OUT_DIR/emu-a.log" 2>&1 &
 EMU_A_PID=$!
