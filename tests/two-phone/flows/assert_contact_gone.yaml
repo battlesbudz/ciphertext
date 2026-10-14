@@ -1,0 +1,7 @@
+# Assert a contact is GONE from the chat list (session wiped).
+# Env: CONTACT_NAME
+appId: chat.simplex.app
+---
+- launchApp
+- assertNotVisible:
+    text: "${CONTACT_NAME}"
