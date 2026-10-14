@@ -27,7 +27,6 @@ import chat.simplex.common.model.ChatController.appPrefs
 import chat.simplex.common.platform.*
 import chat.simplex.common.views.helpers.*
 import chat.simplex.common.ui.theme.*
-import chat.simplex.common.views.chat.group.MemberProfileImage
 import chat.simplex.common.views.chat.item.*
 import chat.simplex.common.views.chatlist.*
 import chat.simplex.common.views.usersettings.networkAndServers.serverHostname
@@ -363,7 +362,7 @@ fun ChatItemInfoView(chatRh: Long?, ci: ChatItem, ciInfo: ChatItemInfo, devTools
     SectionItemView(
       padding = PaddingValues(horizontal = 0.dp)
     ) {
-      MemberProfileImage(size = 36.dp, member)
+      ProfileImage(36.dp, member.memberProfile.image)
       Spacer(Modifier.width(DEFAULT_SPACE_AFTER_ICON))
       NameWithBadge(
         member.chatViewName,
