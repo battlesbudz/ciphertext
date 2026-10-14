@@ -1,0 +1,17 @@
+# Phone A: create a one-time invitation link and show its QR code.
+# After this flow the driver screenshots the device and decodes the QR
+# to get the invitation link (no clipboard tapping needed).
+appId: chat.simplex.app
+---
+- launchApp
+- tapOn:
+    contentDescription: "Start new chat"
+- assertVisible:
+    text: "New 1-time link"
+    timeout: 60000
+- tapOn:
+    text: "New 1-time link"
+- assertVisible:
+    text: "Share this 1-time link"
+    timeout: 90000
+- waitForAnimationToEnd
