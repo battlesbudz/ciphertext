@@ -52,9 +52,10 @@ maestro_run() {
   local name; name="$(basename "$flow" .yaml)"
   local logfile="$OUT_DIR/maestro-${serial}-${name}.log"
   log "maestro [$serial] $name"
-  env "$@" maestro --device "$serial" test "$flow" >"$logfile" 2>&1
+  env "$@" timeout 600 maestro --device "$serial" test "$flow" >"$logfile" 2>&1
   local rc=$?
-  if [ $rc -eq 0 ]; then
+  if [ $rc -eq 124 ]; then
+    log "maestro [$serial] $name -> TIMEOUT (600s), tail:"
     log "maestro [$serial] $name -> OK"
   else
     log "maestro [$serial] $name -> FAILED (rc=$rc), tail:"
@@ -67,7 +68,7 @@ maestro_run() {
 get_invite_link() {
   local serial="$1"
   local png="$OUT_DIR/invite-${serial}.png"
-  adb -s "$serial" exec-out screencap -p > "$png"
+  timeout 60 adb -s "$serial" exec-out screencap -p > "$png"
   python3 "$TEST_DIR/qr_decode.py" "$png"
 }
 
@@ -75,7 +76,7 @@ get_invite_link() {
 deliver_invite() {
   local serial="$1" link="$2"
   # Target MainActivity explicitly: avoids the browser/chooser for https links.
-  adb -s "$serial" shell am start -n "$APP_ID/$APP_ID.MainActivity" \
+  timeout 60 adb -s "$serial" shell am start -n "$APP_ID/$APP_ID.MainActivity" \
     -a android.intent.action.VIEW -d "'$link'" >"$OUT_DIR/deeplink-${serial}.log" 2>&1
   sleep 5
 }
@@ -87,9 +88,15 @@ log "=== Phase 0: create + boot emulators (arm64, slow) ==="
 sdkmanager --install "system-images;android-30;default;arm64-v8a" >"$OUT_DIR/sdkmanager.log" 2>&1 || {
   fail "sdkmanager install of system image"
   cat "$OUT_DIR/sdkmanager.log"
+  exit 1
 }
-echo "no" | avdmanager create avd -n "$AVD_A" -k "system-images;android-30;default;arm64-v8a" --device "pixel_5" --force >"$OUT_DIR/avd-a.log" 2>&1
-echo "no" | avdmanager create avd -n "$AVD_B" -k "system-images;android-30;default;arm64-v8a" --device "pixel_5" --force >"$OUT_DIR/avd-b.log" 2>&1
+echo "no" | avdmanager create avd -n "$AVD_A" -k "system-images;android-30;default;arm64-v8a" --device "pixel_5" --force >"$OUT_DIR/avd-a.log" 2>&1 || {
+  fail "avdmanager create AVD A"; cat "$OUT_DIR/avd-a.log"; exit 1
+}
+echo "no" | avdmanager create avd -n "$AVD_B" -k "system-images;android-30;default;arm64-v8a" --device "pixel_5" --force >"$OUT_DIR/avd-b.log" 2>&1 || {
+  fail "avdmanager create AVD B"; cat "$OUT_DIR/avd-b.log"; exit 1
+}
+avdmanager list avd >>"$OUT_DIR/avd-a.log" 2>&1
 
 emulator -avd "$AVD_A" -port 5554 -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -memory 2048 >"$OUT_DIR/emu-a.log" 2>&1 &
 EMU_A_PID=$!
@@ -100,34 +107,64 @@ cleanup_emulators() {
 }
 trap cleanup_emulators EXIT
 
+# Wait for an emulator to appear in `adb devices` AND finish booting.
+# Never blocks forever: every wait has a deadline, and a dead emulator
+# process fails fast with its log attached.
 wait_boot() {
-  local serial="$1" deadline=$((SECONDS + 1500))
-  log "waiting for boot: $serial"
-  adb -s "$serial" wait-for-device
+  local serial="$1" emu_pid="$2" emu_log="$3" deadline=$((SECONDS + 1500))
+  log "waiting for device: $serial (pid $emu_pid)"
   while [ $SECONDS -lt $deadline ]; do
+    if ! kill -0 "$emu_pid" 2>/dev/null; then
+      log "emulator process $emu_pid died for $serial; last log:"
+      tail -n 60 "$emu_log" | sed 's/^/    /'
+      return 1
+    fi
+    if adb devices 2>/dev/null | grep -q "^${serial}[[:space:]]"; then
+      break
+    fi
+    sleep 10
+  done
+  if ! adb devices 2>/dev/null | grep -q "^${serial}[[:space:]]"; then
+    log "TIMEOUT: $serial never appeared in adb devices"
+    tail -n 60 "$emu_log" | sed 's/^/    /'
+    return 1
+  fi
+  log "device online: $serial; waiting for boot_completed"
+  while [ $SECONDS -lt $deadline ]; do
+    if ! kill -0 "$emu_pid" 2>/dev/null; then
+      log "emulator process $emu_pid died during boot for $serial; last log:"
+      tail -n 60 "$emu_log" | sed 's/^/    /'
+      return 1
+    fi
     if [ "$(adb -s "$serial" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ]; then
       log "booted: $serial"
       return 0
     fi
     sleep 15
   done
-  log "TIMEOUT waiting for boot: $serial"
+  log "TIMEOUT waiting for boot_completed: $serial"
   return 1
 }
-wait_boot "$SERIAL_A" || fail "emulator A did not boot"
-wait_boot "$SERIAL_B" || fail "emulator B did not boot"
+BOOT_OK=1
+wait_boot "$SERIAL_A" "$EMU_A_PID" "$OUT_DIR/emu-a.log" || BOOT_OK=0
+wait_boot "$SERIAL_B" "$EMU_B_PID" "$OUT_DIR/emu-b.log" || BOOT_OK=0
+if [ "$BOOT_OK" != "1" ]; then
+  fail "one or both emulators did not boot; aborting (no point running Maestro against dead emulators)"
+  adb devices
+  exit 1
+fi
 
 for s in "$SERIAL_A" "$SERIAL_B"; do
-  adb -s "$s" shell input keyevent 82 || true
-  adb -s "$s" shell settings put global window_animation_scale 0
-  adb -s "$s" shell settings put global transition_animation_scale 0
-  adb -s "$s" shell settings put global animator_duration_scale 0
-  adb -s "$s" shell settings put global heads_up_notifications_enabled 0
+  timeout 30 adb -s "$s" shell input keyevent 82 || true
+  timeout 30 adb -s "$s" shell settings put global window_animation_scale 0
+  timeout 30 adb -s "$s" shell settings put global transition_animation_scale 0
+  timeout 30 adb -s "$s" shell settings put global animator_duration_scale 0
+  timeout 30 adb -s "$s" shell settings put global heads_up_notifications_enabled 0
 done
 
 log "=== Install APK on both ==="
-adb -s "$SERIAL_A" install -r -g "$APK" >"$OUT_DIR/install-a.log" 2>&1 || fail "install on A"
-adb -s "$SERIAL_B" install -r -g "$APK" >"$OUT_DIR/install-b.log" 2>&1 || fail "install on B"
+timeout 300 adb -s "$SERIAL_A" install -r -g "$APK" >"$OUT_DIR/install-a.log" 2>&1 || fail "install on A"
+timeout 300 adb -s "$SERIAL_B" install -r -g "$APK" >"$OUT_DIR/install-b.log" 2>&1 || fail "install on B"
 
 # =====================================================================
 # Phase 1: onboarding on both (parallel)
@@ -229,7 +266,7 @@ fi
 # Phase 5: kill A, verify B wipes the session
 # =====================================================================
 log "=== Phase 5: kill A, B must wipe ==="
-adb -s "$SERIAL_A" shell am force-stop "$APP_ID"
+timeout 60 adb -s "$SERIAL_A" shell am force-stop "$APP_ID"
 log "A force-stopped; waiting 45s for B watchdog (30s timeout) + wipe"
 sleep 45
 if maestro_run "$SERIAL_B" "$FLOWS/assert_contact_gone.yaml" CONTACT_NAME="$NAME_A"; then
@@ -242,7 +279,7 @@ fi
 # Phase 6: relaunch A, reconnect (auto if B initiated, else manual)
 # =====================================================================
 log "=== Phase 6: relaunch A, reconnect ==="
-adb -s "$SERIAL_A" shell am start -n "$APP_ID/$APP_ID.MainActivity" >"$OUT_DIR/relaunch-a.log" 2>&1
+timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$APP_ID.MainActivity" >"$OUT_DIR/relaunch-a.log" 2>&1
 sleep 10
 RECON_OK=0
 # Case 1: B was the token-smaller initiator -> a contact request is waiting on A.
