@@ -33,8 +33,7 @@ import chat.simplex.common.model.ChatModel.controller
 import chat.simplex.common.model.ChatModel.filesToDelete
 import chat.simplex.common.platform.*
 import chat.simplex.common.ui.theme.*
-import chat.simplex.common.views.chat.group.hostFromRelayLink
-import chat.simplex.common.views.chat.group.relayConnStatus
+import chat.simplex.common.views.newchat.hostFromRelayLink
 import chat.simplex.common.views.chat.item.*
 import chat.simplex.common.views.helpers.*
 import chat.simplex.common.views.newchat.RelayProgressIndicator
@@ -2184,4 +2183,14 @@ private data class SubscriberRelayState(
 
 private fun relayMemberRemoved(status: GroupMemberStatus?): Boolean =
   status in listOf(GroupMemberStatus.MemLeft, GroupMemberStatus.MemRemoved, GroupMemberStatus.MemGroupDeleted)
+
+// 1:1-only: local replacement for the deleted group relay status helper.
+// Returns (status text, status dot color) for a relay member row.
+private fun relayConnStatus(m: GroupMember): Pair<String, Color> =
+  when {
+    relayMemberRemoved(m.memberStatus) -> "removed" to Color.Gray
+    m.activeConn?.connFailedErr != null -> "failed" to Color.Red
+    m.activeConn?.connStatus == ConnStatus.Ready -> "connected" to Color.Green
+    else -> "connecting" to WarningOrange
+  }
 
