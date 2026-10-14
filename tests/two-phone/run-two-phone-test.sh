@@ -9,9 +9,13 @@
 # Exit 0 only if every required check passes. A full per-check report is
 # printed at the end and logs land in $OUT_DIR (uploaded as an artifact).
 #
-# NOTE: the APK is arm64-only, so the emulators are arm64-v8a images under
-# QEMU software emulation on the x86_64 runner. Everything is slow;
-# timeouts are generous on purpose.
+# NOTE: the APK is arm64-only (abiFilters in build.gradle.kts), so the
+# emulators are x86_64 Google-APIs images on the x86_64 runner with KVM.
+# The arm64 APK installs and runs via the image's native bridge (houdini:
+# ro.product.cpu.abilist includes arm64-v8a), so no app-code change is
+# needed. arm64 emulator images are NOT an option: emulator 37.x on an
+# x86_64 host refuses them ("Avd's CPU Architecture 'arm64' is not
+# supported by the QEMU2 emulator on x86_64 host").
 
 set -u
 APK="${1:?usage: run-two-phone-test.sh <path-to-signed-apk>}"
@@ -84,20 +88,20 @@ deliver_invite() {
 # =====================================================================
 # Phase 0: emulators
 # =====================================================================
-log "=== Phase 0: create + boot emulators (arm64, slow) ==="
+log "=== Phase 0: create + boot emulators (x86_64, KVM) ==="
 # Pin the AVD home BEFORE creating anything, so avdmanager and the
 # emulator binary agree on where AVDs live.
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 mkdir -p "$ANDROID_AVD_HOME"
-sdkmanager --install "emulator" "platform-tools" "system-images;android-30;default;arm64-v8a" >"$OUT_DIR/sdkmanager.log" 2>&1 || {
+sdkmanager --install "emulator" "platform-tools" "system-images;android-30;google_apis;x86_64" >"$OUT_DIR/sdkmanager.log" 2>&1 || {
   fail "sdkmanager install of emulator + system image"
   cat "$OUT_DIR/sdkmanager.log"
   exit 1
 }
-echo "no" | avdmanager create avd -n "$AVD_A" -k "system-images;android-30;default;arm64-v8a" --device "pixel_5" --force >"$OUT_DIR/avd-a.log" 2>&1 || {
+echo "no" | avdmanager create avd -n "$AVD_A" -k "system-images;android-30;google_apis;x86_64" --device "pixel_5" --force >"$OUT_DIR/avd-a.log" 2>&1 || {
   fail "avdmanager create AVD A"; cat "$OUT_DIR/avd-a.log"; exit 1
 }
-echo "no" | avdmanager create avd -n "$AVD_B" -k "system-images;android-30;default;arm64-v8a" --device "pixel_5" --force >"$OUT_DIR/avd-b.log" 2>&1 || {
+echo "no" | avdmanager create avd -n "$AVD_B" -k "system-images;android-30;google_apis;x86_64" --device "pixel_5" --force >"$OUT_DIR/avd-b.log" 2>&1 || {
   fail "avdmanager create AVD B"; cat "$OUT_DIR/avd-b.log"; exit 1
 }
 # Verify the AVD .ini files actually landed in the pinned home.
@@ -181,6 +185,15 @@ for s in "$SERIAL_A" "$SERIAL_B"; do
 done
 
 log "=== Install APK on both ==="
+# The arm64 APK needs the native bridge: abilist must include arm64-v8a.
+for s in "$SERIAL_A" "$SERIAL_B"; do
+  ABIS="$(timeout 30 adb -s "$s" shell getprop ro.product.cpu.abilist 2>/dev/null | tr -d '\r')"
+  log "abilist [$s]: $ABIS"
+  case "$ABIS" in
+    *arm64-v8a*) ;;
+    *) fail "native bridge missing on $s (no arm64-v8a in abilist); arm64 APK cannot install"; exit 1 ;;
+  esac
+done
 timeout 300 adb -s "$SERIAL_A" install -r -g "$APK" >"$OUT_DIR/install-a.log" 2>&1 || fail "install on A"
 timeout 300 adb -s "$SERIAL_B" install -r -g "$APK" >"$OUT_DIR/install-b.log" 2>&1 || fail "install on B"
 
