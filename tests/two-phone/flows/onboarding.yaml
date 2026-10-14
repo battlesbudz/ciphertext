@@ -1,0 +1,33 @@
+# Onboarding: first launch -> profile created -> chat list.
+# Env: PROFILE_NAME (e.g. PhoneA / PhoneB)
+appId: chat.simplex.app
+---
+- launchApp
+- assertVisible:
+    text: "Private and secure messaging"
+    timeout: 120000
+- tapOn:
+    text: "Get started"
+- assertVisible:
+    text: "Create your profile"
+    timeout: 90000
+- tapOn:
+    text:
+      regex: "Enter profile name.*"
+- inputText: "${PROFILE_NAME}"
+- tapOn:
+    text: "Create"
+# Server operators / conditions screen (defaults pre-selected)
+- tapOn:
+    text: "Continue"
+    optional: true
+# Network / notifications screen
+- tapOn:
+    text: "Continue"
+    optional: true
+- tapOn:
+    text: "Make private connection"
+    optional: true
+- assertVisible:
+    text: "Tap to start a new chat"
+    timeout: 120000
