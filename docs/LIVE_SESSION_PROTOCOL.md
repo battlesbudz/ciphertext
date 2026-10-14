@@ -135,3 +135,37 @@ even programmatically. The 1:1-only invariant is enforced in
   stale session (or simply not resume it).
 - Relay servers see encrypted traffic only. Destroying the relay removes the
   queue data; client-side wipe removes keys and messages.
+
+## Implementation Notes (Android)
+
+The Android app implements this protocol natively in Kotlin
+(`LiveSessionManager` in `chat.simplex.common.model`), using existing core
+primitives. It does not call the Haskell `APILiveSession*` commands, because
+the prototype APK is built with prebuilt upstream native libraries (the
+Haskell `LiveSession` API is available for future builds that compile the
+fork's Haskell core).
+
+Behavioral compliance with this spec:
+
+- **Heartbeat**: sent every 10 seconds as a marked text message
+  (`\u001fLIVE_HB:<sessionId>:<token>`), via the standard send-message API.
+- **Filtering**: incoming heartbeats and session invites are intercepted in
+  the chat-response pipeline, never surface in the UI, and are deleted from
+  the local store immediately.
+- **Timeout**: a watchdog checks every 5 seconds; if no peer heartbeat
+  arrives within 30 seconds, the session is declared dead.
+- **Wipe**: on session end the contact is fully deleted
+  (`ChatDeleteMode.Full`), which destroys all messages, keys, and server
+  queues. Nothing carries over.
+- **Reconnect**: next-session invitations are exchanged at session start
+  (marked `\u001fLIVE_INVITE:` messages). On timeout, the smaller token
+  initiates a new contact via the stored invitation; the waiter auto-accepts.
+  A brand-new session starts with fresh IDs, tokens, and invitations.
+- **Relay lifecycle**: the per-contact SMP queues are the session's relay.
+  They exist only while the session's contact exists and are destroyed by the
+  full delete on session end. No dedicated relay server is provisioned in
+  this prototype.
+
+The Haskell `LiveSession` API (`APILiveSessionStart`, `APILiveSessionPing`,
+etc.) remains the reference implementation of the session state machine and
+is invocable via the `/_live` terminal commands for testing.
