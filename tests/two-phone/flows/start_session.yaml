@@ -1,15 +1,22 @@
 # Start a live (ephemeral) session from the open 1:1 chat:
 # toolbar menu -> "Start live session", then assert the session banner.
+# The toolbar menu button has no visible text; matched via its
+# contentDescription ("More") through the text: selector (accessibilityText).
 appId: chat.simplex.app
 ---
 - tapOn:
-    contentDescription: "More"
+    text: "More"
+- extendedWaitUntil:
+    visible:
+      text: "Start live session"
+    timeout: 60000
 - assertVisible:
     text: "Start live session"
-    timeout: 60000
 - tapOn:
     text: "Start live session"
-- assertVisible:
-    text:
-      regex: "Live session.*wipes on exit"
+- extendedWaitUntil:
+    visible:
+      text: "Live session.*wipes on exit"
     timeout: 90000
+- assertVisible:
+    text: "Live session.*wipes on exit"
