@@ -85,8 +85,8 @@ deliver_invite() {
 # Phase 0: emulators
 # =====================================================================
 log "=== Phase 0: create + boot emulators (arm64, slow) ==="
-sdkmanager --install "system-images;android-30;default;arm64-v8a" >"$OUT_DIR/sdkmanager.log" 2>&1 || {
-  fail "sdkmanager install of system image"
+sdkmanager --install "emulator" "platform-tools" "system-images;android-30;default;arm64-v8a" >"$OUT_DIR/sdkmanager.log" 2>&1 || {
+  fail "sdkmanager install of emulator + system image"
   cat "$OUT_DIR/sdkmanager.log"
   exit 1
 }
