@@ -1,3 +1,5 @@
+SHA: fc4346b96e324627d8c018ebaf29c8a9ec3a2c42
+SIZE: 4483
 # Builds a signed arm64 Android APK for the private SimpleX fork.
 #
 # The native libraries (libsimplex.so, libsupport.so) are not committed to the
@@ -17,6 +19,9 @@ on:
       - 'apps/multiplatform/**'
       - '.github/workflows/android-apk.yml'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build-apk:
@@ -106,3 +111,16 @@ jobs:
           name: simplex-private-${{ env.VERSION }}-arm64
           path: ${{ env.APK_PATH }}
           if-no-files-found: error
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="v${{ env.VERSION }}-ephemeral.${{ github.run_number }}"
+          gh release create "$TAG" \
+            --target stable \
+            --title "SimpleX Ephemeral Prototype v${{ env.VERSION }}" \
+            --notes "Ephemeral 1:1 live-session prototype build (run ${{ github.run_number }}).$(printf '\n\n- 1:1 live ephemeral sessions with 10s heartbeat / 30s timeout\n- Disconnect destroys the session; dead sessions are never resumed\n- Both clients auto-establish a fresh session with zero carryover\n- Group chat UI removed (1:1 only)\n\nSigned fossRelease APK (arm64).')" \
+            --prerelease \
+            "${{ env.APK_PATH }}"
