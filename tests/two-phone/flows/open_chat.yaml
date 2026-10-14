@@ -3,11 +3,17 @@
 appId: chat.simplex.app
 ---
 - launchApp
+- extendedWaitUntil:
+    visible:
+      text: "${CONTACT_NAME}"
+    timeout: 90000
 - assertVisible:
     text: "${CONTACT_NAME}"
-    timeout: 90000
 - tapOn:
     text: "${CONTACT_NAME}"
+- extendedWaitUntil:
+    visible:
+      text: "Message"
+    timeout: 60000
 - assertVisible:
     text: "Message"
-    timeout: 60000
