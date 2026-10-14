@@ -1,0 +1,11 @@
+# Assert no live-protocol text is ever visible in the chat UI.
+# Heartbeats (LIVE_HB) and invites (LIVE_INVITE) are filtered before
+# reaching the UI and deleted from the store.
+appId: chat.simplex.app
+---
+- assertNotVisible:
+    text:
+      regex: ".*LIVE_HB.*"
+- assertNotVisible:
+    text:
+      regex: ".*LIVE_INVITE.*"
