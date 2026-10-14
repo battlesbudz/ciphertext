@@ -1,0 +1,12 @@
+# Send a message in the currently open chat and assert it appears.
+# Env: TEXT
+appId: chat.simplex.app
+---
+- tapOn:
+    text: "Message"
+- inputText: "${TEXT}"
+- tapOn:
+    contentDescription: "Send Message"
+- assertVisible:
+    text: "${TEXT}"
+    timeout: 90000
