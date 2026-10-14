@@ -1,5 +1,3 @@
-SHA: fc4346b96e324627d8c018ebaf29c8a9ec3a2c42
-SIZE: 4483
 # Builds a signed arm64 Android APK for the private SimpleX fork.
 #
 # The native libraries (libsimplex.so, libsupport.so) are not committed to the
