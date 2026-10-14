@@ -1,19 +1,29 @@
 # Onboarding: first launch -> profile created -> chat list.
 # Env: PROFILE_NAME (e.g. PhoneA / PhoneB)
+# Maestro 1.39.0 syntax:
+# - text: is matched as a FULL regex against text, hintText, AND
+#   accessibilityText (Android contentDescription). So text: "Send Message"
+#   matches a button whose contentDescription is "Send Message".
+# - No per-command timeout in 1.39.0: long waits use extendedWaitUntil.
 appId: chat.simplex.app
 ---
 - launchApp
+- extendedWaitUntil:
+    visible:
+      text: "Private and secure messaging"
+    timeout: 120000
 - assertVisible:
     text: "Private and secure messaging"
-    timeout: 120000
 - tapOn:
     text: "Get started"
+- extendedWaitUntil:
+    visible:
+      text: "Create your profile"
+    timeout: 90000
 - assertVisible:
     text: "Create your profile"
-    timeout: 90000
 - tapOn:
-    text:
-      regex: "Enter profile name.*"
+    text: "Enter profile name.*"
 - inputText: "${PROFILE_NAME}"
 - tapOn:
     text: "Create"
@@ -28,6 +38,9 @@ appId: chat.simplex.app
 - tapOn:
     text: "Make private connection"
     optional: true
+- extendedWaitUntil:
+    visible:
+      text: "Tap to start a new chat"
+    timeout: 120000
 - assertVisible:
     text: "Tap to start a new chat"
-    timeout: 120000
