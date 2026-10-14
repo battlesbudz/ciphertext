@@ -33,9 +33,13 @@ jobs:
     name: Two emulators, live ephemeral session
     runs-on: ubuntu-latest
     timeout-minutes: 180
+    # Only the latest run matters; cancel superseded ones (each push
+    # of test files used to queue a full run).
+    concurrency:
+      group: two-phone-test
+      cancel-in-progress: true
 
     env:
-      ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
       AVD_A: phoneA
       AVD_B: phoneB
       SERIAL_A: emulator-5554
