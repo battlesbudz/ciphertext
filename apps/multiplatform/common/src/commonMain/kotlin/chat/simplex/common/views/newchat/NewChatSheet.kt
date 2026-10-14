@@ -60,9 +60,6 @@ fun ModalData.NewChatSheet(rh: RemoteHostInfo?, close: () -> Unit) {
         scanPaste = {
           ModalManager.start.showModalCloseable(endButtons = { AddContactLearnMoreButton() }) { _ -> NewChatView(chatModel.currentRemoteHost.value, NewChatOption.CONNECT, showQRCodeScanner = appPlatform.isAndroid, close = closeAll) }
         },
-        createGroup = {
-          ModalManager.start.showCustomModal { close -> AddGroupView(chatModel, chatModel.currentRemoteHost.value, close, closeAll) }
-        },
         createChannel = {
           ModalManager.start.showCustomModal { close -> AddChannelView(chatModel, chatModel.currentRemoteHost.value, close, closeAll) }
         },
@@ -112,7 +109,6 @@ private fun ModalData.NewChatSheetLayout(
   rh: RemoteHostInfo?,
   addContact: () -> Unit,
   scanPaste: () -> Unit,
-  createGroup: () -> Unit,
   createChannel: () -> Unit,
   close: () -> Unit,
 ) {
@@ -193,11 +189,6 @@ private fun ModalData.NewChatSheetLayout(
       painterResource(MR.images.ic_qr_code),
       if (appPlatform.isAndroid) stringResource(MR.strings.scan_paste_link) else stringResource(MR.strings.paste_link),
       scanPaste,
-    ),
-    Triple(
-      painterResource(MR.images.ic_group),
-      stringResource(MR.strings.create_group_button),
-      createGroup,
     ),
     Triple(
       painterResource(MR.images.ic_bigtop_updates),
