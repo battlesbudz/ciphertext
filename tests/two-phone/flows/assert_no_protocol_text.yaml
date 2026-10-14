@@ -4,8 +4,6 @@
 appId: chat.simplex.app
 ---
 - assertNotVisible:
-    text:
-      regex: ".*LIVE_HB.*"
+    text: ".*LIVE_HB.*"
 - assertNotVisible:
-    text:
-      regex: ".*LIVE_INVITE.*"
+    text: ".*LIVE_INVITE.*"
