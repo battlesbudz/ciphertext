@@ -720,12 +720,12 @@ fun ChatItemView(
                   DeleteItemMenu()
                 }
                 is CIContent.RcvGroupInvitation -> {
-                  CIGroupInvitationView(cItem, c.groupInvitation, c.memberRole, joinGroup = joinGroup, chatIncognito = cInfo.incognito, showTimestamp = showTimestamp, timedMessagesTTL = cInfo.timedMessagesTTL)
-                  DeleteItemMenu()
+                  // 1:1-only: group invitations not supported
+                  Box(Modifier.size(0.dp)) {}
                 }
                 is CIContent.SndGroupInvitation -> {
-                  CIGroupInvitationView(cItem, c.groupInvitation, c.memberRole, joinGroup = joinGroup, chatIncognito = cInfo.incognito, showTimestamp = showTimestamp, timedMessagesTTL = cInfo.timedMessagesTTL)
-                  DeleteItemMenu()
+                  // 1:1-only: group invitations not supported
+                  Box(Modifier.size(0.dp)) {}
                 }
                 is CIContent.RcvDirectEventContent -> {
                   EventItemView()
