@@ -79,7 +79,7 @@ jobs:
         working-directory: apps/multiplatform
         run: |
           chmod +x gradlew
-          ./gradlew :android:assembleFossRelease --no-daemon
+          ./gradlew :android:assembleFossRelease --no-daemon --stacktrace
 
       - name: Sign APK (throwaway debug keystore, installable only)
         run: |
