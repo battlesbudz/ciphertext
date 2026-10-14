@@ -106,8 +106,13 @@ jobs:
           ls -la "${APK_DIR}/simplex-private-${VERSION}-arm64.apk"
 
       - name: Install Maestro CLI
+        # Pin Maestro 1.39.0 (last 1.x). The flows use 1.x YAML syntax
+        # (contentDescription selectors, per-command timeout). Maestro 2.x
+        # rejects both ("Unknown Property: contentDescription/timeout").
+        # The install script reads MAESTRO_VERSION for a pinned release.
         run: |
           set -euo pipefail
+          export MAESTRO_VERSION="1.39.0"
           curl -Ls "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
           "$HOME/.maestro/bin/maestro" --version
