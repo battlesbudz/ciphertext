@@ -196,7 +196,7 @@ object LiveSessionManager {
       composedMessages = listOf(ComposedMessage(null, null, MsgContent.MCText(inviteText), emptyMap()))
     )
 
-    val contactName = (ChatController.chatModel.chatsContext.getContactChat(contactId)?.chatInfo as? ChatInfo.Direct)?.contact?.localDisplayName ?: "?"
+    val contactName = (ChatController.chatModel.getContactChat(contactId)?.chatInfo as? ChatInfo.Direct)?.contact?.localDisplayName ?: "?"
     val now = Clock.System.now().toEpochMilliseconds()
     sessionState.value = LiveSessionState(
       sessionId = sessionId,
