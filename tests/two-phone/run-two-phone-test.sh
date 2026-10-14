@@ -56,11 +56,19 @@ maestro_run() {
   local name; name="$(basename "$flow" .yaml)"
   local logfile="$OUT_DIR/maestro-${serial}-${name}.log"
   log "maestro [$serial] $name"
-  env "$@" timeout 600 maestro --device "$serial" test "$flow" >"$logfile" 2>&1
+  # Maestro only injects shell env vars starting with MAESTRO_ (see
+  # Env.withInjectedShellEnvVars); flow variables MUST be passed with
+  # -e KEY=VALUE, or ${VAR} evaluates to null.
+  local env_args=()
+  local kv
+  for kv in "$@"; do env_args+=(-e "$kv"); done
+  timeout 600 maestro --device "$serial" test "$flow" "${env_args[@]}" >"$logfile" 2>&1
   local rc=$?
-  if [ $rc -eq 124 ]; then
-    log "maestro [$serial] $name -> TIMEOUT (600s), tail:"
+  if [ $rc -eq 0 ]; then
     log "maestro [$serial] $name -> OK"
+  elif [ $rc -eq 124 ]; then
+    log "maestro [$serial] $name -> TIMEOUT (600s), tail:"
+    tail -n 40 "$logfile" | sed 's/^/    /'
   else
     log "maestro [$serial] $name -> FAILED (rc=$rc), tail:"
     tail -n 40 "$logfile" | sed 's/^/    /'
@@ -230,6 +238,13 @@ if [ $RC_A -eq 0 ] && [ $RC_B -eq 0 ]; then
   R_A="PASS"; pass "(a) both phones onboarded"
 else
   R_A="FAIL"; fail "(a) onboarding (A rc=$RC_A, B rc=$RC_B)"
+  # Onboarding runs backgrounded, so its Maestro output is NOT in the job
+  # log. Dump the tails here so the failure is diagnosable without the
+  # artifact (artifact download needs Actions write scope).
+  for s in "$SERIAL_A" "$SERIAL_B"; do
+    log "--- onboarding Maestro tail [$s] ---"
+    tail -n 40 "$OUT_DIR/maestro-${s}-onboarding.log" 2>/dev/null | sed 's/^/    /' || true
+  done
 fi
 
 # =====================================================================
