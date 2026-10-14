@@ -1,0 +1,18 @@
+# Accept an incoming contact request (tap the request chat, tap Accept).
+# Env: CONTACT_NAME (profile name of the requester)
+appId: chat.simplex.app
+---
+- launchApp
+- assertVisible:
+    text: "${CONTACT_NAME}"
+    timeout: 180000
+- tapOn:
+    text: "${CONTACT_NAME}"
+- assertVisible:
+    text: "Accept contact request"
+    timeout: 90000
+- tapOn:
+    text: "Accept"
+- assertVisible:
+    text: "Message"
+    timeout: 90000
