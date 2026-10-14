@@ -1,0 +1,128 @@
+# Two-phone test: two emulators run the APK and verify live ephemeral sessions.
+#
+# Proves (a) both phones onboard, (b) a 1:1 session is established via
+# invitation, (c) messages flow both ways, (d) heartbeats stay invisible,
+# (e) killing one phone wipes the session on the other, (f) a brand-new
+# session is re-established, (g) zero carryover into the new session.
+#
+# Test infrastructure ONLY. Does not modify app code or the release workflow.
+# Builds its own signed APK from the current commit (same steps as
+# android-apk.yml) so it tests exactly what is on stable.
+#
+# The APK is arm64-only (abiFilters), so the emulators must be arm64-v8a
+# images (QEMU software emulation on the x86_64 runner — slow, hence the
+# generous timeouts). Triggers: manual dispatch, or pushes touching the test
+# files / this workflow.
+
+name: Two-Phone Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - stable
+    paths:
+      - '.github/workflows/two-phone-test.yml'
+      - 'tests/two-phone/**'
+
+permissions:
+  contents: read
+
+jobs:
+  two-phone-test:
+    name: Two emulators, live ephemeral session
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    env:
+      ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
+      AVD_A: phoneA
+      AVD_B: phoneB
+      SERIAL_A: emulator-5554
+      SERIAL_B: emulator-5556
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract native libraries from upstream APKs (arm64-v8a + armeabi-v7a)
+        run: |
+          set -euo pipefail
+          extract_abi() {
+            local apk_url="$1" abi="$2"
+            local libs_dir="apps/multiplatform/common/src/commonMain/cpp/android/libs/$abi"
+            mkdir -p "$libs_dir"
+            curl -sSL --fail -o /tmp/simplex-abi.apk "$apk_url"
+            rm -rf /tmp/sx-libs && mkdir -p /tmp/sx-libs
+            unzip -o /tmp/simplex-abi.apk "lib/$abi/*" -d /tmp/sx-libs/
+            cp "/tmp/sx-libs/lib/$abi/libsimplex.so" "/tmp/sx-libs/lib/$abi/libsupport.so" "$libs_dir/"
+            test -f "$libs_dir/libsimplex.so"
+            test -f "$libs_dir/libsupport.so"
+          }
+          extract_abi "https://github.com/simplex-chat/simplex-chat/releases/download/v7.0.3/simplex-aarch64.apk" "arm64-v8a"
+          extract_abi "https://github.com/simplex-chat/simplex-chat/releases/download/v7.0.3/simplex-armv7a.apk" "armeabi-v7a"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build fossRelease APK
+        working-directory: apps/multiplatform
+        run: |
+          chmod +x gradlew
+          ./gradlew :android:assembleFossRelease --no-daemon
+
+      - name: Sign APK (throwaway debug keystore, installable only)
+        run: |
+          set -euo pipefail
+          VERSION="$(grep '^android.version_name=' apps/multiplatform/gradle.properties | cut -d= -f2)"
+          APK_DIR="apps/multiplatform/android/build/outputs/apk/foss/release"
+          UNSIGNED_APK="$(ls "$APK_DIR"/*arm64-v8a*.apk | head -n 1)"
+          keytool -genkeypair -v \
+            -keystore /tmp/debug.keystore \
+            -alias androiddebugkey \
+            -storepass android -keypass android \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname "CN=Android Debug,O=Android,C=US"
+          SDK="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          BUILD_TOOLS="$(ls -d "${SDK}"/build-tools/* | sort -V | tail -n 1)"
+          "${BUILD_TOOLS}/zipalign" -f 4 "${UNSIGNED_APK}" /tmp/aligned.apk
+          "${BUILD_TOOLS}/apksigner" sign \
+            --ks /tmp/debug.keystore \
+            --ks-pass pass:android \
+            --key-pass pass:android \
+            --out "${APK_DIR}/simplex-private-${VERSION}-arm64.apk" /tmp/aligned.apk
+          "${BUILD_TOOLS}/apksigner" verify --print-certs "${APK_DIR}/simplex-private-${VERSION}-arm64.apk"
+          echo "APK_PATH=${APK_DIR}/simplex-private-${VERSION}-arm64.apk" >> "$GITHUB_ENV"
+          ls -la "${APK_DIR}/simplex-private-${VERSION}-arm64.apk"
+
+      - name: Install Maestro CLI
+        run: |
+          set -euo pipefail
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+          "$HOME/.maestro/bin/maestro" --version
+
+      - name: Install Python QR decoder deps
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet --disable-pip-version-check opencv-python-headless
+
+      - name: Run two-phone test
+        run: |
+          set -euo pipefail
+          bash tests/two-phone/run-two-phone-test.sh "$APK_PATH"
+
+      - name: Upload test logs and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: two-phone-test-logs
+          path: |
+            /tmp/two-phone-test/**
+          if-no-files-found: warn
