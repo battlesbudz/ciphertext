@@ -1,0 +1,7 @@
+# Assert the live-session banner is visible (session active on this phone).
+appId: chat.simplex.app
+---
+- assertVisible:
+    text:
+      regex: "Live session.*wipes on exit"
+    timeout: 120000
