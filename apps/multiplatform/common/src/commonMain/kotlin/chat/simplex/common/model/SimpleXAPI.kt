@@ -2823,6 +2823,11 @@ object ChatController {
         if (r.contact.directOrUsed) {
           ntfManager.notifyContactConnected(r.user, r.contact)
         }
+        // Live session auto-reconnect (private fork): if we initiated a
+        // reconnect, start the brand-new session on this new contact.
+        if (active(r.user)) {
+          LiveSessionManager.onContactConnected(r.contact)
+        }
       }
       is CR.ContactConnecting -> {
         if (active(r.user) && r.contact.directOrUsed) {
@@ -2850,6 +2855,11 @@ object ChatController {
       }
       is CR.ReceivedContactRequest -> {
         val contactRequest = r.contactRequest
+        // Live session auto-reconnect (private fork): auto-accept if we are
+        // the waiter in a pending reconnect; skip the normal request UI.
+        if (active(r.user) && LiveSessionManager.onContactRequest(contactRequest.apiId)) {
+          return@withBGApi
+        }
         if (active(r.user)) {
           withContext(Dispatchers.Main) {
             if (r.chat_ != null) { // means contact request was created with contact, so we need to add/update contact chat
@@ -2906,6 +2916,16 @@ object ChatController {
         r.chatItems.forEach { chatItem ->
           val cInfo = chatItem.chatInfo
           val cItem = chatItem.chatItem
+          // Live session protocol filter (private fork): heartbeats and session
+          // invites never surface in the UI and are deleted from the store.
+          val liveMsgText = (cItem.content.msgContent as? MsgContent.MCText)?.text
+          if (liveMsgText != null && LiveSessionManager.isProtocolMessage(liveMsgText)) {
+            val liveContactId = (cInfo as? ChatInfo.Direct)?.contact?.apiId
+            if (liveContactId != null) {
+              LiveSessionManager.handleProtocolMessage(liveMsgText, liveContactId, cItem.id)
+            }
+            return@forEach
+          }
           if (active(r.user)) {
             withContext(Dispatchers.Main) {
               chatModel.chatsContext.addChatItem(rhId, cInfo, cItem)
