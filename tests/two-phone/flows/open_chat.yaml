@@ -1,0 +1,13 @@
+# Open a 1:1 chat from the chat list.
+# Env: CONTACT_NAME
+appId: chat.simplex.app
+---
+- launchApp
+- assertVisible:
+    text: "${CONTACT_NAME}"
+    timeout: 90000
+- tapOn:
+    text: "${CONTACT_NAME}"
+- assertVisible:
+    text: "Message"
+    timeout: 60000
