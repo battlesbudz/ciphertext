@@ -35,7 +35,6 @@ import chat.simplex.common.model.ChatModel.activeCall
 import chat.simplex.common.model.ChatModel.controller
 import chat.simplex.common.ui.theme.*
 import chat.simplex.common.views.call.*
-import chat.simplex.common.views.chat.group.*
 import chat.simplex.common.views.chat.item.*
 import chat.simplex.common.views.chatlist.*
 import chat.simplex.common.views.helpers.*
@@ -229,18 +228,6 @@ fun ChatView(
           }
       }
     }
-    if (chatsCtx.secondaryContextFilter == null && chatInfo is ChatInfo.Group && chatInfo.groupInfo.membership.memberPending) {
-      LaunchedEffect(Unit) {
-        val scopeInfo = GroupChatScopeInfo.MemberSupport(groupMember_ = null)
-        val supportChatInfo = ChatInfo.Group(chatInfo.groupInfo, groupChatScope = scopeInfo)
-        showMemberSupportChatView(
-          chatModel.chatId,
-          scrollToItemId,
-          supportChatInfo,
-          scopeInfo
-        )
-      }
-    }
     val view = LocalMultiplatformView()
     // We need to have real unreadCount value for displaying it inside top right button
     // Having activeChat reloaded on every change in it is inefficient (UI lags)
@@ -425,17 +412,6 @@ fun ChatView(
                       ChatInfoView(chatsCtx, chatModel, chatInfo.contact, contactInfo?.first, contactInfo?.second, chatInfo.localAlias, code, close) {
                         showSearch.value = true
                       }
-                    } else if (chatInfo is ChatInfo.Group) {
-                      var link: GroupLink? by remember(chatInfo.id) { mutableStateOf(preloadedLink) }
-                      KeyChangeEffect(chatInfo.id) {
-                        setGroupMembers(chatRh, chatInfo.groupInfo, chatModel)
-                        link = chatModel.controller.apiGetGroupLink(chatRh, chatInfo.groupInfo.groupId)
-                        preloadedLink = link
-                      }
-                      GroupChatInfoView(chatsCtx, chatRh, chatInfo.id, link, selectedItems, appBar, scrollToItemId, {
-                        link = it
-                        preloadedLink = it
-                      }, close, { showSearch.value = true })
                     } else {
                       LaunchedEffect(Unit) {
                         close()
@@ -465,36 +441,7 @@ fun ChatView(
               }
             },
             showSupportChats = {
-              val cInfo = activeChat.value?.chatInfo ?: return@ChatLayout
-              if (ModalManager.end.hasModalsOpen()) {
-                ModalManager.end.closeModals()
-                return@ChatLayout
-              }
-              hideKeyboard(view)
-              scope.launch {
-                if (cInfo is ChatInfo.Group && cInfo.groupInfo.membership.memberRole >= GroupMemberRole.Moderator) {
-                  ModalManager.end.showCustomModal { close ->
-                    MemberSupportView(
-                      chatRh,
-                      chat,
-                      cInfo.groupInfo,
-                      scrollToItemId,
-                      close
-                    )
-                  }
-                } else if (cInfo is ChatInfo.Group) {
-                  val scopeInfo = GroupChatScopeInfo.MemberSupport(groupMember_ = null)
-                  val supportChatInfo = ChatInfo.Group(cInfo.groupInfo, groupChatScope = scopeInfo)
-                  scope.launch {
-                    showMemberSupportChatView(
-                      chatModel.chatId,
-                      scrollToItemId = scrollToItemId,
-                      supportChatInfo,
-                      scopeInfo
-                    )
-                  }
-                }
-              }
+              // 1:1-only: group support chats removed
             },
             showMemberInfo = { groupInfo: GroupInfo, member: GroupMember ->
               hideKeyboard(view)
@@ -2897,7 +2844,7 @@ val MEMBER_IMAGE_SIZE: Dp = 37.dp
 
 @Composable
 fun MemberImage(member: GroupMember) {
-  MemberProfileImage(MEMBER_IMAGE_SIZE * fontSizeSqrtMultiplier, member, backgroundColor = MaterialTheme.colors.background)
+  ProfileImage(MEMBER_IMAGE_SIZE * fontSizeSqrtMultiplier, member.memberProfile.image, backgroundColor = MaterialTheme.colors.background)
 }
 
 @Composable
@@ -3305,14 +3252,9 @@ fun addGroupMembers(groupInfo: GroupInfo, rhId: Long?, view: Any? = null, close:
 }
 
 fun openGroupLink(groupInfo: GroupInfo, rhId: Long?, view: Any? = null, close: (() -> Unit)? = null) {
+  // 1:1-only: group link UI removed
   hideKeyboard(view)
-  withBGApi {
-    val link = chatModel.controller.apiGetGroupLink(rhId, groupInfo.groupId)
-    close?.invoke()
-    ModalManager.end.showModalCloseable(showClose = true, cardScreen = true) {
-      GroupLinkView(chatModel, rhId, groupInfo, link, onGroupLinkUpdated = null, isChannel = groupInfo.useRelays, shareGroupInfo = groupInfo)
-    }
-  }
+  close?.invoke()
 }
 
 @Composable
