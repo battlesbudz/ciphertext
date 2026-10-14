@@ -1158,6 +1158,11 @@ fun ChatLayout(
                   SelectedItemsCounterToolbar(selectedChatItems, !oneHandUI.value || !chatBottomBar.value)
                 }
               }
+              // Live (ephemeral) 1:1 session banner — private fork. Shown under the
+              // toolbar of the direct chat that owns the session.
+              if (chatInfo is ChatInfo.Direct) {
+                LiveSessionBanner(chatInfo)
+              }
               if (
                 chatInfo is ChatInfo.Group
                 && (reportsCount > 0 || supportUnreadCount > 0)
@@ -1281,6 +1286,21 @@ fun BoxScope.ChatInfoToolbar(
           showMenu.value = false
           showSearch.value = true
         })
+      }
+      // Live (ephemeral) 1:1 session — private fork. Only one session at a time.
+      if (LiveSessionManager.sessionState.value == null) {
+        menuItems.add {
+          ItemAction(
+            stringResource(MR.strings.live_session_start),
+            painterResource(MR.images.ic_lock),
+            onClick = {
+              showMenu.value = false
+              scope.launch {
+                LiveSessionManager.startSession(chatInfo.apiId, chatInfo.displayName)
+              }
+            }
+          )
+        }
       }
     }
     is ChatInfo.Group -> {
@@ -1542,6 +1562,67 @@ fun BoxScope.ChatInfoToolbar(
         } else {
           callMenuItems.forEach { it() }
         }
+      }
+    }
+  }
+}
+
+// Live (ephemeral) 1:1 session status banner — private fork.
+//
+// Shown under the toolbar of the direct chat that owns the session. While a
+// session is active it shows the session status with an "End session" button;
+// while auto-reconnecting it shows a "starting a brand-new session" indicator.
+// User-visible text never uses em dashes.
+@Composable
+private fun LiveSessionBanner(chatInfo: ChatInfo.Direct) {
+  val scope = rememberCoroutineScope()
+  val session = LiveSessionManager.sessionState.value
+  val reconnecting = LiveSessionManager.reconnecting.value
+  // The session's contact is deleted on session end, so remember which chat
+  // the session belonged to in order to scope the reconnect indicator.
+  val lastSessionContactId = remember { mutableStateOf<Long?>(null) }
+  LaunchedEffect(session?.contactId) {
+    if (session != null) {
+      lastSessionContactId.value = session.contactId
+    }
+  }
+  val showActive = session != null && session.contactId == chatInfo.apiId
+  val showReconnecting = session == null && reconnecting && lastSessionContactId.value == chatInfo.apiId
+  if (!showActive && !showReconnecting) return
+  val text = if (showReconnecting) {
+    stringResource(MR.strings.live_session_reconnecting)
+  } else {
+    LiveSessionManager.statusText.value?.replace("—", "-")
+      ?: stringResource(MR.strings.live_session_default_status)
+  }
+  Row(
+    Modifier
+      .fillMaxWidth()
+      .background(Indigo)
+      .padding(horizontal = 12.dp, vertical = 8.dp),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    Icon(
+      painterResource(MR.images.ic_lock),
+      null,
+      Modifier.size(20.dp),
+      tint = Color.White
+    )
+    Spacer(Modifier.width(8.dp))
+    Text(
+      text,
+      Modifier.weight(1f),
+      color = Color.White,
+      style = MaterialTheme.typography.body2,
+      maxLines = 2,
+      overflow = TextOverflow.Ellipsis
+    )
+    if (showActive) {
+      TextButton(
+        onClick = { scope.launch { LiveSessionManager.endSession(userInitiated = true) } },
+        contentPadding = PaddingValues(horizontal = 8.dp)
+      ) {
+        Text(stringResource(MR.strings.live_session_end_session), color = Color.White)
       }
     }
   }
