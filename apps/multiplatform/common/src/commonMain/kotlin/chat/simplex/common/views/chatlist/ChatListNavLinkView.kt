@@ -23,7 +23,6 @@ import chat.simplex.common.model.ChatModel.controller
 import chat.simplex.common.platform.*
 import chat.simplex.common.ui.theme.*
 import chat.simplex.common.views.chat.*
-import chat.simplex.common.views.chat.group.*
 import chat.simplex.common.views.chat.item.ItemAction
 import chat.simplex.common.views.contacts.onRequestAccepted
 import chat.simplex.common.views.helpers.*
@@ -474,7 +473,7 @@ fun DeleteGroupAction(chat: Chat, groupInfo: GroupInfo, chatModel: ChatModel, sh
     stringResource(MR.strings.delete_group_menu_action),
     painterResource(MR.images.ic_delete),
     onClick = {
-      deleteGroupDialog(chat, groupInfo, chatModel)
+      // 1:1-only: group deletion UI removed
       showMenu.value = false
     },
     color = Color.Red
@@ -513,7 +512,7 @@ fun LeaveGroupAction(rhId: Long?, groupInfo: GroupInfo, chatModel: ChatModel, sh
     stringResource(MR.strings.leave_group_button),
     painterResource(MR.images.ic_logout),
     onClick = {
-      leaveGroupDialog(rhId, groupInfo, chatModel)
+      // 1:1-only: group leave UI removed
       showMenu.value = false
     },
     color = Color.Red
