@@ -22,7 +22,6 @@ import chat.simplex.common.model.*
 import chat.simplex.common.platform.*
 import chat.simplex.common.ui.theme.DEFAULT_PADDING
 import chat.simplex.common.ui.theme.DEFAULT_PADDING_HALF
-import chat.simplex.common.views.chat.group.*
 import chat.simplex.common.views.chat.item.sendCommandMsg
 import chat.simplex.common.views.helpers.commandMenuAnimSpec
 import chat.simplex.res.MR
