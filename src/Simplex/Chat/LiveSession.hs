@@ -33,7 +33,8 @@ type LiveSessionId = Text
 
 -- | Reason a live session ended.
 data LiveSessionEndReason
-  = LSEndPeerDisconnect -- ^ Peer disconnected or heartbeat timed out
+  = LSEndPeerDisconnect -- ^ Peer disconnected
+  | LSEndHeartbeatTimeout -- ^ Heartbeat timed out (network blip)
   | LSEndUserEnded -- ^ Local user ended the session
   deriving (Show, Eq, Generic)
 
