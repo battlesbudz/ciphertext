@@ -1,0 +1,6 @@
+# Assert a specific text IS visible. Env: TEXT
+appId: chat.simplex.app
+---
+- assertVisible:
+    text: "${TEXT}"
+    timeout: 120000
