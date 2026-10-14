@@ -18,6 +18,7 @@
 -- Simplex.Chat.Controller) so Controller can import it without cycles.
 module Simplex.Chat.LiveSession where
 
+import Data.Int (Int64)
 import Data.Map.Strict (Map)
 import Data.Text (Text)
 import qualified Data.Text as T
