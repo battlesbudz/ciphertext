@@ -430,43 +430,13 @@ fun ChatView(
               }
             },
             showReports = {
-              val cInfo = activeChat.value?.chatInfo ?: return@ChatLayout
-              if (ModalManager.end.hasModalsOpen()) {
-                ModalManager.end.closeModals()
-                return@ChatLayout
-              }
-              hideKeyboard(view)
-              scope.launch {
-                showGroupReportsView(staleChatId, scrollToItemId, cInfo)
-              }
+              // 1:1-only: group reports removed
             },
             showSupportChats = {
               // 1:1-only: group support chats removed
             },
-            showMemberInfo = { groupInfo: GroupInfo, member: GroupMember ->
-              hideKeyboard(view)
-              groupMembersJob.cancel()
-              groupMembersJob = scope.launch(Dispatchers.Default) {
-                val r = chatModel.controller.apiGroupMemberInfo(chatRh, groupInfo.groupId, member.groupMemberId)
-                val stats = r?.second
-                val (_, code) = if (member.memberActive) {
-                  val memCode = chatModel.controller.apiGetGroupMemberCode(chatRh, groupInfo.apiId, member.groupMemberId)
-                  member to memCode?.second
-                } else {
-                  member to null
-                }
-                setGroupMembers(chatRh, groupInfo, chatModel)
-                if (!isActive) return@launch
-
-                if (chatsCtx.secondaryContextFilter == null) {
-                  ModalManager.end.closeModals()
-                }
-                ModalManager.end.showModalCloseable(showClose = true, cardScreen = true) { close ->
-                  remember { derivedStateOf { chatModel.getGroupMember(member.groupMemberId) } }.value?.let { mem ->
-                    GroupMemberInfoView(chatRh, groupInfo, mem, scrollToItemId, stats, code, chatModel, openedFromSupportChat = false, close = close, closeAll = close)
-                  }
-                }
-              }
+            showMemberInfo = { _: GroupInfo, _: GroupMember ->
+              // 1:1-only: group member info removed
             },
             loadMessages = { chatId, pagination, visibleItemIndexes ->
               val c = chatModel.getChat(chatId)
@@ -961,21 +931,7 @@ fun ChatLayout(
                   setReaction, showItemDetails, markItemsRead, markChatRead, closeSearch, remember { { onComposed(it) } }, developerTools, showViaProxy, contentFilter,
                 )
               }
-              if (chatInfo is ChatInfo.Group && composeState.value.message.text.isNotEmpty()) {
-                Column(
-                  Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(bottom = composeViewHeight.value)
-                ) {
-                  GroupMentions(
-                    chatsCtx = chatsCtx,
-                    rhId = remoteHostId,
-                    composeState = composeState,
-                    composeViewFocusRequester = composeViewFocusRequester,
-                    chatInfo = chatInfo,
-                  )
-                }
-              }
+              // 1:1-only: group mentions removed
               if (chatInfo != null && chatInfo.menuCommands.isNotEmpty()) {
                 Column(Modifier.align(Alignment.BottomStart).padding(bottom = composeViewHeight.value)) {
                   CommandsMenuView(chatsCtx, chat, composeState, showCommandsMenu)
@@ -1056,40 +1012,12 @@ fun ChatLayout(
         }
         when (chatsCtx.secondaryContextFilter) {
           is SecondaryContextFilter.GroupChatScopeContext -> {
-            when (chatsCtx.secondaryContextFilter.groupScopeInfo) {
-              is GroupChatScopeInfo.MemberSupport -> {
-                if (oneHandUI.value) {
-                  StatusBarBackground()
-                }
-                Column(if (oneHandUI.value && chatBottomBar.value) Modifier.align(Alignment.BottomStart).imePadding() else Modifier) {
-                  Box {
-                    if (selectedChatItems.value == null) {
-                      if (chat != null) {
-                        MemberSupportChatAppBar(chatsCtx, remoteHostId, chat, chatsCtx.secondaryContextFilter.groupScopeInfo.groupMember_, scrollToItemId, { ModalManager.end.closeModal() }, onSearchValueChanged)
-                      }
-                    } else {
-                      SelectedItemsCounterToolbar(selectedChatItems, !oneHandUI.value)
-                    }
-                  }
-                }
-              }
-            }
+            // 1:1-only: group chat scope UI removed
           }
           is SecondaryContextFilter.MsgContentTagContext -> {
             when (chatsCtx.secondaryContextFilter.contentTag) {
               MsgContentTag.Report -> {
-                if (oneHandUI.value) {
-                  StatusBarBackground()
-                }
-                Column(if (oneHandUI.value) Modifier.align(Alignment.BottomStart).imePadding() else Modifier) {
-                  Box {
-                    if (selectedChatItems.value == null) {
-                      GroupReportsAppBar(chatsCtx, { ModalManager.end.closeModal() }, onSearchValueChanged)
-                    } else {
-                      SelectedItemsCounterToolbar(selectedChatItems, !oneHandUI.value)
-                    }
-                  }
-                }
+                // 1:1-only: group reports UI removed
               }
               else -> TODO()
             }
@@ -3241,14 +3169,9 @@ private fun findQuotedItemFromItem(
 val chatViewScrollState = MutableStateFlow(false)
 
 fun addGroupMembers(groupInfo: GroupInfo, rhId: Long?, view: Any? = null, close: (() -> Unit)? = null) {
+  // 1:1-only: group members UI removed
   hideKeyboard(view)
-  withBGApi {
-    setGroupMembers(rhId, groupInfo, chatModel)
-    close?.invoke()
-    ModalManager.end.showModalCloseable(showClose = true) { close ->
-      AddGroupMembersView(rhId, groupInfo, false, chatModel, close)
-    }
-  }
+  close?.invoke()
 }
 
 fun openGroupLink(groupInfo: GroupInfo, rhId: Long?, view: Any? = null, close: (() -> Unit)? = null) {
