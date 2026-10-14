@@ -39,7 +39,6 @@ import chat.simplex.common.ui.theme.*
 import chat.simplex.common.views.helpers.*
 import chat.simplex.common.views.usersettings.*
 import chat.simplex.common.platform.*
-import chat.simplex.common.views.chat.group.ChatTTLOption
 import chat.simplex.common.views.chat.item.MarkdownText
 import chat.simplex.common.views.chatlist.updateChatSettings
 import chat.simplex.common.views.newchat.*
@@ -615,12 +614,6 @@ fun ChatInfoLayout(
         }
       }
     }
-    SectionDividerSpaced()
-
-    SectionView {
-      ChatTTLOption(chatItemTTL, setChatItemTTL, deletingItems)
-    }
-    SectionTextFooter(stringResource(MR.strings.chat_ttl_options_footer))
     SectionDividerSpaced()
 
     val conn = contact.activeConn
