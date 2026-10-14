@@ -254,8 +254,13 @@ object LiveSessionManager {
             statusText.value = "Could not reconnect — peer unavailable"
           }
         }
-        if (iAmInitiator) initiateReconnect()
-        // Waiter: auto-accept hook handles the incoming contact request.
+        if (iAmInitiator) {
+          initiateReconnect()
+        } else {
+          // Waiter: auto-accept hook handles incoming contact requests.
+          // Also catch a request that arrived before we timed out (race).
+          acceptPendingContactRequest()
+        }
       } else {
         // Session died before the invitation exchange completed: cannot reconnect.
         pendingReconnect = null
@@ -293,6 +298,20 @@ object LiveSessionManager {
     return try {
       chatController.apiAcceptContactRequest(null, incognito = false, contactReqId = contactReqId) != null
     } catch (e: Exception) { false }
+  }
+
+  // Accept the most recent pending contact request, if any (race: the
+  // initiator's reconnect request may have arrived before we timed out).
+  private suspend fun acceptPendingContactRequest() {
+    try {
+      val reqChat = chatModel.chatsContext.chats.value
+        .filter { it.chatInfo is ChatInfo.ContactRequest }
+        .maxByOrNull { (it.chatInfo as ChatInfo.ContactRequest).contactRequest.createdAt }
+      val reqId = (reqChat?.chatInfo as? ChatInfo.ContactRequest)?.contactRequest?.apiId
+      if (reqId != null) {
+        chatController.apiAcceptContactRequest(null, incognito = false, contactReqId = reqId)
+      }
+    } catch (e: Exception) { /* best effort */ }
   }
 
   // Called from SimpleXAPI when a contact connects. If we are the initiator in
