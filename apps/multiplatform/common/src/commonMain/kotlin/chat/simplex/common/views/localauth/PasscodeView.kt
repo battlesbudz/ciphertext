@@ -12,7 +12,7 @@ import dev.icerock.moko.resources.compose.painterResource
 import androidx.compose.ui.unit.dp
 import chat.simplex.common.platform.*
 import chat.simplex.common.ui.theme.DEFAULT_PADDING
-import chat.simplex.common.views.chat.group.ProgressIndicator
+import androidx.compose.material.CircularProgressIndicator
 import chat.simplex.common.views.helpers.SimpleButton
 import chat.simplex.common.views.helpers.*
 import chat.simplex.res.MR
@@ -133,7 +133,7 @@ fun PasscodeView(
     HorizontalLayout()
   }
   if (!buttonsEnabled.value) {
-    ProgressIndicator()
+    CircularProgressIndicator()
   }
   val view = LocalMultiplatformView()
   LaunchedEffect(Unit) {
