@@ -1,0 +1,5 @@
+# Tap visible text. Env: TEXT
+appId: chat.simplex.app
+---
+- tapOn:
+    text: "${TEXT}"
