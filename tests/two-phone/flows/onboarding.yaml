@@ -75,18 +75,12 @@ appId: chat.simplex.app
     text: ".*Network commitments.*"
 - tapOn:
     text: "Accept"
-# After onboarding the app can land on a "Connect to desktop" modal
-# (run 25: both phones showed it instead of the chat list). It is a
-# ModalView whose close button is the Back arrow (contentDescription
-# "Back"). Close it if present, then assert the chat-list FAB.
-- extendedWaitUntil:
-    visible:
-      text: "Connect to desktop"
-    timeout: 30000
-    optional: true
-- tapOn:
-    text: "Back"
-    optional: true
+# NOTE (run 26): an unconditional optional "Back" tap here PROVED
+# harmful — it found some "Back" node and tapped it, navigating away
+# from the chat list, so the "Start new chat" assert then failed.
+# Do NOT add a Back tap here. Run 25's one-off "Connect to desktop"
+# modal (absent in run 26) must be handled in the driver if it ever
+# recurs, gated on the modal actually being present.
 # Post-onboarding chat list shows onboarding cards ("Talk to someone",
 # etc.), not the "Tap to start a new chat" empty-state hint. The FAB
 # ("Start new chat") is the stable chat-list signal — and Phase 2 taps it.
