@@ -325,13 +325,8 @@ class AlertManager {
                 Text(
                   buildAnnotatedString {
                     append(profileName)
-                    if (profileBadge != null) {
-                      append(" ")
-                      appendInlineContent(id = "nameBadge")
-                    }
                   },
-                  inlineContent =
-                    if (profileBadge != null) mapOf("nameBadge" to nameBadgeInline(profileBadge, nameFontSize)) else emptyMap(),
+                  inlineContent = emptyMap(),
                   textAlign = TextAlign.Center,
                   style = MaterialTheme.typography.h4,
                   lineHeight = 20.sp,

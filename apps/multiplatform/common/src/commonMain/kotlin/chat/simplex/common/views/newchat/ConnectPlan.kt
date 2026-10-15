@@ -30,7 +30,10 @@ suspend fun planAndConnect(
   filterKnownContact: ((Contact) -> Unit)? = null,
   filterKnownGroup: ((GroupInfo) -> Unit)? = null,
 ): CompletableDeferred<Boolean> {
-  when (val target = strConnectTarget(shortOrFullLink.trim())) {
+  // ciphertext: links normalize to simplex: for the backend (strConnectTarget
+  // also normalizes for detection); simplex: links pass through unchanged.
+  val normalizedLink = normalizeCiphertextLink(shortOrFullLink)
+  when (val target = strConnectTarget(normalizedLink.trim())) {
     is ConnectTarget.Link -> {
       if (target.linkType == SimplexLinkType.relay) {
         AlertManager.privacySensitive.showAlertMsg(
@@ -51,7 +54,7 @@ suspend fun planAndConnect(
     inProgress.value = false
     cleanup?.invoke()
   }
-  return planAndConnectTask(rhId, shortOrFullLink, linkOwnerSig, close, cleanup, filterKnownContact, filterKnownGroup, inProgress)
+  return planAndConnectTask(rhId, normalizedLink, linkOwnerSig, close, cleanup, filterKnownContact, filterKnownGroup, inProgress)
 }
 
 private suspend fun planAndConnectTask(

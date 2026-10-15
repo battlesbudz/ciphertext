@@ -2255,18 +2255,12 @@ fun BoxScope.ChatItemsList(
           .background(MaterialTheme.appColors.receivedMessage)
       ) {
         ChatInfoImage(chatInfo, size = alertProfileImageSize, iconColor = MaterialTheme.colors.secondaryVariant.mixWith(MaterialTheme.colors.onBackground, 0.97f))
-        val bannerBadge = chatInfo.nameBadge
         val uriHandler = LocalUriHandler.current
         Text(
           buildAnnotatedString {
             append(chatInfo.displayName)
-            if (bannerBadge != null) {
-              append(" ")
-              appendInlineContent(id = "nameBadge")
-            }
           },
-          inlineContent =
-            if (bannerBadge != null) mapOf("nameBadge" to nameBadgeInline(bannerBadge, MaterialTheme.typography.h3.fontSize) { showBadgeInfoAlert(chatInfo.displayName, bannerBadge, uriHandler) }) else emptyMap(),
+          inlineContent = emptyMap(),
           style = MaterialTheme.typography.h3,
           color = MaterialTheme.colors.onBackground,
           textAlign = TextAlign.Center,

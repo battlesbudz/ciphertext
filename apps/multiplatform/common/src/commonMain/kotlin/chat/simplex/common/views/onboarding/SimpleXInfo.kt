@@ -148,6 +148,13 @@ fun SimpleXInfoLayout(
           lineHeight = 20.sp,
           modifier = Modifier.padding(top = DEFAULT_PADDING_HALF)
         )
+        // Fork attribution (required): links to the Ciphertext repo.
+        ReadableTextWithLink(
+          MR.strings.fork_attribution,
+          "https://github.com/battlesbudz/ciphertext",
+          textAlign = TextAlign.Center,
+          padding = PaddingValues(top = DEFAULT_PADDING_HALF)
+        )
       }
     },
     button = {

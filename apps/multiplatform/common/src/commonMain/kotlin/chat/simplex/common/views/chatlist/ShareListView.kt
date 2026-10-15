@@ -79,7 +79,7 @@ fun ShareListView(chatModel: ChatModel, stopped: Boolean) {
 }
 
 private fun hasSimplexLink(msg: String): Boolean {
-  val parsedMsg = parseToMarkdown(msg) ?: return false
+  val parsedMsg = parseToMarkdown(normalizeCiphertextLink(msg)) ?: return false
   return parsedMsg.any { ft -> ft.format is Format.SimplexLink }
 }
 

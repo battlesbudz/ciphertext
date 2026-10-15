@@ -29,10 +29,8 @@ import chat.simplex.common.ui.theme.*
 import chat.simplex.common.views.database.DatabaseView
 import chat.simplex.common.views.helpers.*
 import chat.simplex.common.views.migration.MigrateFromDeviceView
-import chat.simplex.common.views.onboarding.GetStakeView
 import chat.simplex.common.views.onboarding.SimpleXInfo
 import chat.simplex.common.views.onboarding.WhatsNewView
-import chat.simplex.common.views.onboarding.crowdfundingAvailable
 import chat.simplex.common.views.usersettings.networkAndServers.NetworkAndServersView
 import chat.simplex.res.MR
 
@@ -70,11 +68,6 @@ fun SettingsView(chatModel: ChatModel, setPerformLA: (Boolean) -> Unit, close: (
   }
 }
 
-val simplexTeamUri =
-  "simplex:/a#lrdvu2d8A1GumSmoKb2krQmtKhWXq-tyGpHuM7aMwsw?h=smp6.simplex.im"
-
-val simplexNewsUri =
-  "simplex:/c#grcfG3ulVI4Sh6ow33qBsmSk7uEy3gRSl2KkJ5ER6tA?h=smp18.simplex.im"
 
 @Composable
 fun SettingsLayout(
@@ -116,16 +109,6 @@ fun SettingsLayout(
       AppVersionItem(showVersion)
     }
 
-    if (crowdfundingAvailable()) {
-      SectionDividerSpaced()
-      SectionView(stringResource(MR.strings.v7_0_invest)) {
-        SettingsActionItem(
-          painterResource(MR.images.ic_redeem),
-          stringResource(MR.strings.v7_0_crowdfunding),
-          { ModalManager.start.showModalCloseable(cardScreen = true) { close -> GetStakeView(showFirstImage = true, close = close) } }
-        )
-      }
-    }
     SectionBottomSpacer()
   }
 }
@@ -150,22 +133,7 @@ fun HelpAndSupportView(
     SectionDividerSpaced()
 
     SectionView(stringResource(MR.strings.settings_section_title_contact)) {
-      if (!chatModel.desktopNoUserNoRemote) {
-        SettingsActionItem(painterResource(MR.images.ic_bigtop_updates), stringResource(MR.strings.follow_simplex_network_news), { uriHandler.openVerifiedSimplexUri(simplexNewsUri) }, textColor = MaterialTheme.colors.primary, disabled = stopped)
-        SettingsActionItem(painterResource(MR.images.ic_tag), stringResource(MR.strings.chat_with_the_founder), { uriHandler.openVerifiedSimplexUri(simplexTeamUri) }, textColor = MaterialTheme.colors.primary, disabled = stopped)
-      }
       SettingsActionItem(painterResource(MR.images.ic_mail), stringResource(MR.strings.send_us_an_email), { uriHandler.openUriCatching("mailto:chat@simplex.chat") }, textColor = MaterialTheme.colors.primary)
-    }
-    SectionDividerSpaced()
-
-    SectionView(stringResource(MR.strings.settings_section_title_support_project)) {
-      if (!platform.androidIsPlayStoreBuild) {
-        ContributeItem(uriHandler)
-      }
-      if (appPlatform.isAndroid) {
-        RateAppItem(uriHandler)
-      }
-      StarOnGithubItem(uriHandler)
     }
     SectionBottomSpacer()
   }
@@ -239,45 +207,8 @@ fun ChatLockItem(
   }
 }
 
-@Composable fun ContributeItem(uriHandler: UriHandler) {
-  SectionItemView({ uriHandler.openExternalLink("https://github.com/simplex-chat/simplex-chat#contribute") }) {
-    Icon(
-      painterResource(MR.images.ic_keyboard),
-      contentDescription = "GitHub",
-      tint = MaterialTheme.colors.secondary,
-    )
-    TextIconSpaced()
-    Text(generalGetString(MR.strings.contribute), color = MaterialTheme.colors.primary)
-  }
-}
 
-@Composable fun RateAppItem(uriHandler: UriHandler) {
-  SectionItemView({
-    runCatching { uriHandler.openUriCatching("market://details?id=chat.simplex.app") }
-      .onFailure { uriHandler.openUriCatching("https://play.google.com/store/apps/details?id=chat.simplex.app") }
-  }
-  ) {
-    Icon(
-      painterResource(MR.images.ic_star),
-      contentDescription = "Google Play",
-      tint = MaterialTheme.colors.secondary,
-    )
-    TextIconSpaced()
-    Text(generalGetString(MR.strings.rate_the_app), color = MaterialTheme.colors.primary)
-  }
-}
 
-@Composable fun StarOnGithubItem(uriHandler: UriHandler) {
-  SectionItemView({ uriHandler.openExternalLink("https://github.com/simplex-chat/simplex-chat") }) {
-    Icon(
-      painter = painterResource(MR.images.ic_github),
-      contentDescription = "GitHub",
-      tint = MaterialTheme.colors.secondary,
-    )
-    TextIconSpaced()
-    Text(generalGetString(MR.strings.star_on_github), color = MaterialTheme.colors.primary)
-  }
-}
 
 @Composable fun ChatConsoleItem(showTerminal: () -> Unit) {
   SectionItemView(showTerminal) {
@@ -300,17 +231,6 @@ fun ChatLockItem(
   }
 }
 
-@Composable fun InstallTerminalAppItem(uriHandler: UriHandler) {
-  SectionItemView({ uriHandler.openExternalLink("https://github.com/simplex-chat/simplex-chat") }) {
-    Icon(
-      painter = painterResource(MR.images.ic_github),
-      contentDescription = "GitHub",
-      tint = MaterialTheme.colors.secondary,
-    )
-    TextIconSpaced()
-    Text(generalGetString(MR.strings.install_simplex_chat_for_terminal), color = MaterialTheme.colors.primary)
-  }
-}
 
 @Composable fun ResetHintsItem(unchangedHints: MutableState<Boolean>) {
   SectionItemView({
