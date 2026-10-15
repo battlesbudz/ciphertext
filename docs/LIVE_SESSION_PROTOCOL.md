@@ -2,9 +2,12 @@
 
 Ephemeral 1:1 sessions for the private fork. A live session exists only while
 both parties are connected. When either party disconnects (clean exit, network
-blip, or heartbeat timeout) the session dies **instantly**: messages wiped,
-keys destroyed, relay torn down. Both parties then automatically start a brand
-**new** session with fresh keys. There is no resume.
+blip, or heartbeat timeout) the session dies: messages wiped,
+keys destroyed, relay torn down. Backgrounding the app gives a 10 s grace
+window for quick returns (image picker, permission dialog, brief app switch);
+if the app is still backgrounded after 10 s, the session is wiped. Both
+parties then automatically start a brand **new** session with fresh keys.
+There is no resume.
 
 ## Design decision (Battles, 2026-10-12)
 
@@ -169,10 +172,14 @@ Behavioral compliance with this spec:
   queues. Nothing carries over. The wipe also removes the chat from the
   UI model and clears the open chat view — the core delete alone leaves
   stale history on screen. Leaving the app (Android `onStop`, except
-  rotation) ends the session and wipes it immediately; the 30 s timeout
-  alone is not enough, since a seconds-long backgrounding never trips
-  it. If the peer deleted the session contact, the local side wipes too
-  (without notifying back).
+  rotation) schedules the wipe 10 s out (`BACKGROUND_WIPE_DELAY_MS`);
+  returning to the app within those 10 s (`onStart`) cancels the pending
+  wipe and keeps the session alive, so quick returns (image picker,
+  permission dialog, brief app switch) do not kill the session. If the
+  app is still backgrounded after 10 s, the session is wiped. The 30 s
+  peer watchdog remains the backup if the process dies before the
+  delayed delete lands. If the peer deleted the session contact, the
+  local side wipes too (without notifying back).
 - **Reconnect**: next-session invitations are exchanged at session start
   (marked `\u001fLIVE_INVITE:` messages). On timeout, the smaller token
   initiates a new contact via the stored invitation; the waiter auto-accepts.

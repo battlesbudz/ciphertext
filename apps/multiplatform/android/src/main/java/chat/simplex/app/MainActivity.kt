@@ -67,6 +67,13 @@ class MainActivity: FragmentActivity() {
     processExternalIntent(intent)
   }
 
+  override fun onStart() {
+    super.onStart()
+    // Cancel a pending background wipe: the app is foreground again
+    // (e.g. back from the image picker) so the session stays alive.
+    LiveSessionManager.onAppForegrounded()
+  }
+
   override fun onResume() {
     super.onResume()
     AppLock.recheckAuthState()
@@ -86,9 +93,10 @@ class MainActivity: FragmentActivity() {
     super.onStop()
     VideoPlayerHolder.stopAll()
     AppLock.appWasHidden()
-    // Live session wipe on exit (private fork): leaving the app kills the
-    // live session and wipes it. Skip on rotation (config change) — the
-    // activity restarts but the user never left.
+    // Live session wipe on exit (private fork): leaving the app schedules
+    // the wipe 10 s out; returning within 10 s (onStart) cancels it.
+    // Skip on rotation (config change) — the activity restarts but the
+    // user never left.
     if (!isChangingConfigurations) {
       LiveSessionManager.onAppBackgrounded()
     }

@@ -37,6 +37,11 @@ object LiveSessionManager {
   const val INVITE_PREFIX = "\u001fLIVE_INVITE:"
   const val HEARTBEAT_INTERVAL_MS = 10_000L
   const val HEARTBEAT_TIMEOUT_MS = 30_000L
+  // Grace window after the app backgrounds before the session is wiped.
+  // Quick returns (image picker, permission dialog, brief app switch)
+  // cancel the pending wipe via onAppForegrounded(); if the app is
+  // still backgrounded when the delay elapses, the session is wiped.
+  const val BACKGROUND_WIPE_DELAY_MS = 10_000L
   // Random jitter applied to each heartbeat delay so send times do not
   // form an exact 10 s beacon for a timing observer. Worst-case gap
   // between peer heartbeats is ~12 s + network latency, far inside
@@ -55,6 +60,7 @@ object LiveSessionManager {
   private var heartbeatJob: Job? = null
   private var watchdogJob: Job? = null
   private var reconnectTimeoutJob: Job? = null
+  private var backgroundWipeJob: Job? = null
 
   // Set when a session died and we are establishing a brand-new one.
   // Visible for the auto-accept / auto-start hooks in SimpleXAPI.
@@ -360,14 +366,30 @@ object LiveSessionManager {
     sessionState.value?.contactId == contactId
 
   // Called when the app is backgrounded (Android MainActivity.onStop).
-  // Leaving the app kills the session and wipes it — the 30 s timeout
-  // alone is not enough, since a brief backgrounding never trips it.
+  // Schedules the session wipe 10 s out instead of wiping immediately,
+  // so quick returns (image picker, permission dialog, brief app switch)
+  // survive: onAppForegrounded() cancels the pending wipe. If the app
+  // is still backgrounded when the delay elapses, the session is wiped.
+  // The wipe only applies to the session that was active when the app
+  // backgrounded (session-ID check) — if a timeout reconnect already
+  // started a brand-new session, the stale pending wipe is a no-op.
   // Fire-and-forget: if the process dies before the delete lands, the
-  // peer's watchdog (no heartbeats) wipes the peer side anyway.
+  // peer's 30 s watchdog (no heartbeats) wipes the peer side anyway.
   fun onAppBackgrounded() {
-    scope.launch {
+    val sessionIdAtBackground = sessionState.value?.sessionId ?: return
+    backgroundWipeJob?.cancel()
+    backgroundWipeJob = scope.launch {
+      delay(BACKGROUND_WIPE_DELAY_MS)
+      if (sessionState.value?.sessionId != sessionIdAtBackground) return@launch
       try { endSession(userInitiated = true) } catch (e: Exception) { /* best effort */ }
     }
+  }
+
+  // Called when the app returns to the foreground (Android MainActivity.onStart).
+  // Cancels a pending background wipe so the session stays alive.
+  fun onAppForegrounded() {
+    backgroundWipeJob?.cancel()
+    backgroundWipeJob = null
   }
 
   // Called when the peer deleted our live-session contact (we received
