@@ -461,6 +461,10 @@ if maestro_run "$SERIAL_A" "$FLOWS/create_invite.yaml"; then
       INVITE_OK=1
     else
       fail "A could not accept B's contact request"
+      # Ground truth: what does A's chat with B actually show?
+      # (Accept bar? message input? connecting banner? The prepare
+      # path may complete without a manual Accept — the dump tells us.)
+      dump_maestro_hierarchy "$SERIAL_A" "accept-fail"
     fi
   else
     fail "could not decode invitation QR from A's screenshot"
