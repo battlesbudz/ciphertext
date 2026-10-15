@@ -45,11 +45,10 @@ R_E="NOT_RUN"; R_F="NOT_RUN"; R_G="NOT_RUN"
 RECONNECT_MODE="none"
 FAILURES=0
 
-# log() writes to STDERR: stdout is reserved for captured values, so a
-# log line inside a $(...) command substitution must never pollute the
-# captured value (run 24: an "invite screenshot" log line became the
-# "invite link"). GitHub Actions shows stderr in the job log identically.
-log() { echo "[$(date -u +%H:%M:%S)] $*" >&2; }
+# log() writes to stdout (keeps job-log ordering; stderr/stdout interleave
+# jumbled the Maestro tails + hierarchy dumps in run 25). Stdout pollution
+# is fixed where it matters: get_invite_link sends its own logs to stderr.
+log() { echo "[$(date -u +%H:%M:%S)] $*"; }
 pass() { log "PASS: $*"; }
 fail() { log "FAIL: $*"; FAILURES=$((FAILURES + 1)); }
 
@@ -83,35 +82,38 @@ maestro_run() {
 }
 
 # --- QR decode: screenshot one device, return the invitation link. ---
+# Capture the invitation QR from a device screenshot and decode it.
+# Stdout is RESERVED for the decoded link (this function is called inside
+# $(...)): every diagnostic here goes to stderr explicitly, or a log line
+# becomes the "link" (run 24). Retries 3x: adb capture is flaky.
 get_invite_link() {
   local serial="$1"
   local png="$OUT_DIR/invite-${serial}.png"
-  rm -f "$png"
-  # Method 1: on-device screencap + pull (avoids binary-stdout mangling).
-  timeout 60 adb -s "$serial" shell screencap -p /sdcard/invite.png >"$OUT_DIR/screencap-${serial}.log" 2>&1 || log "screencap on $serial failed"
-  timeout 60 adb -s "$serial" pull /sdcard/invite.png "$png" >"$OUT_DIR/pull-${serial}.log" 2>&1 || log "pull from $serial failed"
-  # Method 2 (fallback): exec-out binary stream.
-  if [ ! -s "$png" ]; then
-    log "screencap+pull produced no file for $serial; falling back to exec-out"
-    timeout 60 adb -s "$serial" exec-out screencap -p > "$png" 2>"$OUT_DIR/execout-${serial}.log" || true
-  fi
-  if [ ! -s "$png" ]; then
-    log "invite screenshot missing/empty for $serial (both capture methods failed)"
-    return 1
-  fi
-  log "invite screenshot for $serial: $(stat -c%s "$png") bytes"
-  local link
-  link="$(python3 "$TEST_DIR/qr_decode.py" "$png" 2>"$OUT_DIR/qrdecode-${serial}.log")" || {
-    log "QR decode failed for $serial:"
-    sed 's/^/    /' "$OUT_DIR/qrdecode-${serial}.log" || true
-    return 1
-  }
-  # Guard: the decoded payload must be a URL. Never let a stray log line
-  # or garbage through as the "link" again.
-  case "$link" in
-    http*) printf '%s' "$link" ;;
-    *) log "decoded invite payload is not a URL: $link"; return 1 ;;
-  esac
+  local attempt link
+  for attempt in 1 2 3; do
+    rm -f "$png"
+    # Method 1: on-device screencap + pull (avoids binary-stdout mangling).
+    timeout 60 adb -s "$serial" shell screencap -p /sdcard/invite.png >"$OUT_DIR/screencap-${serial}.log" 2>&1 || true
+    timeout 60 adb -s "$serial" pull /sdcard/invite.png "$png" >"$OUT_DIR/pull-${serial}.log" 2>&1 || true
+    # Method 2 (fallback): exec-out binary stream.
+    if [ ! -s "$png" ]; then
+      timeout 60 adb -s "$serial" exec-out screencap -p > "$png" 2>"$OUT_DIR/execout-${serial}.log" || true
+    fi
+    if [ -s "$png" ]; then
+      log "invite screenshot for $serial: $(stat -c%s "$png") bytes (attempt $attempt)" >&2
+      link="$(python3 "$TEST_DIR/qr_decode.py" "$png" 2>"$OUT_DIR/qrdecode-${serial}.log")" || link=""
+      case "$link" in
+        http*) printf '%s' "$link"; return 0 ;;
+        "") log "QR decode failed for $serial (attempt $attempt)" >&2 ;;
+        *) log "decoded invite payload is not a URL: $link" >&2 ;;
+      esac
+    else
+      log "invite screenshot missing/empty for $serial (attempt $attempt)" >&2
+    fi
+    sleep 5
+  done
+  log "invite screenshot failed for $serial after 3 attempts" >&2
+  return 1
 }
 
 # --- Deep-link an invitation into a device's app. ---
