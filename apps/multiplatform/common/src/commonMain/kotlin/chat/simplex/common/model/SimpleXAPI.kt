@@ -192,8 +192,6 @@ class AppPreferences {
   val showHiddenProfilesNotice = mkBoolPreference(SHARED_PREFS_SHOW_HIDDEN_PROFILES_NOTICE, true)
   val oneHandUICardShown = mkBoolPreference(SHARED_PREFS_ONE_HAND_UI_CARD_SHOWN, false)
   val addressCreationCardShown = mkBoolPreference(SHARED_PREFS_ADDRESS_CREATION_CARD_SHOWN, false)
-  val getStakeBannerTapped = mkBoolPreference(SHARED_PREFS_GET_STAKE_BANNER_TAPPED, false)
-  val getStakeBannerDismissed = mkBoolPreference(SHARED_PREFS_GET_STAKE_BANNER_DISMISSED, false)
   val showMuteProfileAlert = mkBoolPreference(SHARED_PREFS_SHOW_MUTE_PROFILE_ALERT, true)
   val showReportsInSupportChatAlert = mkBoolPreference(SHARED_PREFS_SHOW_REPORTS_IN_SUPPORT_CHAT_ALERT, true)
   val appLanguage = mkStrPreference(SHARED_PREFS_APP_LANGUAGE, null)
@@ -275,8 +273,6 @@ class AppPreferences {
     hintPref(laNoticeShown, false),
     hintPref(oneHandUICardShown, false),
     hintPref(addressCreationCardShown, false),
-    hintPref(getStakeBannerTapped, false),
-    hintPref(getStakeBannerDismissed, false),
     hintPref(liveMessageAlertShown, false),
     hintPref(signMessageAlertShown, false),
     hintPref(showHiddenProfilesNotice, true),
@@ -468,8 +464,6 @@ class AppPreferences {
     private const val SHARED_PREFS_SHOW_HIDDEN_PROFILES_NOTICE = "ShowHiddenProfilesNotice"
     private const val SHARED_PREFS_ONE_HAND_UI_CARD_SHOWN = "OneHandUICardShown"
     private const val SHARED_PREFS_ADDRESS_CREATION_CARD_SHOWN = "AddressCreationCardShown"
-    private const val SHARED_PREFS_GET_STAKE_BANNER_TAPPED = "GetStakeBannerTapped"
-    private const val SHARED_PREFS_GET_STAKE_BANNER_DISMISSED = "GetStakeBannerDismissed"
     private const val SHARED_PREFS_SHOW_MUTE_PROFILE_ALERT = "ShowMuteProfileAlert"
     private const val SHARED_PREFS_SHOW_REPORTS_IN_SUPPORT_CHAT_ALERT = "ShowReportsInSupportChatAlert"
     private const val SHARED_PREFS_STORE_DB_PASSPHRASE = "StoreDBPassphrase"
@@ -1862,7 +1856,7 @@ object ChatController {
           if (ownerMsg != null) AlertManager.shared.showAlertMsg(generalGetString(MR.strings.error_saving_simplex_name), ownerMsg)
           else apiConnectResponseAlert(r)
         }
-        throw Exception("failed to set SimpleX name: ${r.responseType} ${r.details}")
+        throw Exception("failed to set Ciphertext name: ${r.responseType} ${r.details}")
       }
     }
   }
@@ -7184,9 +7178,17 @@ data class CreatedConnLink(val connFullLink: String, val connShortLink: String?)
   val cmdString: String get() = connFullLink + (if (connShortLink == null) "" else " $connShortLink")
 }
 
+// New links use the ciphertext: scheme (Ciphertext identity); the backend
+// only understands simplex:, so inbound ciphertext: links are normalized
+// back before parsing/connecting (see normalizeCiphertextLink).
 fun simplexChatLink(uri: String): String =
-  if (uri.startsWith("simplex:/")) uri.replace("simplex:/", "https://simplex.chat/")
+  if (uri.startsWith("simplex:/")) uri.replace("simplex:/", "ciphertext:/")
   else uri
+
+// Normalize a user-supplied or intent-opened ciphertext: link to the simplex:
+// form the backend parser understands. No-op for simplex: links and other text.
+fun normalizeCiphertextLink(text: String): String =
+  text.replace("ciphertext:", "simplex:")
 
 @Serializable
 sealed class OwnerVerification {

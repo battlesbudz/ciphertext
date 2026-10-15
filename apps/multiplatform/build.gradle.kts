@@ -64,7 +64,7 @@ buildscript {
     id "org.jetbrains.kotlin.plugin.serialization" version "$kotlin_version"
 }*/
 
-group = "chat.simplex"
+group = "chat.ciphertext"
 version = extra["android.version_name"] as String
 
 allprojects {

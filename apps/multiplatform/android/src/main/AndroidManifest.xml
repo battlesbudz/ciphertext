@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="chat.simplex.app">
+    package="chat.ciphertext.app">
 
   <uses-feature android:name="android.hardware.camera" />
 
@@ -63,7 +63,7 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
 
-      <!-- open simplex:/ connection URI -->
+      <!-- open simplex:/ connection URI (kept for backward compat) -->
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
 
@@ -71,6 +71,15 @@
         <category android:name="android.intent.category.BROWSABLE" />
 
         <data android:scheme="simplex" />
+      </intent-filter>
+      <!-- open ciphertext:/ connection URI (new links use this scheme) -->
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data android:scheme="ciphertext" />
       </intent-filter>
       <intent-filter android:autoVerify="true">
         <action android:name="android.intent.action.VIEW" />

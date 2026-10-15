@@ -1,4 +1,4 @@
-# Builds a signed arm64 Android APK for the private SimpleX fork.
+# Builds a signed arm64 Android APK for Ciphertext (private fork of SimpleX Chat).
 #
 # The native libraries (libsimplex.so, libsupport.so) are not committed to the
 # repo, so they are extracted from the upstream release APK and placed where the CMake
@@ -98,7 +98,7 @@ jobs:
           ZIPALIGN="${BUILD_TOOLS}/zipalign"
           APKSIGNER="${BUILD_TOOLS}/apksigner"
 
-          OUT_APK="${APK_DIR}/simplex-private-${VERSION}-arm64.apk"
+          OUT_APK="${APK_DIR}/ciphertext-${VERSION}-arm64.apk"
           "${ZIPALIGN}" -f 4 "${UNSIGNED_APK}" /tmp/aligned.apk
           "${APKSIGNER}" sign \
             --ks /tmp/release.p12 \
@@ -115,7 +115,7 @@ jobs:
       - name: Upload signed APK
         uses: actions/upload-artifact@v4
         with:
-          name: simplex-private-${{ env.VERSION }}-arm64
+          name: ciphertext-${{ env.VERSION }}-arm64
           path: ${{ env.APK_PATH }}
           if-no-files-found: error
 
@@ -124,10 +124,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          TAG="v${{ env.VERSION }}-ephemeral.${{ github.run_number }}"
+          TAG="v${{ env.VERSION }}-ciphertext.${{ github.run_number }}"
           gh release create "$TAG" \
             --target stable \
-            --title "SimpleX Ephemeral Prototype v${{ env.VERSION }}" \
-            --notes "Ephemeral 1:1 live-session prototype build (run ${{ github.run_number }}).$(printf '\n\n- 1:1 live ephemeral sessions with 10s heartbeat / 30s timeout\n- Disconnect destroys the session; dead sessions are never resumed\n- Both clients auto-establish a fresh session with zero carryover\n- Group chat UI removed (1:1 only)\n\nSigned fossRelease APK (arm64).')" \
+            --title "Ciphertext v${{ env.VERSION }}" \
+            --notes "Ciphertext v${{ env.VERSION }} (run ${{ github.run_number }}). Ciphertext is a fork of SimpleX Chat, licensed under AGPLv3, with 1:1 live ephemeral sessions.$(printf '\n\n- 1:1 live ephemeral sessions with 10s heartbeat / 30s timeout\n- Disconnect destroys the session; dead sessions are never resumed\n- Both clients auto-establish a fresh session with zero carryover\n- Group chat UI removed (1:1 only)\n\nSigned fossRelease APK (arm64).')" \
             --prerelease \
             "${{ env.APK_PATH }}"

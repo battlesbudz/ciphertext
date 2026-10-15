@@ -16,7 +16,7 @@
     <string name="connect_plan_open_group">Atvērt grupu</string>
     <string name="connect_plan_open_new_group">Atvērt jaunu grupu</string>
     <string name="error_parsing_uri_title">Nederīga saite</string>
-    <string name="error_parsing_uri_desc">Lūdzu, pārbaudiet, vai SimpleX saite ir pareiza.</string>
+    <string name="error_parsing_uri_desc">Lūdzu, pārbaudiet, vai Ciphertext saite ir pareiza.</string>
     <string name="opening_database">Tiek atvērta datubāze…</string>
     <string name="database_migration_in_progress">Notiek datubāzes migrācija.\nTas var aizņemt dažas minūtes.</string>
     <string name="non_content_uri_alert_title">Nederīgs faila ceļš</string>
@@ -68,7 +68,7 @@
     <string name="display_name_connecting">savienojas…</string>
     <string name="description_you_shared_one_time_link">Jūs kopīgojāt vienreizēju saiti</string>
     <string name="simplex_link_mode_full">Pilnā saite</string>
-    <string name="simplex_link_mode_browser_warning">Saites atvēršana pārlūkprogrammā var samazināt savienojuma privātumu un drošību. Neuzticamas SimpleX saites būs sarkanas.</string>
+    <string name="simplex_link_mode_browser_warning">Saites atvēršana pārlūkprogrammā var samazināt savienojuma privātumu un drošību. Neuzticamas Ciphertext saites būs sarkanas.</string>
     <string name="display_name_invited_to_connect">uzaicināts pievienoties</string>
     <string name="connect_via_contact_link">Savienoties, izmantojot kontaktpersonas saiti</string>
     <string name="connect_via_link_incognito">Savienoties, izmantojot saiti inkognito režīmā</string>
@@ -247,7 +247,7 @@
     <string name="compose_send_direct_message_to_connect">Rakstiet un sūtiet tiešo ziņojumu, lai izveidotu savienojumu</string>
     <string name="compose_forward_messages_n">Pārsūtīt ziņojumus (%d)</string>
     <string name="compose_save_messages_n">Saglabāt ziņojumus (%d)</string>
-    <string name="simplex_links_not_allowed">SimpleX saites nav atļautas</string>
+    <string name="simplex_links_not_allowed">Ciphertext saites nav atļautas</string>
     <string name="files_and_media_not_allowed">Faili un multivide nav atļauti</string>
     <string name="voice_messages_not_allowed">Balss ziņas nav atļautas</string>
     <string name="compose_message_placeholder">Ierakstiet ziņu</string>
@@ -266,7 +266,7 @@
     <string name="compose_view_add_message">Pievienot ziņu</string>
     <string name="compose_view_connect">Savienoties</string>
     <string name="compose_view_send_contact_request_alert_question">Vai sūtīt kontakta pieprasījumu?</string>
-    <string name="compose_view_send_contact_request_alert_text"><![CDATA[Sūtot kontakta pieprasījumu, jūs atklāsiet savu SimpleX lietotājvārdu šim kontaktam. Vai vēlaties turpināt?]]></string>
+    <string name="compose_view_send_contact_request_alert_text"><![CDATA[Sūtot kontakta pieprasījumu, jūs atklāsiet savu Ciphertext lietotājvārdu šim kontaktam. Vai vēlaties turpināt?]]></string>
     <string name="compose_view_send_request_without_message">Sūtīt pieprasījumu bez ziņas</string>
     <string name="compose_view_send_request">Sūtīt pieprasījumu</string>
     <string name="cant_send_message_alert_title">Nevar nosūtīt ziņu</string>
@@ -305,8 +305,8 @@
     <string name="choose_file_title">Izvēlēties faila nosaukumu</string>
     <string name="gallery_image_button">Galerijas attēla poga</string>
     <string name="gallery_video_button">Galerijas video poga</string>
-    <string name="thank_you_for_installing_simplex">Paldies, ka instalējāt SimpleX</string>
-    <string name="you_can_connect_to_simplex_chat_founder"><![CDATA[Jūs varat sazināties ar SimpleX čata dibinātāju]]></string>
+    <string name="thank_you_for_installing_simplex">Paldies, ka instalējāt Ciphertext</string>
+    
     <string name="to_start_a_new_chat_help_header">Lai sāktu jaunu čatu, palīdzības virsraksts</string>
     <string name="chat_help_tap_button">Čata palīdzības pieskāriena poga</string>
     <string name="keep_unused_invitation_question">Saglabāt neizmantoto uzaicinājuma jautājumu</string>
@@ -320,7 +320,7 @@
     <string name="tap_to_paste_link">Pieskarieties, lai ielīmētu saiti</string>
     <string name="loading_profile">Ielādē profilu</string>
     <string name="invalid_qr_code">Nederīgs Qr kods</string>
-    <string name="code_you_scanned_is_not_simplex_link_qr_code">Noskenētais kods nav SimpleX Link Qr kods</string>
+    <string name="code_you_scanned_is_not_simplex_link_qr_code">Noskenētais kods nav Ciphertext Link Qr kods</string>
     <string name="deleted_chats">Dzēstās sarunas</string>
     <string name="no_filtered_contacts">Nav filtrētu kontaktu</string>
     <string name="contact_list_header_title">Kontaktu saraksta galvenes nosaukums</string>
@@ -337,12 +337,12 @@
     <string name="is_verified">Ir verificēts</string>
     <string name="is_not_verified">Nav verificēts</string>
     <string name="your_settings">Tavi iestatījumi</string>
-    <string name="your_simplex_contact_address">Tava SimpleX kontaktadreses</string>
+    <string name="your_simplex_contact_address">Tava Ciphertext kontaktadreses</string>
     <string name="your_chat_profiles">Tavi čata profili</string>
     <string name="create_chat_profile">Izveidot čata profilu</string>
     <string name="database_passphrase_and_export">Datubāzes parole un eksportēšana</string>
-    <string name="about_simplex_chat">Par SimpleX Chat</string>
-    <string name="how_to_use_simplex_chat">Kā lietot SimpleX Chat</string>
+    <string name="about_simplex_chat">Par Ciphertext</string>
+    <string name="how_to_use_simplex_chat">Kā lietot Ciphertext</string>
     <string name="markdown_help">Markdown palīdzība</string>
     <string name="markdown_in_messages">Markdown ziņās</string>
     <string name="chat_with_the_founder">Čats ar dibinātāju</string>
@@ -380,7 +380,7 @@
     <string name="xftp_servers_configured">Konfigurēti Xftp Serveri</string>
     <string name="xftp_servers_other">Citi Xftp Serveri</string>
     <string name="subscription_percentage">Abonēšanas Procentuālais Daudzums</string>
-    <string name="install_simplex_chat_for_terminal">Instalēt SimpleX Chat Terminālim</string>
+    
     <string name="reset_all_hints">Atiestatīt Visus Padomus</string>
     <string name="star_on_github">Atzīmēt Ar Zvaigzni Github</string>
     <string name="contribute">Ziedot</string>
@@ -454,7 +454,7 @@
     <string name="webrtc_ice_servers">Webrtc Ice Serveri</string>
     <string name="relay_server_protects_ip">Relay Serveris Aizsargā Ip</string>
     <string name="relay_server_if_necessary">Relay Serveris Ja Nepieciešams</string>
-    <string name="open_simplex_chat_to_accept_call">Atveriet SimpleX Chat, lai pieņemtu zvanu</string>
+    <string name="open_simplex_chat_to_accept_call">Atveriet Ciphertext, lai pieņemtu zvanu</string>
     <string name="allow_accepting_calls_from_lock_screen">Atļaut zvanu pieņemšanu no bloķēšanas ekrāna</string>
     <string name="open_verb">Atvērt</string>
     <string name="status_e2e_encrypted">Statuss E2E Šifrēts</string>
@@ -661,7 +661,7 @@
     <string name="button_send_direct_message">Poga \"Sūtīt tiešo ziņu</string>
     <string name="theme_light">Gaišā tēma</string>
     <string name="theme_dark">Tumšā tēma</string>
-    <string name="theme_simplex">SimpleX tēma</string>
+    <string name="theme_simplex">Ciphertext tēma</string>
     <string name="theme_black">Melnā tēma</string>
     <string name="language_system">Sistēmas valoda</string>
     <string name="theme">Tēma</string>
@@ -730,7 +730,7 @@
     <string name="message_reactions">Ziņu reakcijas</string>
     <string name="voice_messages">Balss ziņas</string>
     <string name="files_and_media">Faili un Multivide</string>
-    <string name="simplex_links">SimpleX Saites</string>
+    <string name="simplex_links">Ciphertext Saites</string>
     <string name="recent_history">Nesenā Vēsture</string>
     <string name="audio_video_calls">Audio Video Zvani</string>
     <string name="available_in_v51">\nPieejams V51 versijā</string>
@@ -776,8 +776,8 @@
     <string name="prohibit_message_reactions_group">Aizliegt ziņu reakcijas grupā</string>
     <string name="allow_to_send_files">Atļaut sūtīt failus</string>
     <string name="prohibit_sending_files">Aizliegt sūtīt failus</string>
-    <string name="allow_to_send_simplex_links">Atļaut sūtīt SimpleX saites</string>
-    <string name="prohibit_sending_simplex_links">Aizliegt sūtīt SimpleX saites</string>
+    <string name="allow_to_send_simplex_links">Atļaut sūtīt Ciphertext saites</string>
+    <string name="prohibit_sending_simplex_links">Aizliegt sūtīt Ciphertext saites</string>
     <string name="enable_sending_recent_history">Iespējot nesenās vēstures sūtīšanu</string>
     <string name="v6_3_reports_descr">V6 3 Reports Descr</string>
     <string name="v6_3_organize_chat_lists">V6 3 Organizēt čatu sarakstus</string>
@@ -989,8 +989,8 @@
     <string name="notification_new_contact_request">Jauns kontaktu pieprasījums</string>
     <string name="notification_contact_connected">Kontakts savienots</string>
     <string name="error_showing_desktop_notification">Kļūda, rādot darbvirsmas paziņojumu</string>
-    <string name="la_notice_title_simplex_lock">SimpleX Bloķēšana</string>
-    <string name="la_notice_to_protect_your_information_turn_on_simplex_lock_you_will_be_prompted_to_complete_authentication_before_this_feature_is_enabled">Lai aizsargātu jūsu informāciju, ieslēdziet SimpleX bloķēšanu; jums tiks lūgts pabeigt autentifikāciju, pirms šī funkcija tiks aktivizēta.</string>
+    <string name="la_notice_title_simplex_lock">Ciphertext Bloķēšana</string>
+    <string name="la_notice_to_protect_your_information_turn_on_simplex_lock_you_will_be_prompted_to_complete_authentication_before_this_feature_is_enabled">Lai aizsargātu jūsu informāciju, ieslēdziet Ciphertext bloķēšanu; jums tiks lūgts pabeigt autentifikāciju, pirms šī funkcija tiks aktivizēta.</string>
     <string name="la_notice_turn_on">Ieslēgt</string>
     <string name="la_lock_mode">Bloķēšanas režīms</string>
     <string name="la_lock_mode_system">Izmantot ierīces bloķēšanu</string>
@@ -1006,12 +1006,12 @@
     <string name="la_seconds">sekundes</string>
     <string name="la_minutes">minūtes</string>
     <string name="la_please_remember_to_store_password">Lūdzu, atcerieties saglabāt paroli</string>
-    <string name="auth_simplex_lock_turned_on">SimpleX bloķēšana ieslēgta</string>
+    <string name="auth_simplex_lock_turned_on">Ciphertext bloķēšana ieslēgta</string>
     <string name="auth_you_will_be_required_to_authenticate_when_you_start_or_resume">Jums būs jāveic autentifikācija, kad sākat vai atsākat</string>
     <string name="auth_unlock">Atbloķēt</string>
     <string name="auth_log_in_using_credential">Pieslēgties, izmantojot akreditācijas datus</string>
-    <string name="auth_enable_simplex_lock">Ieslēgt SimpleX Bloķēšanu</string>
-    <string name="auth_disable_simplex_lock">Izslēgt SimpleX Bloķēšanu</string>
+    <string name="auth_enable_simplex_lock">Ieslēgt Ciphertext Bloķēšanu</string>
+    <string name="auth_disable_simplex_lock">Izslēgt Ciphertext Bloķēšanu</string>
     <string name="auth_confirm_credential">Apstiprināt akreditācijas datus</string>
     <string name="auth_unavailable">Autentifikācija nav pieejama</string>
     <string name="auth_device_authentication_is_not_enabled_you_can_turn_on_in_settings_once_enabled">Ierīces autentifikācija nav iespējota; to varat ieslēgt iestatījumos, kad tā būs iespējota.</string>
@@ -1301,8 +1301,8 @@
     <string name="image_descr_qr_code">QR kods</string>
     <string name="icon_descr_address">Adrese</string>
     <string name="icon_descr_help">Palīdzība</string>
-    <string name="icon_descr_simplex_team">Simplex komanda</string>
-    <string name="image_descr_simplex_logo">SimpleX logo</string>
+    
+    <string name="image_descr_simplex_logo">Ciphertext logo</string>
     <string name="icon_descr_email">E-pasts</string>
     <string name="icon_descr_more_button">Vairāk</string>
     <string name="show_QR_code">Rādīt QR kodu</string>
@@ -1525,7 +1525,7 @@
     <string name="create_address_button">Izveidot adresi</string>
     <string name="invalid_name">Nederīgs vārds</string>
     <string name="correct_name_to">Labot vārdu uz</string>
-    <string name="about_simplex">Par SimpleX</string>
+    <string name="about_simplex">Par Ciphertext</string>
     <string name="how_to_use_markdown">Kā izmantot Markdown</string>
     <string name="you_can_use_markdown_to_format_messages__prompt">Jūs varat izmantot Markdown, lai formatētu ziņas</string>
     <string name="bold_text">Trekns teksts</string>
@@ -1566,7 +1566,7 @@
     <string name="make_private_connection">Izveidot privātu savienojumu</string>
     <string name="migrate_from_another_device">Migrēt no citas ierīces</string>
     <string name="how_it_works">Kā tas darbojas</string>
-    <string name="to_protect_privacy_simplex_has_ids_for_queues">Lai aizsargātu privātumu, SimpleX izmanto ID rindām</string>
+    <string name="to_protect_privacy_simplex_has_ids_for_queues">Lai aizsargātu privātumu, Ciphertext izmanto ID rindām</string>
     <string name="only_client_devices_store_contacts_groups_e2e_encrypted_messages">Tikai klientu ierīces glabā kontaktu grupas un e2e šifrētas ziņas</string>
     <string name="all_message_and_files_e2e_encrypted"><![CDATA[Visas ziņas un faili ir e2e šifrēti]]></string>
     <string name="read_more_in_github_with_link"><![CDATA[Lasiet vairāk GitHub krātuvē.]]></string>
@@ -1644,7 +1644,7 @@
     <string name="settings_section_title_settings">Iestatījumi</string>
     <string name="settings_section_title_chat_database">Iestatījumi čata datubāze</string>
     <string name="settings_section_title_help">Iestatījumi palīdzība</string>
-    <string name="settings_section_title_support">Iestatījumi atbalsts</string>
+    
     <string name="settings_section_title_app">Iestatījumi lietotne</string>
     <string name="settings_section_title_device">Iestatījumi ierīce</string>
     <string name="settings_section_title_chats">Iestatījumi čati</string>

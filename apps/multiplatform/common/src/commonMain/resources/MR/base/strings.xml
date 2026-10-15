@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">SimpleX</string>
+  <string name="app_name">Ciphertext</string>
 
   <string name="thousand_abbreviation">k</string>
 
@@ -21,7 +21,7 @@
   <string name="connect_plan_open_group">Open group</string>
   <string name="connect_plan_open_new_group">Open new group</string>
   <string name="error_parsing_uri_title">Invalid link</string>
-  <string name="error_parsing_uri_desc">Please check that SimpleX link is correct.</string>
+  <string name="error_parsing_uri_desc">Please check that Ciphertext link is correct.</string>
 
   <!-- MainActivity.kt -->
   <string name="opening_database">Opening database…</string>
@@ -102,17 +102,17 @@
   <string name="description_via_one_time_link_incognito">incognito via one-time link</string>
 
   <!-- FormattedText, SimpleX links - ChatModel.kt -->
-  <string name="simplex_link_contact">SimpleX contact address</string>
-  <string name="simplex_link_invitation">SimpleX one-time invitation</string>
-  <string name="simplex_link_group">SimpleX group link</string>
-  <string name="simplex_link_channel">SimpleX channel link</string>
-  <string name="simplex_link_relay">SimpleX relay address</string>
+  <string name="simplex_link_contact">Ciphertext contact address</string>
+  <string name="simplex_link_invitation">Ciphertext one-time invitation</string>
+  <string name="simplex_link_group">Ciphertext group link</string>
+  <string name="simplex_link_channel">Ciphertext channel link</string>
+  <string name="simplex_link_relay">Ciphertext relay address</string>
   <string name="simplex_link_connection">via %1$s</string>
-  <string name="simplex_link_mode">SimpleX links</string>
+  <string name="simplex_link_mode">Ciphertext links</string>
   <string name="simplex_link_mode_description">Description</string>
   <string name="simplex_link_mode_full">Full link</string>
   <string name="simplex_link_mode_browser">Via browser</string>
-  <string name="simplex_link_mode_browser_warning">Opening the link in the browser may reduce connection privacy and security. Untrusted SimpleX links will be red.</string>
+  <string name="simplex_link_mode_browser_warning">Opening the link in the browser may reduce connection privacy and security. Untrusted Ciphertext links will be red.</string>
 
   <!-- Reports - ChatModel.kt -->
   <string name="report_reason_spam">Spam</string>
@@ -202,16 +202,16 @@
   <string name="channel_name_requires_newer_app_version">Connecting via channel name requires a newer app version.</string>
   <string name="contact_name_requires_newer_app_version">Connecting via contact name requires a newer app version.</string>
   <string name="please_upgrade_the_app">Please upgrade the app.</string>
-  <string name="simplex_name_error">SimpleX name error</string>
-  <string name="simplex_name_no_servers_desc">None of your servers are set to resolve SimpleX names. Configure servers, or use a connection link.</string>
+  <string name="simplex_name_error">Ciphertext name error</string>
+  <string name="simplex_name_no_servers_desc">None of your servers are set to resolve Ciphertext names. Configure servers, or use a connection link.</string>
   <string name="simplex_name_server_no_resolver_desc">Server %1$s does not support name resolution. Configure servers, or use a connection link.</string>
   <string name="simplex_name_not_found">Name not found</string>
-  <string name="simplex_name_not_found_desc">This SimpleX name is not registered. Please check the name.</string>
+  <string name="simplex_name_not_found_desc">This Ciphertext name is not registered. Please check the name.</string>
   <string name="simplex_name_resolver_error_desc">Resolver error: %1$s</string>
   <string name="simplex_name_no_valid_link">No valid link</string>
-  <string name="simplex_name_no_valid_link_desc">The SimpleX name %1$s is registered, but it has no valid link.</string>
+  <string name="simplex_name_no_valid_link_desc">The Ciphertext name %1$s is registered, but it has no valid link.</string>
   <string name="simplex_name_unconfirmed">Unconfirmed name</string>
-  <string name="simplex_name_unconfirmed_desc">The SimpleX name %1$s is registered, but not added to profile. Please add it to your address or channel profile, if you are the owner.</string>
+  <string name="simplex_name_unconfirmed_desc">The Ciphertext name %1$s is registered, but not added to profile. Please add it to your address or channel profile, if you are the owner.</string>
   <string name="channel_temporarily_unavailable">Channel temporarily unavailable</string>
   <string name="channel_no_active_relays_try_later">Channel has no active relays. Please try to join later.</string>
   <string name="app_update_required">App update required</string>
@@ -265,7 +265,7 @@
   <string name="icon_descr_instant_notifications">Instant notifications</string>
   <string name="service_notifications">Instant notifications!</string>
   <string name="service_notifications_disabled">Instant notifications are disabled!</string>
-  <string name="to_preserve_privacy_simplex_has_background_service_instead_of_push_notifications_it_uses_a_few_pc_battery"><![CDATA[To improve privacy, <b>SimpleX runs in background</b> instead of using push notifications.]]></string>
+  <string name="to_preserve_privacy_simplex_has_background_service_instead_of_push_notifications_it_uses_a_few_pc_battery"><![CDATA[To improve privacy, <b>Ciphertext runs in background</b> instead of using push notifications.]]></string>
   <string name="it_can_disabled_via_settings_notifications_still_shown"><![CDATA[<b>It can be disabled via settings</b> – notifications will still be shown while the app is running.]]></string>
   <string name="turn_off_battery_optimization"><![CDATA[<b>Allow it</b> in the next dialog to receive notifications instantly.]]></string>
   <string name="turning_off_service_and_periodic">Battery optimization is active, turning off background service and periodic requests for new messages. You can re-enable them via settings.</string>
@@ -275,7 +275,7 @@
   <string name="turn_off_battery_optimization_button">Allow</string>
   <string name="turn_off_system_restriction_button">Open app settings</string>
   <string name="disable_notifications_button">Disable notifications</string>
-  <string name="system_restricted_background_desc">SimpleX can\'t run in background. You will receive the notifications only when the app is running.</string>
+  <string name="system_restricted_background_desc">Ciphertext can\'t run in background. You will receive the notifications only when the app is running.</string>
   <string name="system_restricted_background_warn"><![CDATA[To enable notifications, please choose <b>App battery usage</b> / <b>Unrestricted</b> in the app settings.]]></string>
   <string name="system_restricted_background_in_call_title">No background calls</string>
   <string name="system_restricted_background_in_call_desc">The app may be closed after 1 minute in background.</string>
@@ -287,7 +287,7 @@
   <string name="xiaomi_ignore_battery_optimization"><![CDATA[<b>Xiaomi devices</b>: please enable Autostart in the system settings for notifications to work.]]></string>
 
   <!-- SimpleX Chat foreground Service -->
-  <string name="simplex_service_notification_title">SimpleX Chat service</string>
+  <string name="simplex_service_notification_title">Ciphertext service</string>
   <string name="simplex_service_notification_text">Receiving messages…</string>
   <string name="call_service_notification_audio_call">Audio call</string>
   <string name="call_service_notification_video_call">Video call</string>
@@ -295,8 +295,8 @@
   <string name="hide_notification">Hide</string>
 
   <!-- Notification channels -->
-  <string name="ntf_channel_messages">SimpleX Chat messages</string>
-  <string name="ntf_channel_calls">SimpleX Chat calls</string>
+  <string name="ntf_channel_messages">Ciphertext messages</string>
+  <string name="ntf_channel_calls">Ciphertext calls</string>
 
   <!-- Notifications -->
   <string name="settings_notifications_mode_title">Notification service</string>
@@ -321,10 +321,10 @@
   <string name="error_showing_desktop_notification">Error showing notification, contact developers.</string>
 
   <!-- local authentication notice - SimpleXAPI.kt -->
-  <string name="la_notice_title_simplex_lock">SimpleX Lock</string>
-  <string name="la_notice_to_protect_your_information_turn_on_simplex_lock_you_will_be_prompted_to_complete_authentication_before_this_feature_is_enabled">To protect your information, turn on SimpleX Lock.\nYou will be prompted to complete authentication before this feature is enabled.</string>
+  <string name="la_notice_title_simplex_lock">Ciphertext Lock</string>
+  <string name="la_notice_to_protect_your_information_turn_on_simplex_lock_you_will_be_prompted_to_complete_authentication_before_this_feature_is_enabled">To protect your information, turn on Ciphertext Lock.\nYou will be prompted to complete authentication before this feature is enabled.</string>
   <string name="la_notice_turn_on">Turn on</string>
-  <string name="la_lock_mode">SimpleX Lock mode</string>
+  <string name="la_lock_mode">Ciphertext Lock mode</string>
   <string name="la_lock_mode_system">System authentication</string>
   <string name="la_lock_mode_passcode">Passcode entry</string>
   <string name="la_auth_failed">Authentication failed</string>
@@ -340,22 +340,22 @@
   <string name="la_please_remember_to_store_password">Please remember or store it securely - there is no way to recover a lost password!</string>
 
   <!-- LocalAuthentication.kt -->
-  <string name="auth_simplex_lock_turned_on">SimpleX Lock turned on</string>
+  <string name="auth_simplex_lock_turned_on">Ciphertext Lock turned on</string>
   <string name="auth_you_will_be_required_to_authenticate_when_you_start_or_resume">You will be required to authenticate when you start or resume the app after 30 seconds in background.</string>
   <string name="auth_unlock">Unlock</string>
   <string name="auth_log_in_using_credential">Log in using your credential</string>
-  <string name="auth_enable_simplex_lock">Enable SimpleX Lock</string>
-  <string name="auth_disable_simplex_lock">Disable SimpleX Lock</string>
+  <string name="auth_enable_simplex_lock">Enable Ciphertext Lock</string>
+  <string name="auth_disable_simplex_lock">Disable Ciphertext Lock</string>
   <string name="auth_confirm_credential">Confirm your credential</string>
   <string name="auth_unavailable">Authentication unavailable</string>
-  <string name="auth_device_authentication_is_not_enabled_you_can_turn_on_in_settings_once_enabled">Device authentication is not enabled. You can turn on SimpleX Lock via Settings, once you enable device authentication.</string>
-  <string name="auth_device_authentication_is_disabled_turning_off">Device authentication is disabled. Turning off SimpleX Lock.</string>
+  <string name="auth_device_authentication_is_not_enabled_you_can_turn_on_in_settings_once_enabled">Device authentication is not enabled. You can turn on Ciphertext Lock via Settings, once you enable device authentication.</string>
+  <string name="auth_device_authentication_is_disabled_turning_off">Device authentication is disabled. Turning off Ciphertext Lock.</string>
   <string name="auth_stop_chat">Stop chat</string>
   <string name="auth_open_chat_console">Open chat console</string>
   <string name="auth_open_chat_profiles">Change chat profiles</string>
   <string name="auth_open_migration_to_another_device">Open migration screen</string>
-  <string name="lock_not_enabled">SimpleX Lock not enabled!</string>
-  <string name="you_can_turn_on_lock">You can turn on SimpleX Lock via Settings.</string>
+  <string name="lock_not_enabled">Ciphertext Lock not enabled!</string>
+  <string name="you_can_turn_on_lock">You can turn on Ciphertext Lock via Settings.</string>
 
   <!-- Chat Alerts - ChatItemView.kt -->
   <string name="message_delivery_error_title">Message delivery error</string>
@@ -393,15 +393,15 @@
   <string name="reply_verb">Reply</string>
   <string name="share_verb">Share</string>
   <string name="copy_verb">Copy</string>
-  <string name="save_simplex_name_question">Save SimpleX name?</string>
-  <string name="get_simplex_name_beta">Get SimpleX name (BETA)</string>
-  <string name="channel_simplex_name">Channel SimpleX name</string>
+  <string name="save_simplex_name_question">Save Ciphertext name?</string>
+  <string name="get_simplex_name_beta">Get Ciphertext name (BETA)</string>
+  <string name="channel_simplex_name">Channel Ciphertext name</string>
   <string name="register_test_name">How to register a test name</string>
-  <string name="simplex_name_sales">SimpleX name sale starts in</string>
-  <string name="until_register_simplex_domain">until you can register a SimpleX domain</string>
-  <string name="update_app_register_simplex_domain">Update the app to register a SimpleX domain</string>
+  
+  
+  
   <string name="countdown_hrs_min_sec">%1$02d hrs %2$02d min %3$02d sec</string>
-  <string name="simplex_name_sales_footer">Crowdfunding investors can reserve names before the sale starts:</string>
+  
   <string name="remove_name">Remove name</string>
   <string name="save_verb">Save</string>
   <string name="edit_verb">Edit</string>
@@ -521,8 +521,8 @@
   <string name="open_to_accept">Open to accept</string>
   <string name="contact_should_accept">contact should accept…</string>
   <string name="connect_with_contact_name_question">Connect with %1$s?</string>
-  <string name="search_or_paste_simplex_link">Search or paste SimpleX link</string>
-  <string name="address_creation_instruction">Tap Create SimpleX address in the menu to create it later.</string>
+  <string name="search_or_paste_simplex_link">Search or paste Ciphertext link</string>
+  <string name="address_creation_instruction">Tap Create Ciphertext address in the menu to create it later.</string>
 
   <!-- ChatView.kt -->
   <string name="no_selected_chat">No selected chat</string>
@@ -612,7 +612,7 @@
   <string name="compose_send_direct_message_to_connect">Send direct message to connect</string>
   <string name="compose_forward_messages_n">Forwarding %1$s messages</string>
   <string name="compose_save_messages_n">Saving %1$s messages</string>
-  <string name="simplex_links_not_allowed">SimpleX links not allowed</string>
+  <string name="simplex_links_not_allowed">Ciphertext links not allowed</string>
   <string name="files_and_media_not_allowed">Files and media not allowed</string>
   <string name="voice_messages_not_allowed">Voice messages not allowed</string>
   <string name="compose_message_placeholder">Message</string>
@@ -818,15 +818,15 @@
   <string name="gallery_video_button">Video</string>
 
   <!-- help - ChatHelpView.kt -->
-  <string name="thank_you_for_installing_simplex">Thank you for installing SimpleX Chat!</string>
-  <string name="you_can_connect_to_simplex_chat_founder"><![CDATA[You can <font color="#0088ff">connect to SimpleX Chat developers to ask any questions and to receive updates</font>.]]></string>
+  <string name="thank_you_for_installing_simplex">Thank you for installing Ciphertext!</string>
+  
   <string name="to_start_a_new_chat_help_header">To start a new chat</string>
   <string name="chat_help_tap_button">Tap button</string>
   <string name="above_then_preposition_continuation">above, then:</string>
   <string name="add_contact_button_to_create_link_or_connect_via_link"><![CDATA[<b>Add contact</b>: to create a new invitation link, or connect via a link you received.]]></string>
   <string name="create_group_button_to_create_new_group"><![CDATA[<b>Create group</b>: to create a new group.]]></string>
   <string name="to_connect_via_link_title">To connect via link</string>
-  <string name="if_you_received_simplex_invitation_link_you_can_open_in_browser">If you received SimpleX Chat invitation link, you can open it in your browser:</string>
+  <string name="if_you_received_simplex_invitation_link_you_can_open_in_browser">If you received Ciphertext invitation link, you can open it in your browser:</string>
   <string name="desktop_scan_QR_code_from_app_via_scan_QR_code"><![CDATA[💻 desktop: scan displayed QR code from the app, via <b>Scan QR code</b>.]]></string>
   <string name="mobile_tap_open_in_mobile_app_then_tap_connect_in_app"><![CDATA[📱 mobile: tap <b>Open in mobile app</b>, then tap <b>Connect</b> in the app.]]></string>
 
@@ -902,10 +902,10 @@
   <string name="icon_descr_cancel_link_preview">cancel link preview</string>
   <string name="icon_descr_settings">Settings</string>
   <string name="image_descr_qr_code">QR Code</string>
-  <string name="icon_descr_address">SimpleX Address</string>
+  <string name="icon_descr_address">Ciphertext Address</string>
   <string name="icon_descr_help">help</string>
-  <string name="icon_descr_simplex_team">SimpleX Team</string>
-  <string name="image_descr_simplex_logo">SimpleX Logo</string>
+  
+  <string name="image_descr_simplex_logo">Ciphertext Logo</string>
   <string name="icon_descr_email">Email</string>
   <string name="icon_descr_more_button">More</string>
 
@@ -927,7 +927,7 @@
   <string name="share_invitation_link">Share 1-time link</string>
   <string name="paste_the_link_you_received_to_connect_with_your_contact">Paste the link you received to connect with your contact…</string>
   <string name="learn_more">Learn more</string>
-  <string name="learn_more_about_address">About SimpleX address</string>
+  <string name="learn_more_about_address">About Ciphertext address</string>
 
   <string name="connect__a_new_random_profile_will_be_shared">A new random profile will be shared.</string>
   <string name="connect__your_profile_will_be_shared">Your profile %1$s will be shared.</string>
@@ -938,14 +938,14 @@
 
   <!-- User Address Learn More - UserAddressLearnMore.kt -->
   <string name="share_address_publicly">Share address publicly</string>
-  <string name="share_simplex_address_on_social_media">Share SimpleX address on social media.</string>
+  <string name="share_simplex_address_on_social_media">Share Ciphertext address on social media.</string>
   <string name="you_can_share_your_address">You can share your address as a link or QR code - anybody can connect to you.</string>
   <string name="you_wont_lose_your_contacts_if_delete_address">You won\'t lose your contacts if you later delete your address.</string>
   <string name="share_1_time_link_with_a_friend">Share 1-time link with a friend</string>
   <string name="one_time_link_can_be_used_with_one_contact_only"><![CDATA[1-time link can be used <i>with one contact only</i> - share in person or via any messenger.]]></string>
   <string name="you_can_set_connection_name_to_remember">You can set connection name, to remember who the link was shared with.</string>
   <string name="connection_security">Connection security</string>
-  <string name="simplex_address_and_1_time_links_are_safe_to_share">SimpleX address and 1-time links are safe to share via any messenger.</string>
+  <string name="simplex_address_and_1_time_links_are_safe_to_share">Ciphertext address and 1-time links are safe to share via any messenger.</string>
   <string name="to_protect_against_your_link_replaced_compare_codes">To protect against your link being replaced, you can compare contact security codes.</string>
   <string name="you_can_accept_or_reject_connection">When people request to connect, you can accept or reject it.</string>
   <string name="read_more_in_user_guide_with_link"><![CDATA[Read more in <font color="#0088ff">User Guide</font>.]]></string>
@@ -966,17 +966,17 @@
   <string name="paste_link">Paste link</string>
   <string name="one_time_link">One-time invitation link</string>
   <string name="one_time_link_short">1-time link</string>
-  <string name="simplex_address">SimpleX address</string>
+  <string name="simplex_address">Ciphertext address</string>
   <string name="verify_simplex_name_action">Verify name</string>
-  <string name="verify_simplex_names">Verify SimpleX names</string>
-  <string name="simplex_name_not_verified">SimpleX name not verified</string>
-  <string name="simplex_name">SimpleX name</string>
-  <string name="your_simplex_name">Your SimpleX name</string>
-  <string name="set_simplex_name">Set SimpleX name</string>
+  <string name="verify_simplex_names">Verify Ciphertext names</string>
+  <string name="simplex_name_not_verified">Ciphertext name not verified</string>
+  <string name="simplex_name">Ciphertext name</string>
+  <string name="your_simplex_name">Your Ciphertext name</string>
+  <string name="set_simplex_name">Set Ciphertext name</string>
   <string name="error_saving_simplex_name">Error saving name</string>
-  <string name="simplex_name_owner_no_channel_link">The SimpleX name %1$s is registered without channel link. Add channel link to the name via the registration page.</string>
-  <string name="simplex_name_owner_no_address">The SimpleX name %1$s is registered without SimpleX address. Add your SimpleX address to the name via the registration page.</string>
-  <string name="set_user_simplex_name_footer">Let people connect to you via name registered with your SimpleX address.</string>
+  <string name="simplex_name_owner_no_channel_link">The Ciphertext name %1$s is registered without channel link. Add channel link to the name via the registration page.</string>
+  <string name="simplex_name_owner_no_address">The Ciphertext name %1$s is registered without Ciphertext address. Add your Ciphertext address to the name via the registration page.</string>
+  <string name="set_user_simplex_name_footer">Let people connect to you via name registered with your Ciphertext address.</string>
   <string name="set_channel_simplex_name_footer">Let people join via name registered with this channel link.</string>
   <string name="or_show_this_qr_code">Or show this code</string>
   <string name="full_link_button_text">Full link</string>
@@ -993,12 +993,12 @@
   <string name="retry_verb">Retry</string>
   <string name="share_this_1_time_link">Share this 1-time invite link</string>
   <string name="paste_the_link_you_received">Paste the link you received</string>
-  <string name="the_text_you_pasted_is_not_a_link">The text you pasted is not a SimpleX link.</string>
+  <string name="the_text_you_pasted_is_not_a_link">The text you pasted is not a Ciphertext link.</string>
   <string name="tap_to_paste_link">Tap to paste link</string>
   <string name="loading_profile">Loading profile…</string>
 
   <string name="invalid_qr_code">Invalid QR code</string>
-  <string name="code_you_scanned_is_not_simplex_link_qr_code">The code you scanned is not a SimpleX link QR code.</string>
+  <string name="code_you_scanned_is_not_simplex_link_qr_code">The code you scanned is not a Ciphertext link QR code.</string>
 
   <string name="deleted_chats">Archived contacts</string>
   <string name="no_filtered_contacts">No filtered contacts</string>
@@ -1025,18 +1025,18 @@
 
   <!-- settings - SettingsView.kt -->
   <string name="your_settings">Your settings</string>
-  <string name="your_simplex_contact_address">Your SimpleX address</string>
+  <string name="your_simplex_contact_address">Your Ciphertext address</string>
   <string name="your_chat_profiles">Your chat profiles</string>
   <string name="create_chat_profile">Create chat profile</string>
   <string name="database_passphrase_and_export">Database passphrase &amp; export</string>
-  <string name="about_simplex_chat">About SimpleX Chat</string>
+  <string name="about_simplex_chat">About Ciphertext</string>
   <string name="how_to_use_simplex_chat">How to use it</string>
   <string name="markdown_help">Markdown help</string>
   <string name="markdown_in_messages">Markdown in messages</string>
   <string name="chat_with_the_founder">Send questions and ideas</string>
   <string name="send_us_an_email">Send us email</string>
-  <string name="follow_simplex_network_news">Follow SimpleX Network News</string>
-  <string name="chat_lock">SimpleX Lock</string>
+  
+  <string name="chat_lock">Ciphertext Lock</string>
   <string name="chat_console">Chat console</string>
   <string name="message_servers">Message servers</string>
   <string name="smp_servers">SMP servers</string>
@@ -1069,7 +1069,7 @@
   <string name="xftp_servers_configured">Configured XFTP servers</string>
   <string name="xftp_servers_other">Other XFTP servers</string>
   <string name="subscription_percentage">Show percentage</string>
-  <string name="install_simplex_chat_for_terminal">Install SimpleX Chat for terminal</string>
+  
   <string name="reset_all_hints">Reset all hints</string>
   <string name="star_on_github">Star on GitHub</string>
   <string name="contribute">Contribute</string>
@@ -1206,12 +1206,12 @@
   <string name="all_your_contacts_will_remain_connected">All your contacts will remain connected.</string>
   <string name="all_your_contacts_will_remain_connected_update_sent">All your contacts will remain connected. Profile update will be sent to your contacts.</string>
   <string name="share_link">Share link</string>
-  <string name="add_address_to_your_profile">Add address to your profile, so that your SimpleX contacts can share it with other people. Profile update will be sent to your SimpleX contacts.</string>
+  <string name="add_address_to_your_profile">Add address to your profile, so that your Ciphertext contacts can share it with other people. Profile update will be sent to your Ciphertext contacts.</string>
   <string name="create_address_and_let_people_connect">Create an address to let people connect with you.</string>
-  <string name="create_simplex_address">Create SimpleX address</string>
-  <string name="share_with_contacts">Share with SimpleX contacts</string>
-  <string name="share_address_with_contacts_question">Share address with SimpleX contacts?</string>
-  <string name="profile_update_will_be_sent_to_contacts">Profile update will be sent to your SimpleX contacts.</string>
+  <string name="create_simplex_address">Create Ciphertext address</string>
+  <string name="share_with_contacts">Share with Ciphertext contacts</string>
+  <string name="share_address_with_contacts_question">Share address with Ciphertext contacts?</string>
+  <string name="profile_update_will_be_sent_to_contacts">Profile update will be sent to your Ciphertext contacts.</string>
   <string name="stop_sharing_address">Stop sharing address?</string>
   <string name="stop_sharing">Stop sharing</string>
   <string name="auto_accept_contact">Auto-accept</string>
@@ -1219,17 +1219,17 @@
   <string name="address_welcome_message">Welcome message</string>
   <string name="enter_welcome_message_optional">Enter welcome message… (optional)</string>
   <string name="save_settings_question">Save settings?</string>
-  <string name="save_auto_accept_settings">Save SimpleX address settings</string>
+  <string name="save_auto_accept_settings">Save Ciphertext address settings</string>
   <string name="delete_address">Delete address</string>
   <string name="invite_friends">Invite friends</string>
-  <string name="email_invite_subject">Let\'s talk in SimpleX Chat</string>
-  <string name="email_invite_body">Hi!\nConnect to me via SimpleX Chat: %s</string>
+  <string name="email_invite_subject">Let\'s talk in Ciphertext</string>
+  <string name="email_invite_body">Hi!\nConnect to me via Ciphertext: %s</string>
   <string name="for_social_media">For social media</string>
   <string name="or_to_share_privately">Or to share privately</string>
-  <string name="simplex_address_or_1_time_link">SimpleX address or 1-time link?</string>
+  <string name="simplex_address_or_1_time_link">Ciphertext address or 1-time link?</string>
   <string name="create_1_time_link">Create 1-time link</string>
   <string name="new_1_time_link">New 1-time link</string>
-  <string name="onboarding_send_1_time_link">Send the link via any messenger - it\'s secure. Ask to paste into SimpleX.</string>
+  <string name="onboarding_send_1_time_link">Send the link via any messenger - it\'s secure. Ask to paste into Ciphertext.</string>
   <string name="onboarding_or_show_qr_code">Or show QR in person or via video call.</string>
   <string name="onboarding_post_address">Use this address in your social media profile, website, or email signature.</string>
   <string name="onboarding_or_use_qr_code">Or use this QR - print or show online.</string>
@@ -1250,7 +1250,7 @@
   <string name="continue_to_next_step">Continue</string>
   <string name="dont_create_address">Don\'t create address</string>
   <string name="you_can_create_it_later">You can create it later</string>
-  <string name="you_can_make_address_visible_via_settings">You can make it visible to your SimpleX contacts via Settings.</string>
+  <string name="you_can_make_address_visible_via_settings">You can make it visible to your Ciphertext contacts via Settings.</string>
   <string name="invite_friends_short">Invite</string>
 
   <!-- User profile details - UserProfileView.kt -->
@@ -1298,7 +1298,7 @@
   <string name="create_address_button">Create</string>
   <string name="invalid_name">Invalid name!</string>
   <string name="correct_name_to">Correct name to %s?</string>
-  <string name="about_simplex">About SimpleX</string>
+  <string name="about_simplex">About Ciphertext</string>
 
   <!-- markdown demo - MarkdownHelpView.kt -->
   <string name="how_to_use_markdown">How to use markdown</string>
@@ -1364,7 +1364,7 @@
   <string name="onboarding_private_and_secure">Private and secure messaging.</string>
   <string name="onboarding_first_network">The first network where you own\nyour contacts and groups.</string>
   <string name="get_started">Get started</string>
-  <string name="why_simplex_is_built">Why SimpleX is built.</string>
+  <string name="why_simplex_is_built">Why Ciphertext is built.</string>
   <string name="onboarding_your_profile">Your profile</string>
   <string name="onboarding_on_your_phone">On your phone, not on servers.</string>
   <string name="onboarding_no_account">No account. No phone. No email. No ID.\nThe most secure encryption.</string>
@@ -1381,7 +1381,7 @@
   <string name="why_built_p6">The oldest human freedom — to speak to another person without being watched — built on infrastructure that cannot betray it.</string>
   <string name="why_built_p7">Because we destroyed the power to know who you are. So that your power can never be taken.</string>
   <string name="why_built_tagline">Be free in your network.</string>
-  <string name="to_protect_privacy_simplex_has_ids_for_queues">To protect your privacy, SimpleX uses separate IDs for each of your contacts.</string>
+  <string name="to_protect_privacy_simplex_has_ids_for_queues">To protect your privacy, Ciphertext uses separate IDs for each of your contacts.</string>
   <string name="only_client_devices_store_contacts_groups_e2e_encrypted_messages">Only client devices store user profiles, contacts, groups, and messages.</string>
   <string name="all_message_and_files_e2e_encrypted"><![CDATA[All messages and files are sent <b>end-to-end encrypted</b>, with post-quantum security in direct messages.]]></string>
   <string name="read_more_in_github_with_link"><![CDATA[Read more in our <font color="#0088ff">GitHub repository</font>.]]></string>
@@ -1468,7 +1468,7 @@
   <string name="relay_server_if_necessary">Relay server is only used if necessary. Another party can observe your IP address.</string>
 
   <!-- Call Lock Screen -->
-  <string name="open_simplex_chat_to_accept_call">Open SimpleX Chat to accept call</string>
+  <string name="open_simplex_chat_to_accept_call">Open Ciphertext to accept call</string>
   <string name="allow_accepting_calls_from_lock_screen">Enable calls from lock screen via Settings.</string>
   <string name="open_verb">Open</string>
   <string name="open_external_link_title">Open external link?</string>
@@ -1605,7 +1605,7 @@
   <string name="settings_section_title_settings">Settings</string>
   <string name="settings_section_title_chat_database">Chat database</string>
   <string name="settings_section_title_help">Help</string>
-  <string name="settings_section_title_support">Support SimpleX Chat</string>
+  
   <string name="settings_section_title_app">App</string>
   <string name="settings_section_title_device">Device</string>
   <string name="settings_section_title_chats">Chats</string>
@@ -2289,7 +2289,7 @@
   <string name="theme_system">System</string>
   <string name="theme_light">Light</string>
   <string name="theme_dark">Dark</string>
-  <string name="theme_simplex">SimpleX</string>
+  <string name="theme_simplex">Ciphertext</string>
   <string name="theme_black">Black</string>
 
   <!-- Languages -->
@@ -2368,7 +2368,7 @@
   <string name="message_reactions">Message reactions</string>
   <string name="voice_messages">Voice messages</string>
   <string name="files_and_media">Files and media</string>
-  <string name="simplex_links">SimpleX links</string>
+  <string name="simplex_links">Ciphertext links</string>
   <string name="recent_history">Visible history</string>
   <string name="audio_video_calls">Audio/video calls</string>
   <string name="available_in_v51">\nAvailable in v5.1</string>
@@ -2434,8 +2434,8 @@
   <string name="prohibit_message_reactions_group">Prohibit messages reactions.</string>
   <string name="allow_to_send_files">Allow to send files and media.</string>
   <string name="prohibit_sending_files">Prohibit sending files and media.</string>
-  <string name="allow_to_send_simplex_links">Allow to send SimpleX links.</string>
-  <string name="prohibit_sending_simplex_links">Prohibit sending SimpleX links</string>
+  <string name="allow_to_send_simplex_links">Allow to send Ciphertext links.</string>
+  <string name="prohibit_sending_simplex_links">Prohibit sending Ciphertext links</string>
   <string name="enable_sending_recent_history">Send up to 100 last messages to new members.</string>
   <string name="disable_sending_recent_history">Do not send history to new members.</string>
   <string name="enable_sending_member_reports">Allow to report messsages to moderators.</string>
@@ -2454,8 +2454,8 @@
   <string name="message_reactions_are_prohibited">Message reactions are prohibited.</string>
   <string name="group_members_can_send_files">Members can send files and media.</string>
   <string name="files_are_prohibited_in_group">Files and media are prohibited.</string>
-  <string name="group_members_can_send_simplex_links">Members can send SimpleX links.</string>
-  <string name="simplex_links_are_prohibited_in_group">SimpleX links are prohibited.</string>
+  <string name="group_members_can_send_simplex_links">Members can send Ciphertext links.</string>
+  <string name="simplex_links_are_prohibited_in_group">Ciphertext links are prohibited.</string>
   <string name="recent_history_is_sent_to_new_members">Up to 100 last messages are sent to new members.</string>
   <string name="recent_history_is_not_sent_to_new_members">History is not sent to new members.</string>
   <string name="group_members_can_send_reports">Members can report messsages to moderators.</string>
@@ -2482,7 +2482,7 @@
   <string name="group_members_can_add_message_reactions_channel">Subscribers can add message reactions.</string>
   <string name="group_members_can_send_voice_channel">Subscribers can send voice messages.</string>
   <string name="group_members_can_send_files_channel">Subscribers can send files and media.</string>
-  <string name="group_members_can_send_simplex_links_channel">Subscribers can send SimpleX links.</string>
+  <string name="group_members_can_send_simplex_links_channel">Subscribers can send Ciphertext links.</string>
   <string name="group_members_can_send_reports_channel">Subscribers can report messsages to moderators.</string>
   <string name="recent_history_is_sent_to_new_members_channel">Up to 100 last messages are sent to new subscribers.</string>
   <string name="recent_history_is_not_sent_to_new_members_channel">History is not sent to new subscribers.</string>
@@ -2728,7 +2728,7 @@
   <string name="v6_4_1_welcome_contacts_descr">Set profile bio and welcome message.</string>
   <string name="v6_4_1_keep_chats_clean">Keep your chats clean</string>
   <string name="v6_4_1_keep_chats_clean_descr">Enable disappearing messages by default.</string>
-  <string name="v6_4_1_short_address">Short SimpleX address</string>
+  <string name="v6_4_1_short_address">Short Ciphertext address</string>
   <string name="v6_4_1_short_address_create">Create your address</string>
   <string name="v6_4_1_short_address_update">Update your address</string>
   <string name="v6_4_1_short_address_share">Share your address</string>
@@ -2745,13 +2745,13 @@
   <string name="v6_5_safe_web_links_descr">- opt-in to send link previews.\n- use SOCKS proxy if enabled.\n- prevent hyperlink phishing.\n- remove link tracking.</string>
   <string name="v6_5_non_profit_governance">Non-profit governance</string>
   <string name="v6_5_non_profit_governance_descr">To make SimpleX Network last.</string>
-  <string name="v7_0_invest" translatable="false">You can now invest in SimpleX Chat! 🚀</string>
-  <string name="v7_0_invest_descr" translatable="false">Crowdfunding on Wefunder.</string>
-  <string name="v7_0_crowdfunding" translatable="false">Crowdfunding on Wefunder</string>
-  <string name="v7_0_invest_learn_more" translatable="false">Learn more on Wefunder</string>
-  <string name="invest_banner_title" translatable="false">Invest in SimpleX Chat!</string>
-  <string name="invest_banner_subtitle" translatable="false">Crowdfunding on Wefunder</string>
-  <string name="v7_0_simplex_names">SimpleX public names (BETA)</string>
+  
+  
+  
+  
+  
+  
+  <string name="v7_0_simplex_names">Ciphertext public names (BETA)</string>
   <string name="v7_0_simplex_names_descr">Public names for your channel or business.</string>
   <string name="v7_0_channels">Better channels 📢</string>
   <string name="v7_0_channels_previews">Create web preview.</string>
@@ -2868,7 +2868,7 @@
   <string name="connect_plan_you_are_already_connecting_to_vName"><![CDATA[You are already connecting to <b>%1$s</b>.]]></string>
   <string name="connect_plan_already_connecting">Already connecting!</string>
   <string name="connect_plan_you_are_already_connecting_via_this_one_time_link">You are already connecting via this one-time link!</string>
-  <string name="connect_plan_this_is_your_own_simplex_address">This is your own SimpleX address!</string>
+  <string name="connect_plan_this_is_your_own_simplex_address">This is your own Ciphertext address!</string>
   <string name="connect_plan_repeat_connection_request">Repeat connection request?</string>
   <string name="connect_plan_you_have_already_requested_connection_via_this_address">You have already requested connection via this address!</string>
   <string name="connect_plan_join_your_group">Join your group?</string>
@@ -3199,16 +3199,16 @@
   <string name="close_behavior_dialog_text">If you choose Close, messages won\'t be received.\nYou can change it later in Appearance settings.</string>
   <string name="close_behavior_dialog_close">Close the app</string>
   <string name="close_behavior_dialog_minimize">Minimize to tray</string>
-  <string name="tray_show">Show SimpleX</string>
-  <string name="tray_quit">Quit SimpleX</string>
-  <string name="tray_tooltip">SimpleX</string>
-  <string name="tray_tooltip_unread">SimpleX — %d unread</string>
+  <string name="tray_show">Show Ciphertext</string>
+  <string name="tray_quit">Quit Ciphertext</string>
+  <string name="tray_tooltip">Ciphertext</string>
+  <string name="tray_tooltip_unread">Ciphertext — %d unread</string>
   <string name="appearance_minimize_to_tray">Close to tray</string>
   <string name="appearance_minimize_to_tray_desc">Runs in background to receive messages</string>
-  <string name="badge_supports_simplex">%s supports SimpleX Chat.</string>
-  <string name="badge_supported_simplex">%1$s supported SimpleX Chat. The badge expired on %2$s.</string>
-  <string name="badge_support_from_v7">You can support SimpleX starting from v7 of the app.</string>
-  <string name="badge_invested">%s invested in SimpleX Chat crowdfunding.</string>
+  
+  
+  
+  
   <string name="badge_unverified_title">Unverified badge</string>
   <string name="badge_unverified_desc">This badge could not be verified and may not be genuine.</string>
   <string name="badge_unknown_key_title">Badge cannot be verified</string>
@@ -3219,4 +3219,5 @@
   <string name="live_session_end_session">End session</string>
   <string name="live_session_default_status">Live session. Everything wipes on exit.</string>
   <string name="live_session_reconnecting">Starting a brand-new session…</string>
+<string name="fork_attribution">Ciphertext is a fork of SimpleX Chat, licensed under AGPLv3.</string>
 </resources>

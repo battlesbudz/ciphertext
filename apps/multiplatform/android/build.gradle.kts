@@ -12,8 +12,8 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "chat.simplex.app"
-        namespace = "chat.simplex.app"
+        applicationId = "chat.ciphertext.app"
+        namespace = "chat.ciphertext.app"
         minSdk = 26
         targetSdk = 35
         // !!!
@@ -31,7 +31,7 @@ android {
             }
         }
         manifestPlaceholders["app_name"] = "@string/app_name"
-        manifestPlaceholders["provider_authorities"] = "chat.simplex.app.provider"
+        manifestPlaceholders["provider_authorities"] = "chat.ciphertext.app.provider"
         manifestPlaceholders["extract_native_libs"] = rootProject.extra["compression.level"] as Int != 0
     }
 
@@ -56,7 +56,7 @@ android {
             isDebuggable = rootProject.extra["enable_debuggable"] as Boolean
             manifestPlaceholders["app_name"] = rootProject.extra["app.name"] as String
             // Provider can"t be the same for different apps on the same device
-            manifestPlaceholders["provider_authorities"] = "chat.simplex.app${rootProject.extra["application_id.suffix"]}.provider"
+            manifestPlaceholders["provider_authorities"] = "chat.ciphertext.app${rootProject.extra["application_id.suffix"]}.provider"
         }
         release {
             isMinifyEnabled = false
@@ -244,7 +244,7 @@ tasks {
 
                 if (project.properties["android.injected.signing.key.alias"] != null && buildType == "release") {
                     val flavor = variant.removeSuffix("Release").lowercase()
-                    mapOf("arm64-v8a" to "simplex.apk", "armeabi-v7a" to "simplex-armv7a.apk").forEach { (abi, name) ->
+                    mapOf("arm64-v8a" to "ciphertext.apk", "armeabi-v7a" to "ciphertext-armv7a.apk").forEach { (abi, name) ->
                         if (!File(outputDir, "android-$flavor-$abi-release.apk").renameTo(File(outputDir, name))) {
                             logger.warn("No $abi apk to rename to $name")
                         }

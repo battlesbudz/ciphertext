@@ -1,5 +1,22 @@
 # Release History
 
+## v7.0.4-ciphertext.1
+
+Ciphertext, October 2026
+
+The first Ciphertext release: the SimpleX fork rebranded and narrowed to ephemeral 1:1 live sessions.
+
+- App renamed to Ciphertext (package `chat.ciphertext.app`). Invite links now use the `ciphertext:` scheme; old `simplex:` links still open.
+- 1:1 live ephemeral sessions only: disconnect destroys the session, dead sessions are never resumed, both clients auto-establish a fresh session with zero carryover.
+- 10 second grace window when the app is backgrounded; gone longer than 10 seconds wipes the session on both sides.
+- Heartbeats and session invites never appear in the chat.
+- Optional Tor routing through Orbot (Settings, Network and servers).
+- Upstream marketing removed: invest banner, badges, support prompts, terminal-app install.
+- Group chat UI removed (1:1 only).
+
+Ciphertext is a fork of SimpleX Chat, licensed under AGPLv3.
+
+
 ## v6.5
 
 30 April, 2026

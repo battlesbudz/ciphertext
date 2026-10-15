@@ -822,7 +822,7 @@ private fun createInvitation(
 }
 
 fun strIsSimplexLink(str: String): Boolean {
-  val parsedMd = parseToMarkdown(str)
+  val parsedMd = parseToMarkdown(normalizeCiphertextLink(str))
   return parsedMd != null && parsedMd.size == 1 && parsedMd[0].format is Format.SimplexLink
 }
 
@@ -832,7 +832,7 @@ sealed class ConnectTarget {
 }
 
 fun strConnectTarget(str: String): ConnectTarget? {
-  val parsedMd = parseToMarkdown(str) ?: return null
+  val parsedMd = parseToMarkdown(normalizeCiphertextLink(str)) ?: return null
   val links = parsedMd.filter { it.format?.isSimplexLink ?: false }
   if (links.size == 1) {
     val fmt = links[0].format as Format.SimplexLink

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SimpleX</string>
+    <string name="app_name">Ciphertext</string>
     <string name="thousand_abbreviation">k</string>
     <!-- Connect via Link - MainActivity.kt -->
     <string name="connect_via_contact_link">Über den Kontaktadressen-Link verbinden?</string>
@@ -38,15 +38,15 @@
     <string name="description_via_one_time_link">über einen Einmal-Link</string>
     <string name="description_via_one_time_link_incognito">Inkognito über einen Einmal-Link</string>
     <!-- FormattedText, SimpleX links - ChatModel.kt -->
-    <string name="simplex_link_contact">SimpleX-Kontaktadressen-Link</string>
-    <string name="simplex_link_invitation">SimpleX-Einmal-Einladungslink</string>
-    <string name="simplex_link_group">SimpleX-Gruppen-Link</string>
+    <string name="simplex_link_contact">Ciphertext-Kontaktadressen-Link</string>
+    <string name="simplex_link_invitation">Ciphertext-Einmal-Einladungslink</string>
+    <string name="simplex_link_group">Ciphertext-Gruppen-Link</string>
     <string name="simplex_link_connection">über %1$s</string>
-    <string name="simplex_link_mode">SimpleX-Links</string>
+    <string name="simplex_link_mode">Ciphertext-Links</string>
     <string name="simplex_link_mode_description">Beschreibung</string>
     <string name="simplex_link_mode_full">Vollständiger Link</string>
     <string name="simplex_link_mode_browser">Über den Browser</string>
-    <string name="simplex_link_mode_browser_warning">Das Öffnen des Links über den Browser kann die Privatsphäre und Sicherheit der Verbindung reduzieren. SimpleX-Links, denen nicht vertraut wird, werden rot markiert.</string>
+    <string name="simplex_link_mode_browser_warning">Das Öffnen des Links über den Browser kann die Privatsphäre und Sicherheit der Verbindung reduzieren. Ciphertext-Links, denen nicht vertraut wird, werden rot markiert.</string>
     <!-- SimpleXAPI.kt -->
     <string name="error_saving_smp_servers">Fehler beim Speichern der SMP-Server</string>
     <string name="ensure_smp_server_address_are_correct_format_and_unique">Stellen Sie sicher, dass die SMP-Server-Adressen das richtige Format haben, zeilenweise getrennt und nicht doppelt vorhanden sind.</string>
@@ -87,7 +87,7 @@
     <string name="icon_descr_instant_notifications">Sofortige Benachrichtigungen</string>
     <string name="service_notifications">Sofortige Benachrichtigungen!</string>
     <string name="service_notifications_disabled">Sofortige Benachrichtigungen sind deaktiviert!</string>
-    <string name="to_preserve_privacy_simplex_has_background_service_instead_of_push_notifications_it_uses_a_few_pc_battery"><![CDATA[Um Ihre Privatsphäre zu schützen, <b>läuft SimpleX im Hintergrund ab</b>, anstatt Push-Benachrichtigungen zu nutzen.]]></string>
+    <string name="to_preserve_privacy_simplex_has_background_service_instead_of_push_notifications_it_uses_a_few_pc_battery"><![CDATA[Um Ihre Privatsphäre zu schützen, <b>läuft Ciphertext im Hintergrund ab</b>, anstatt Push-Benachrichtigungen zu nutzen.]]></string>
     <string name="it_can_disabled_via_settings_notifications_still_shown"><![CDATA[<b>Diese können über die Einstellungen deaktiviert werden</b> – solange die App läuft, werden Benachrichtigungen weiterhin angezeigt.]]></string>
     <string name="turn_off_battery_optimization"><![CDATA[Um Benachrichtigungen sofort zu erhalten, <b>Erlauben Sie es</b> im nächsten Dialog.]]></string>
     <string name="turning_off_service_and_periodic">Die Akkuoptimierung ist aktiv, der Hintergrunddienst und die periodische Nachfrage nach neuen Nachrichten ist abgeschaltet. Sie können diese Funktion in den Einstellungen wieder aktivieren.</string>
@@ -99,12 +99,12 @@
     <string name="database_initialization_error_title">Die Datenbank kann nicht initialisiert werden</string>
     <string name="database_initialization_error_desc">Die Datenbank arbeitet nicht richtig. Für weitere Informationen antippen.</string>
     <!-- SimpleX Chat foreground Service -->
-    <string name="simplex_service_notification_title">SimpleX-Chat-Hintergrunddienst</string>
+    <string name="simplex_service_notification_title">Ciphertext-Hintergrunddienst</string>
     <string name="simplex_service_notification_text">Empfange Nachrichten …</string>
     <string name="hide_notification">Verberge</string>
     <!-- Notification channels -->
-    <string name="ntf_channel_messages">SimpleX-Chat-Nachrichten</string>
-    <string name="ntf_channel_calls">SimpleX-Chat-Anrufe</string>
+    <string name="ntf_channel_messages">Ciphertext-Nachrichten</string>
+    <string name="ntf_channel_calls">Ciphertext-Anrufe</string>
     <!-- Notifications -->
     <string name="settings_notifications_mode_title">Benachrichtigungsdienst</string>
     <string name="settings_notification_preview_mode_title">Vorschau anzeigen</string>
@@ -126,20 +126,20 @@
     <string name="notification_new_contact_request">Neue Kontaktanfrage</string>
     <string name="notification_contact_connected">Verbunden</string>
     <!-- local authentication notice - SimpleXAPI.kt -->
-    <string name="la_notice_title_simplex_lock">SimpleX-Sperre</string>
-    <string name="la_notice_to_protect_your_information_turn_on_simplex_lock_you_will_be_prompted_to_complete_authentication_before_this_feature_is_enabled">Um Ihre Informationen zu schützen, schalten Sie die SimpleX Sperre ein.\nSie werden aufgefordert, die Authentifizierung abzuschließen, bevor diese Funktion aktiviert wird.</string>
+    <string name="la_notice_title_simplex_lock">Ciphertext-Sperre</string>
+    <string name="la_notice_to_protect_your_information_turn_on_simplex_lock_you_will_be_prompted_to_complete_authentication_before_this_feature_is_enabled">Um Ihre Informationen zu schützen, schalten Sie die Ciphertext Sperre ein.\nSie werden aufgefordert, die Authentifizierung abzuschließen, bevor diese Funktion aktiviert wird.</string>
     <string name="la_notice_turn_on">Aktivieren</string>
     <!-- LocalAuthentication.kt -->
-    <string name="auth_simplex_lock_turned_on">SimpleX-Sperre aktiviert</string>
+    <string name="auth_simplex_lock_turned_on">Ciphertext-Sperre aktiviert</string>
     <string name="auth_you_will_be_required_to_authenticate_when_you_start_or_resume">Sie müssen sich authentifizieren, wenn Sie die im Hintergrund befindliche App nach 30 Sekunden starten oder fortsetzen.</string>
     <string name="auth_unlock">Entsperren</string>
     <string name="auth_log_in_using_credential">Melden Sie sich mit Ihren Zugangsdaten an</string>
-    <string name="auth_enable_simplex_lock">SimpleX-Sperre aktivieren</string>
-    <string name="auth_disable_simplex_lock">SimpleX-Sperre deaktivieren</string>
+    <string name="auth_enable_simplex_lock">Ciphertext-Sperre aktivieren</string>
+    <string name="auth_disable_simplex_lock">Ciphertext-Sperre deaktivieren</string>
     <string name="auth_confirm_credential">Bestätigen Sie Ihre Zugangsdaten</string>
     <string name="auth_unavailable">Authentifizierung nicht verfügbar</string>
-    <string name="auth_device_authentication_is_not_enabled_you_can_turn_on_in_settings_once_enabled">Geräteauthentifizierung ist nicht aktiviert. Sie können die SimpleX-Sperre über die Einstellungen aktivieren, sobald Sie die Geräteauthentifizierung aktiviert haben.</string>
-    <string name="auth_device_authentication_is_disabled_turning_off">Geräteauthentifizierung ist deaktiviert. SimpleX-Sperre wird ausgeschaltet.</string>
+    <string name="auth_device_authentication_is_not_enabled_you_can_turn_on_in_settings_once_enabled">Geräteauthentifizierung ist nicht aktiviert. Sie können die Ciphertext-Sperre über die Einstellungen aktivieren, sobald Sie die Geräteauthentifizierung aktiviert haben.</string>
+    <string name="auth_device_authentication_is_disabled_turning_off">Geräteauthentifizierung ist deaktiviert. Ciphertext-Sperre wird ausgeschaltet.</string>
     <string name="auth_stop_chat">Chat beenden</string>
     <string name="auth_open_chat_console">Chat-Konsole öffnen</string>
     <!-- Chat Alerts - ChatItemView.kt -->
@@ -260,13 +260,13 @@
     <string name="gallery_image_button">Bild</string>
     <string name="gallery_video_button">Video</string>
     <!-- help - ChatHelpView.kt -->
-    <string name="thank_you_for_installing_simplex">Danke, dass Sie SimpleX Chat installiert haben!</string>
-    <string name="you_can_connect_to_simplex_chat_founder"><![CDATA[Sie können sich <font color="#0088ff">mit den SimpleX-Chat-Entwicklern verbinden, um Fragen zu stellen und aktuelle Informationen zu erhalten</font>.]]></string>
+    <string name="thank_you_for_installing_simplex">Danke, dass Sie Ciphertext installiert haben!</string>
+    
     <string name="to_start_a_new_chat_help_header">Um einen neuen Chat zu starten</string>
     <string name="chat_help_tap_button">Schaltfläche tippen</string>
     <string name="above_then_preposition_continuation">Danach die gewünschte Aktion auswählen:</string>
     <string name="to_connect_via_link_title">Über Link verbinden</string>
-    <string name="if_you_received_simplex_invitation_link_you_can_open_in_browser">Wenn Sie einen SimpleX-Chat-Einladungslink erhalten haben, können Sie ihn in Ihrem Browser öffnen:</string>
+    <string name="if_you_received_simplex_invitation_link_you_can_open_in_browser">Wenn Sie einen Ciphertext-Einladungslink erhalten haben, können Sie ihn in Ihrem Browser öffnen:</string>
     <string name="desktop_scan_QR_code_from_app_via_scan_QR_code"><![CDATA[💻 Desktop: Angezeigten QR-Code aus der App scannen, über <b>QR-Code scannen</b>.]]></string>
     <string name="mobile_tap_open_in_mobile_app_then_tap_connect_in_app"><![CDATA[📱 Mobiltelefon: Tippen Sie in der App auf „<b>In mobiler App öffnen</b>“ und dann auf „<b>Verbinden</b>“.]]></string>
     <!-- Contact Request Alert Dialogue - ChatListNavLinkView.kt -->
@@ -310,10 +310,10 @@
     <string name="icon_descr_cancel_link_preview">Linkvorschau abbrechen</string>
     <string name="icon_descr_settings">Einstellungen</string>
     <string name="image_descr_qr_code">QR-Code</string>
-    <string name="icon_descr_address">SimpleX-Adresse</string>
+    <string name="icon_descr_address">Ciphertext-Adresse</string>
     <string name="icon_descr_help">Hilfe</string>
-    <string name="icon_descr_simplex_team">SimpleX-Team</string>
-    <string name="image_descr_simplex_logo">SimpleX-Logo</string>
+    
+    <string name="image_descr_simplex_logo">Ciphertext-Logo</string>
     <string name="icon_descr_email">E-Mail</string>
     <string name="icon_descr_more_button">Mehr</string>
     <!-- Connection info - ContactConnectionInfoView.kt -->
@@ -342,15 +342,15 @@
     <string name="one_time_link">Einmal-Einladungslink</string>
     <!-- settings - SettingsView.kt -->
     <string name="your_settings">Einstellungen</string>
-    <string name="your_simplex_contact_address">Ihre SimpleX-Adresse</string>
+    <string name="your_simplex_contact_address">Ihre Ciphertext-Adresse</string>
     <string name="database_passphrase_and_export">Datenbank-Passwort und -Export</string>
-    <string name="about_simplex_chat">Über SimpleX Chat</string>
-    <string name="how_to_use_simplex_chat">Wie man SimpleX nutzt</string>
+    <string name="about_simplex_chat">Über Ciphertext</string>
+    <string name="how_to_use_simplex_chat">Wie man Ciphertext nutzt</string>
     <string name="markdown_help">Markdown-Hilfe</string>
     <string name="markdown_in_messages">Markdown in Nachrichten</string>
     <string name="chat_with_the_founder">Senden Sie Fragen und Ideen</string>
     <string name="send_us_an_email">Senden Sie uns eine E-Mail</string>
-    <string name="chat_lock">SimpleX-Sperre</string>
+    <string name="chat_lock">Ciphertext-Sperre</string>
     <string name="chat_console">Chat-Konsole</string>
     <string name="smp_servers">SMP-Server</string>
     <string name="smp_servers_preset_address">Voreingestellte Serveradresse</string>
@@ -372,7 +372,7 @@
     <string name="smp_servers_invalid_address">Ungültige Serveradresse!</string>
     <string name="smp_servers_check_address">Überprüfen Sie die Serveradresse und versuchen Sie es nochmal.</string>
     <string name="smp_servers_delete_server">Server löschen</string>
-    <string name="install_simplex_chat_for_terminal">Installieren Sie SimpleX Chat als Terminalanwendung</string>
+    
     <string name="star_on_github">Stern auf GitHub vergeben</string>
     <string name="contribute">Unterstützen Sie uns</string>
     <string name="rate_the_app">Bewerten Sie die App</string>
@@ -432,7 +432,7 @@
     <string name="display_name_cannot_contain_whitespace">Der angezeigte Name darf keine Leerzeichen enthalten.</string>
     <string name="display_name">Geben Sie Ihren Namen ein:</string>
     <string name="create_profile_button">Erstellen</string>
-    <string name="about_simplex">Über SimpleX</string>
+    <string name="about_simplex">Über Ciphertext</string>
     <!-- markdown demo - MarkdownHelpView.kt -->
     <string name="how_to_use_markdown">Wie Sie Markdowns anwenden</string>
     <string name="you_can_use_markdown_to_format_messages__prompt">Sie können Markdowns verwenden, um Nachrichten zu formatieren:</string>
@@ -472,7 +472,7 @@
     <string name="make_private_connection">Stellen Sie eine private Verbindung her</string>
     <string name="how_it_works">Wie es funktioniert</string>
     <!-- How SimpleX Works -->
-    <string name="to_protect_privacy_simplex_has_ids_for_queues">SimpleX nutzt individuelle Kennungen für jeden Ihrer Kontakte, um Ihre Privatsphäre zu schützen.</string>
+    <string name="to_protect_privacy_simplex_has_ids_for_queues">Ciphertext nutzt individuelle Kennungen für jeden Ihrer Kontakte, um Ihre Privatsphäre zu schützen.</string>
     <string name="only_client_devices_store_contacts_groups_e2e_encrypted_messages">Nur die Endgeräte speichern Benutzerprofile, Kontakte, Gruppen und Nachrichten.</string>
     <string name="read_more_in_github_with_link"><![CDATA[Erfahren Sie in unserem <font color="#0088ff">GitHub-Repository</font> mehr dazu.]]></string>
     <!-- MakeConnection -->
@@ -504,7 +504,7 @@
     <string name="relay_server_protects_ip">Relais-Server schützen Ihre IP-Adresse, können aber die Anrufdauer erfassen.</string>
     <string name="relay_server_if_necessary">Relais-Server werden nur genutzt, wenn sie benötigt werden. Ihre IP-Adresse kann von Anderen erfasst werden.</string>
     <!-- Call Lock Screen -->
-    <string name="open_simplex_chat_to_accept_call">Öffnen Sie SimpleX Chat, um den Anruf anzunehmen.</string>
+    <string name="open_simplex_chat_to_accept_call">Öffnen Sie Ciphertext, um den Anruf anzunehmen.</string>
     <string name="allow_accepting_calls_from_lock_screen">Aktivieren Sie Anrufe vom Sperrbildschirm über die Einstellungen.</string>
     <string name="open_verb">Öffnen</string>
     <!-- Call overlay -->
@@ -551,7 +551,7 @@
     <string name="settings_section_title_you">Meine Daten</string>
     <string name="settings_section_title_settings">Einstellungen</string>
     <string name="settings_section_title_help">Hilfe</string>
-    <string name="settings_section_title_support">Unterstützung von SimpleX Chat</string>
+    
     <string name="settings_section_title_device">Gerät</string>
     <string name="settings_section_title_chats">Chats</string>
     <string name="settings_developer_tools">Entwicklertools</string>
@@ -1133,8 +1133,8 @@
     <string name="alert_title_msg_bad_id">Falsche Nachrichten-ID</string>
     <string name="ensure_xftp_server_address_are_correct_format_and_unique">Stellen Sie sicher, dass die XFTP-Server-Adressen das richtige Format haben, zeilenweise getrennt und nicht doppelt vorhanden sind.</string>
     <string name="network_socks_toggle_use_socks_proxy">SOCKS-Proxy nutzen</string>
-    <string name="la_lock_mode">SimpleX-Sperrmodus</string>
-    <string name="lock_not_enabled">SimpleX-Sperre ist nicht aktiviert!</string>
+    <string name="la_lock_mode">Ciphertext-Sperrmodus</string>
+    <string name="lock_not_enabled">Ciphertext-Sperre ist nicht aktiviert!</string>
     <string name="disable_onion_hosts_when_not_supported"><![CDATA[Setzen Sie <i>Verwende .onion-Hosts</i> auf "Nein", wenn der SOCKS-Proxy sie nicht unterstützt.]]></string>
     <string name="submit_passcode">Bestätigen</string>
     <string name="la_mode_system">System</string>
@@ -1144,7 +1144,7 @@
 \nDies kann passieren, wenn es einen Fehler gegeben hat oder die Verbindung kompromittiert wurde.</string>
     <string name="alert_text_decryption_error_n_messages_failed_to_decrypt">%1$d Nachrichten konnten nicht entschlüsselt werden.</string>
     <string name="alert_text_msg_bad_hash">Der Hash der vorherigen Nachricht unterscheidet sich.</string>
-    <string name="you_can_turn_on_lock">Sie können die SimpleX-Sperre über die Einstellungen aktivieren.</string>
+    <string name="you_can_turn_on_lock">Sie können die Ciphertext-Sperre über die Einstellungen aktivieren.</string>
     <string name="network_socks_proxy_settings">SOCKS-Proxy-Einstellungen</string>
     <string name="la_lock_mode_system">System-Authentifizierung</string>
     <string name="smp_server_test_upload_file">Datei hochladen</string>
@@ -1184,30 +1184,30 @@
     <string name="error_setting_address">Fehler bei der Adresseinstellung</string>
     <string name="learn_more">Mehr erfahren</string>
     <string name="scan_qr_to_connect_to_contact">Um eine Verbindung herzustellen, kann Ihr Kontakt den QR-Code scannen oder den Link in der App verwenden.</string>
-    <string name="simplex_address">SimpleX-Adresse</string>
+    <string name="simplex_address">Ciphertext-Adresse</string>
     <string name="you_can_accept_or_reject_connection">Wenn Personen eine Verbindung anfordern, können Sie diese annehmen oder ablehnen.</string>
     <string name="you_wont_lose_your_contacts_if_delete_address">Sie werden Ihre damit verbundenen Kontakte nicht verlieren, wenn Sie diese Adresse später löschen.</string>
     <string name="customize_theme_title">Design anpassen</string>
     <string name="theme_colors_section_title">Interface-Farben</string>
-    <string name="add_address_to_your_profile">Fügen Sie die Adresse Ihrem Profil hinzu, damit Ihre SimpleX-Kontakte sie mit anderen Personen teilen können. Es wird eine Profilaktualisierung an Ihre SimpleX-Kontakte gesendet.</string>
+    <string name="add_address_to_your_profile">Fügen Sie die Adresse Ihrem Profil hinzu, damit Ihre Ciphertext-Kontakte sie mit anderen Personen teilen können. Es wird eine Profilaktualisierung an Ihre Ciphertext-Kontakte gesendet.</string>
     <string name="all_your_contacts_will_remain_connected_update_sent">Alle Ihre Kontakte bleiben verbunden. Es wird eine Profilaktualisierung an Ihre Kontakte gesendet.</string>
     <string name="create_address_and_let_people_connect">Erstellen Sie eine Adresse, damit sich Personen mit Ihnen verbinden können.</string>
-    <string name="create_simplex_address">SimpleX-Adresse erstellen</string>
-    <string name="share_with_contacts">Mit SimpleX-Kontakten teilen</string>
+    <string name="create_simplex_address">Ciphertext-Adresse erstellen</string>
+    <string name="share_with_contacts">Mit Ciphertext-Kontakten teilen</string>
     <string name="your_contacts_will_remain_connected">Ihre Kontakte bleiben weiterhin verbunden.</string>
     <string name="auto_accept_contact">Automatisch akzeptieren</string>
     <string name="enter_welcome_message_optional">Geben Sie eine Begrüßungsmeldung ein … (optional)</string>
     <string name="invite_friends">Freunde einladen</string>
-    <string name="email_invite_subject">Lassen Sie uns über SimpleX Chat schreiben</string>
-    <string name="profile_update_will_be_sent_to_contacts">Profil-Aktualisierung wird an Ihre SimpleX-Kontakte gesendet.</string>
-    <string name="save_auto_accept_settings">SimpleX-Adress-Einstellungen speichern</string>
+    <string name="email_invite_subject">Lassen Sie uns über Ciphertext schreiben</string>
+    <string name="profile_update_will_be_sent_to_contacts">Profil-Aktualisierung wird an Ihre Ciphertext-Kontakte gesendet.</string>
+    <string name="save_auto_accept_settings">Ciphertext-Adress-Einstellungen speichern</string>
     <string name="save_settings_question">Einstellungen speichern\?</string>
-    <string name="share_address_with_contacts_question">Die Adresse mit SimpleX-Kontakten teilen?</string>
+    <string name="share_address_with_contacts_question">Die Adresse mit Ciphertext-Kontakten teilen?</string>
     <string name="stop_sharing">Teilen beenden</string>
     <string name="stop_sharing_address">Das Teilen der Adresse beenden\?</string>
     <string name="dont_create_address">Keine Adresse erstellt</string>
     <string name="email_invite_body">Hallo!
-\nVerbinden Sie sich per SimpleX Chat mit mir: %s</string>
+\nVerbinden Sie sich per Ciphertext mit mir: %s</string>
     <string name="you_can_create_it_later">Sie können dies später erstellen</string>
     <string name="enter_welcome_message">Geben Sie eine Begrüßungsmeldung ein …</string>
     <string name="group_welcome_preview">Vorschau</string>
@@ -1219,8 +1219,8 @@
     <string name="color_received_message">Empfangene Nachricht</string>
     <string name="color_secondary">Zweite Farbe</string>
     <string name="color_sent_message">Gesendete Nachricht</string>
-    <string name="theme_simplex">SimpleX</string>
-    <string name="learn_more_about_address">Über die SimpleX-Adresse</string>
+    <string name="theme_simplex">Ciphertext</string>
+    <string name="learn_more_about_address">Über die Ciphertext-Adresse</string>
     <string name="one_time_link_short">Einmal-Link</string>
     <string name="color_primary_variant">Erste Akzentfarbe</string>
     <string name="continue_to_next_step">Weiter</string>
@@ -1416,7 +1416,7 @@
     <string name="disable_notifications_button">Benachrichtigungen deaktivieren</string>
     <string name="system_restricted_background_in_call_title">Keine Anrufe im Hintergrund</string>
     <string name="turn_off_system_restriction_button">App-Einstellungen öffnen</string>
-    <string name="system_restricted_background_desc">SimpleX kann nicht im Hintergrund ablaufen. Sie erhalten Benachrichtigungen nur dann, solange die App läuft.</string>
+    <string name="system_restricted_background_desc">Ciphertext kann nicht im Hintergrund ablaufen. Sie erhalten Benachrichtigungen nur dann, solange die App läuft.</string>
     <string name="system_restricted_background_in_call_desc">Die App kann nach einer Minute im Hintergrund geschlossen werden.</string>
     <string name="system_restricted_background_warn"><![CDATA[Wählen Sie bitte in den App-Einstellungen <b>App-Akkuverbrauch</b> / <b>Unbeschränkt</b> , um Benachrichtigungen zu aktivieren.]]></string>
     <string name="rcv_group_event_n_members_connected">%s, %s und %d weitere Mitglieder wurden mit Ihnen verbunden</string>
@@ -1479,7 +1479,7 @@
     <string name="connect_plan_connect_to_yourself">Mit Ihnen selbst verbinden?</string>
     <string name="contact_tap_to_connect">Zum Verbinden tippen</string>
     <string name="connect_plan_you_are_already_in_group_vName"><![CDATA[Sie sind bereits Mitglied in der Gruppe <b>%1$s</b>.]]></string>
-    <string name="connect_plan_this_is_your_own_simplex_address">Das ist Ihre eigene SimpleX-Adresse!</string>
+    <string name="connect_plan_this_is_your_own_simplex_address">Das ist Ihre eigene Ciphertext-Adresse!</string>
     <string name="correct_name_to">Richtiger Name für %s?</string>
     <string name="delete_messages__question">Sollen %d Nachrichten gelöscht werden?</string>
     <string name="connect_with_contact_name_question">Mit %1$s verbinden?</string>
@@ -1579,7 +1579,7 @@
     <string name="app_was_crashed">Ansicht abgestürzt</string>
     <string name="error_showing_content">Fehler beim Anzeigen des Inhalts</string>
     <string name="error_showing_message">Fehler beim Anzeigen der Nachricht</string>
-    <string name="you_can_make_address_visible_via_settings">Sie können sie über Einstellungen für Ihre SimpleX-Kontakte sichtbar machen.</string>
+    <string name="you_can_make_address_visible_via_settings">Sie können sie über Einstellungen für Ihre Ciphertext-Kontakte sichtbar machen.</string>
     <string name="recent_history_is_not_sent_to_new_members">Der Nachrichtenverlauf wird nicht an neue Gruppenmitglieder gesendet.</string>
     <string name="retry_verb">Wiederholen</string>
     <string name="camera_not_available">Kamera nicht verfügbar</string>
@@ -1588,8 +1588,8 @@
     <string name="disable_sending_recent_history">Den Nachrichtenverlauf nicht an neue Mitglieder senden.</string>
     <string name="or_show_this_qr_code">Oder diesen QR-Code anzeigen</string>
     <string name="recent_history_is_sent_to_new_members">Bis zu 100 der letzten Nachrichten werden an neue Mitglieder gesendet.</string>
-    <string name="code_you_scanned_is_not_simplex_link_qr_code">Der von Ihnen gescannte Code ist kein SimpleX-Link-QR-Code.</string>
-    <string name="the_text_you_pasted_is_not_a_link">Der von Ihnen eingefügte Text ist kein SimpleX-Link.</string>
+    <string name="code_you_scanned_is_not_simplex_link_qr_code">Der von Ihnen gescannte Code ist kein Ciphertext-Link-QR-Code.</string>
+    <string name="the_text_you_pasted_is_not_a_link">Der von Ihnen eingefügte Text ist kein Ciphertext-Link.</string>
     <string name="enable_camera_access">Kamera-Zugriff aktivieren</string>
     <string name="you_can_view_invitation_link_again">Den Einladungslink können Sie in den Details der Verbindung nochmals sehen.</string>
     <string name="keep_unused_invitation_question">Nicht genutzte Einladung behalten?</string>
@@ -1606,7 +1606,7 @@
     <string name="tap_to_scan">Zum Scannen tippen</string>
     <string name="keep_invitation_link">Behalten</string>
     <string name="tap_to_paste_link">Tippen, um den Link einzufügen</string>
-    <string name="search_or_paste_simplex_link">Suchen oder SimpleX-Link einfügen</string>
+    <string name="search_or_paste_simplex_link">Suchen oder Ciphertext-Link einfügen</string>
     <string name="chat_is_stopped_you_should_transfer_database">Der Chat wurde gestoppt. Wenn diese Datenbank bereits auf einem anderen Gerät von Ihnen verwendet wurde, sollten Sie diese dorthin zurück übertragen, bevor Sie den Chat starten.</string>
     <string name="start_chat_question">Chat starten?</string>
     <string name="show_internal_errors">Interne Fehler anzeigen</string>
@@ -1785,17 +1785,17 @@
     <string name="network_type_network_wifi">WiFi</string>
     <string name="network_type_ethernet">Kabelgebundenes Netzwerk</string>
     <string name="files_and_media_not_allowed">Dateien und Medien sind nicht erlaubt</string>
-    <string name="simplex_links_not_allowed">SimpleX-Links sind nicht erlaubt</string>
+    <string name="simplex_links_not_allowed">Ciphertext-Links sind nicht erlaubt</string>
     <string name="voice_messages_not_allowed">Sprachnachrichten sind nicht erlaubt</string>
-    <string name="simplex_links">SimpleX-Links</string>
-    <string name="group_members_can_send_simplex_links">Mitglieder können SimpleX-Links versenden.</string>
+    <string name="simplex_links">Ciphertext-Links</string>
+    <string name="group_members_can_send_simplex_links">Mitglieder können Ciphertext-Links versenden.</string>
     <string name="feature_roles_admins">Administratoren</string>
     <string name="feature_roles_all_members">Alle Mitglieder</string>
     <string name="feature_enabled_for">Aktiviert für</string>
     <string name="feature_roles_owners">Eigentümer</string>
-    <string name="simplex_links_are_prohibited_in_group">SimpleX-Links sind nicht erlaubt.</string>
-    <string name="prohibit_sending_simplex_links">Das Senden von SimpleX-Links nicht erlauben.</string>
-    <string name="allow_to_send_simplex_links">Das Senden von SimpleX-Links erlauben.</string>
+    <string name="simplex_links_are_prohibited_in_group">Ciphertext-Links sind nicht erlaubt.</string>
+    <string name="prohibit_sending_simplex_links">Das Senden von Ciphertext-Links nicht erlauben.</string>
+    <string name="allow_to_send_simplex_links">Das Senden von Ciphertext-Links erlauben.</string>
     <string name="audio_device_speaker">Lautsprecher</string>
     <string name="audio_device_earpiece">Kopfhörer</string>
     <string name="forward_chat_item">Weiterleiten</string>
@@ -2121,7 +2121,7 @@
     <string name="chat_database_exported_save">Sie können das exportierte Archiv speichern.</string>
     <string name="reset_all_hints">Alle Hinweise zurücksetzen</string>
     <string name="new_message">Neue Nachricht</string>
-    <string name="error_parsing_uri_desc">Bitte überprüfen Sie, ob der SimpleX-Link korrekt ist.</string>
+    <string name="error_parsing_uri_desc">Bitte überprüfen Sie, ob der Ciphertext-Link korrekt ist.</string>
     <string name="error_parsing_uri_title">Ungültiger Link</string>
     <string name="settings_section_title_chat_database">Chat-Datenbank</string>
     <string name="switching_profile_error_title">Fehler beim Wechseln des Profils</string>
@@ -2189,16 +2189,16 @@
     <string name="no_media_servers_configured_for_private_routing">Keine Server für das Herunterladen von Dateien.</string>
     <string name="no_media_servers_configured_for_sending">Keine Server für das Versenden von Dateien.</string>
     <string name="connection_error_quota">Nicht ausgelieferte Nachrichten</string>
-    <string name="share_simplex_address_on_social_media">Die SimpleX-Adresse auf sozialen Medien teilen.</string>
+    <string name="share_simplex_address_on_social_media">Die Ciphertext-Adresse auf sozialen Medien teilen.</string>
     <string name="connection_security">Verbindungs-Sicherheit</string>
     <string name="share_1_time_link_with_a_friend">Den Einmal-Einladungslink mit einem Freund teilen</string>
-    <string name="simplex_address_and_1_time_links_are_safe_to_share">Die SimpleX-Adresse und Einmal-Links können sicher über beliebige Messenger geteilt werden.</string>
+    <string name="simplex_address_and_1_time_links_are_safe_to_share">Die Ciphertext-Adresse und Einmal-Links können sicher über beliebige Messenger geteilt werden.</string>
     <string name="you_can_set_connection_name_to_remember">Sie können einen Verbindungsnamen festlegen, um sich zu merken, mit wem der Link geteilt wurde.</string>
     <string name="address_settings">Adress-Einstellungen</string>
     <string name="create_1_time_link">Einmal-Link erstellen</string>
     <string name="for_social_media">Für soziale Medien</string>
     <string name="or_to_share_privately">Oder zum privaten Teilen</string>
-    <string name="simplex_address_or_1_time_link">SimpleX-Adresse oder Einmal-Link?</string>
+    <string name="simplex_address_or_1_time_link">Ciphertext-Adresse oder Einmal-Link?</string>
     <string name="onboarding_choose_server_operators">Server-Betreiber</string>
     <string name="onboarding_network_operators">Netzwerk-Betreiber</string>
     <string name="onboarding_network_operators_app_will_use_different_operators">Die App verwendet für jede Unterhaltung Server von unterschiedlichen Betreibern, um Ihre Privatsphäre zu schützen.</string>
@@ -2265,7 +2265,7 @@
     <string name="message_deleted_or_not_received_error_title">Keine Nachricht</string>
     <string name="no_message_servers_configured_for_private_routing">Keine Server für privates Nachrichten-Routing.</string>
     <string name="share_address_publicly">Die Adresse öffentlich teilen</string>
-    <string name="address_creation_instruction">Tippen Sie im Menü auf SimpleX-Adresse erstellen, um sie später zu erstellen.</string>
+    <string name="address_creation_instruction">Tippen Sie im Menü auf Ciphertext-Adresse erstellen, um sie später zu erstellen.</string>
     <string name="connection_error_quota_desc">Diese Verbindung hat das Limit der nicht ausgelieferten Nachrichten erreicht. Ihr Kontakt ist möglicherweise offline.</string>
     <string name="message_deleted_or_not_received_error_desc">Diese Nachricht wurde gelöscht oder bisher noch nicht empfangen.</string>
     <string name="to_protect_against_your_link_replaced_compare_codes">Zum Schutz vor dem Austausch Ihres Links können Sie die Sicherheitscodes Ihrer Kontakte vergleichen.</string>
@@ -2449,7 +2449,7 @@
     <string name="unsupported_connection_link">Verbindungs-Link wird nicht unterstützt</string>
     <string name="short_link_button_text">Verkürzter Link</string>
     <string name="full_link_button_text">Vollständiger Link</string>
-    <string name="simplex_link_channel">SimpleX-Kanallink</string>
+    <string name="simplex_link_channel">Ciphertext-Kanallink</string>
     <string name="link_requires_newer_app_version_please_upgrade">Für diesen Link wird eine neuere App-Version benötigt. Bitte aktualisieren Sie die App oder bitten Sie Ihren Kontakt einen kompatiblen Link zu senden.</string>
     <string name="network_smp_web_port_all">Alle Server</string>
     <string name="network_smp_web_port_off">Aus</string>
@@ -2571,7 +2571,7 @@
     <string name="v6_4_1_keep_chats_clean">Ihre Chats übersichtlich halten</string>
     <string name="v6_4_1_welcome_contacts_descr">Sie können eine Profil-Biografie und eine Begrüßungsmeldung eingeben.</string>
     <string name="v6_4_1_short_address_share">Ihre Adresse teilen</string>
-    <string name="v6_4_1_short_address">Verkürzte SimpleX-Adresse</string>
+    <string name="v6_4_1_short_address">Verkürzte Ciphertext-Adresse</string>
     <string name="time_to_disappear_is_set_only_for_new_contacts">Die Zeit bis zum Verschwinden wird nur für neue Kontakte eingestellt.</string>
     <string name="v6_4_1_short_address_update">Ihre Adresse aktualisieren</string>
     <string name="connect_use_incognito_profile">Inkognito-Profil nutzen</string>
@@ -2599,7 +2599,7 @@
     <string name="sanitize_links_toggle">Link-Tracking entfernen</string>
     <string name="chat_banner_connect_to_use_bot">Verbinden tippen, um den Bot zu nutzen.</string>
     <string name="cant_send_commands_alert_text">Um Befehle senden zu können, müssen Sie verbunden sein.</string>
-    <string name="simplex_link_relay">SimpleX Relais-Adresse</string>
+    <string name="simplex_link_relay">Ciphertext Relais-Adresse</string>
     <string name="error_marking_member_support_chat_read">Fehler beim Markieren als gelesen</string>
     <string name="proxy_destination_error_unknown_ca">Fingerabdruck in der Zielserveradresse stimmt nicht mit dem Zertifikat überein: %1$s.</string>
     <string name="smp_proxy_error_unknown_ca">Fingerabdruck in der Weiterleitungsserveradresse stimmt nicht mit dem Zertifikat überein: %1$s.</string>
@@ -2805,7 +2805,7 @@
     <string name="v6_5_reliability">Zuverlässigkeit: Mehrere Relais pro Kanal.</string>
     <string name="v6_5_safe_web_links">Sichere Web-Links</string>
     <string name="v6_5_security">Sicherheit: Nur die Eigentümer des Kanals besitzen die Schlüssel.</string>
-    <string name="onboarding_send_1_time_link">Den Link über einen beliebigen Messenger versenden – es ist sicher. Bitte in SimpleX einfügen.</string>
+    <string name="onboarding_send_1_time_link">Den Link über einen beliebigen Messenger versenden – es ist sicher. Bitte in Ciphertext einfügen.</string>
     <string name="talk_to_someone">Mit Jemandem sprechen</string>
     <string name="v6_5_non_profit_governance_descr">Für ein dauerhaftes SimpleX-Netzwerk.</string>
     <string name="onboarding_post_address">Diese Adresse in Ihrem Social‑Media‑Profil, auf Ihrer Webseite oder in Ihrer E‑Mail‑Signatur verwenden.</string>
@@ -2833,7 +2833,7 @@
     <string name="group_members_can_add_message_reactions_channel">Abonnenten können eine Reaktion auf Nachrichten geben.</string>
     <string name="group_members_can_send_voice_channel">Abonnenten können Sprachnachrichten versenden.</string>
     <string name="group_members_can_send_files_channel">Abonnenten können Dateien und Medien versenden.</string>
-    <string name="group_members_can_send_simplex_links_channel">Abonnenten können SimpleX-Links versenden.</string>
+    <string name="group_members_can_send_simplex_links_channel">Abonnenten können Ciphertext-Links versenden.</string>
     <string name="group_members_can_send_reports_channel">Abonnenten können Nachrichten an Moderatoren melden.</string>
     <string name="recent_history_is_sent_to_new_members_channel">Bis zu 100 der letzten Nachrichten werden an neue Abonnenten gesendet.</string>
     <string name="recent_history_is_not_sent_to_new_members_channel">Der Nachrichtenverlauf wird nicht an neue Abonnenten gesendet.</string>
@@ -2862,7 +2862,7 @@
     <string name="onboarding_configure_routers">Router einrichten</string>
     <string name="members_can_chat_with_admins_channel">Abonnenten können mit Administratoren chatten.</string>
     <string name="onboarding_first_network">Das erste Netzwerk,\nin dem Sie Ihre Kontakte und Gruppen besitzen.</string>
-    <string name="why_simplex_is_built">Warum SimpleX entwickelt wurde.</string>
+    <string name="why_simplex_is_built">Warum Ciphertext entwickelt wurde.</string>
     <string name="onboarding_your_network">Ihr Netzwerk</string>
     <string name="onboarding_your_profile">Ihr Profil</string>
     <string name="one_hand_ui_bottom_bar">Untere Leiste</string>
@@ -2891,10 +2891,10 @@
     <string name="close_behavior_dialog_minimize">In den Infobereich minimieren</string>
     <string name="close_behavior_dialog_title">In den Infobereich minimieren?</string>
     <string name="appearance_minimize_to_tray">In den Infobereich minimieren</string>
-    <string name="tray_quit">SimpleX beenden</string>
-    <string name="tray_show">SimpleX anzeigen</string>
-    <string name="tray_tooltip">SimpleX</string>
-    <string name="tray_tooltip_unread">SimpleX — %d ungelesen</string>
+    <string name="tray_quit">Ciphertext beenden</string>
+    <string name="tray_show">Ciphertext anzeigen</string>
+    <string name="tray_tooltip">Ciphertext</string>
+    <string name="tray_tooltip_unread">Ciphertext — %d ungelesen</string>
     <string name="error_deleting_message">Fehler beim Löschen der Nachricht</string>
     <string name="from_history">Aus dem Nachrichtenverlauf</string>
     <string name="another_instance_title">App ist bereits gestartet</string>
@@ -2905,7 +2905,7 @@
     <string name="channel_owner_count_singular">%1$d Eigentümer</string>
     <string name="channel_owner_count_plural">%1$d Eigentümer</string>
     <string name="channel_owners_contributors_count">%1$d Eigentümer und Mitwirkende</string>
-    <string name="badge_supported_simplex">%1$s hat SimpleX Chat unterstützt. Das Abzeichen ist am %2$s abgelaufen.</string>
+    
     <string name="settings_section_title_about">Über</string>
     <string name="relay_status_acknowledged_roster">Bestätigter Relaisbestand</string>
     <string name="webpage_code_footer">Fügen Sie diesen Code in Ihre Webseite ein. Er zeigt die Vorschau Ihres Kanals / Ihrer Gruppe an.</string>
@@ -2931,8 +2931,8 @@
     <string name="more_privacy">Weitere Privatsphäre</string>
     <string name="embed_only_your_page">Nur Ihre oben genannte Seite kann die Vorschau anzeigen.</string>
     <string name="please_upgrade_the_app">Bitte die App aktualisieren.</string>
-    <string name="badge_invested">%s hat sich am SimpleX Chat-Crowdfunding beteiligt.</string>
-    <string name="badge_supports_simplex">%s unterstützt SimpleX Chat.</string>
+    
+    
     <string name="group_member_role_observer_channel">Abonnent</string>
     <string name="settings_section_title_support_project">Unterstützen Sie das Projekt</string>
     <string name="badge_unknown_key_desc">Das Abzeichen ist mit einem Schlüssel signiert, den diese App‑Version nicht erkennt. Aktualisieren Sie die App, um dieses Abzeichen zu verifizieren.</string>
@@ -2944,30 +2944,30 @@
     <string name="badge_unverified_title">Abzeichen nicht verifiziert</string>
     <string name="relays_no_web_support">Die verwendeten Chat‑Relais unterstützen keine Webseiten.</string>
     <string name="webpage_code">Webseiten-Code</string>
-    <string name="badge_support_from_v7">Sie können SimpleX ab der App-Version v7 unterstützen.</string>
+    
     <string name="error_saving_simplex_name">Fehler beim Speichern des Namens</string>
-    <string name="set_user_simplex_name_footer">Lassen Sie sich über den mit Ihrer SimpleX‑Adresse registrierten Namen verbinden.</string>
+    <string name="set_user_simplex_name_footer">Lassen Sie sich über den mit Ihrer Ciphertext‑Adresse registrierten Namen verbinden.</string>
     <string name="set_channel_simplex_name_footer">Ermöglichen Sie Beitritte über den mit diesem Kanal‑Link registrierten Namen.</string>
     <string name="simplex_name_not_found">Name wurde nicht gefunden</string>
-    <string name="simplex_name_no_servers_desc">Keiner Ihrer Server ist zum Auflösen von SimpleX‑Namen konfiguriert. Konfigurieren Sie Server oder verwenden Sie einen Verbindungslink.</string>
+    <string name="simplex_name_no_servers_desc">Keiner Ihrer Server ist zum Auflösen von Ciphertext‑Namen konfiguriert. Konfigurieren Sie Server oder verwenden Sie einen Verbindungslink.</string>
     <string name="no_names_servers_enabled">Keine Server für die Namensauflösung konfiguriert.</string>
     <string name="simplex_name_no_valid_link">Kein gültiger Link</string>
     <string name="simplex_name_resolver_error_desc">Namensauflösungs-Fehler: %1$s</string>
     <string name="simplex_name_server_no_resolver_desc">Der Server %1$s unterstützt keine Namensauflösung. Konfigurieren Sie Server oder verwenden Sie einen Verbindungslink.</string>
-    <string name="set_simplex_name">SimpleX-Name einrichten</string>
-    <string name="simplex_name">SimpleX-Name</string>
-    <string name="simplex_name_error">Fehler beim SimpleX-Namen</string>
-    <string name="simplex_name_not_verified">SimpleX-Name ist nicht verifiziert</string>
-    <string name="simplex_name_no_valid_link_desc">Der SimpleX-Name %1$s wurde registriert, aber er hat keinen gültigen Link.</string>
-    <string name="simplex_name_unconfirmed_desc">Der SimpleX‑Name %1$s wurde registriert, jedoch nicht in Ihrem Profil hinterlegt. Bitte zu Ihrer Adresse oder zum Kanalprofil hinzufügen, sofern Sie der Besitzer sind.</string>
-    <string name="simplex_name_owner_no_channel_link">Der SimpleX‑Name %1$s wurde ohne Kanal‑Link registriert. Fügen Sie den Kanal‑Link über die Registrierungsseite hinzu.</string>
-    <string name="simplex_name_owner_no_address">Der SimpleX‑Name %1$s wurde ohne SimpleX-Adresse registriert. Fügen Sie die SimpleX-Adresse über die Registrierungsseite hinzu.</string>
-    <string name="simplex_name_not_found_desc">Dieser SimpleX-Name wurde nicht registriert. Bitte überprüfen Sie den Namen.</string>
+    <string name="set_simplex_name">Ciphertext-Name einrichten</string>
+    <string name="simplex_name">Ciphertext-Name</string>
+    <string name="simplex_name_error">Fehler beim Ciphertext-Namen</string>
+    <string name="simplex_name_not_verified">Ciphertext-Name ist nicht verifiziert</string>
+    <string name="simplex_name_no_valid_link_desc">Der Ciphertext-Name %1$s wurde registriert, aber er hat keinen gültigen Link.</string>
+    <string name="simplex_name_unconfirmed_desc">Der Ciphertext‑Name %1$s wurde registriert, jedoch nicht in Ihrem Profil hinterlegt. Bitte zu Ihrer Adresse oder zum Kanalprofil hinzufügen, sofern Sie der Besitzer sind.</string>
+    <string name="simplex_name_owner_no_channel_link">Der Ciphertext‑Name %1$s wurde ohne Kanal‑Link registriert. Fügen Sie den Kanal‑Link über die Registrierungsseite hinzu.</string>
+    <string name="simplex_name_owner_no_address">Der Ciphertext‑Name %1$s wurde ohne Ciphertext-Adresse registriert. Fügen Sie die Ciphertext-Adresse über die Registrierungsseite hinzu.</string>
+    <string name="simplex_name_not_found_desc">Dieser Ciphertext-Name wurde nicht registriert. Bitte überprüfen Sie den Namen.</string>
     <string name="operator_use_for_names">Für Namensauflösung</string>
     <string name="simplex_name_unconfirmed">Unbestätigter Name</string>
     <string name="verify_simplex_name_action">Name überprüfen</string>
-    <string name="verify_simplex_names">SimpleX-Namen überprüfen</string>
-    <string name="your_simplex_name">Ihr SimpleX-Name</string>
+    <string name="verify_simplex_names">Ciphertext-Namen überprüfen</string>
+    <string name="your_simplex_name">Ihr Ciphertext-Name</string>
     <string name="connect_plan_connect_to_name">Mit %s verbinden</string>
     <string name="connect_plan_join_name">Kanal %s beitreten</string>
     <string name="do_not_require_message_signatures">Signatur für Nachrichten nicht erforderlich.</string>
@@ -2983,11 +2983,11 @@
     <string name="sign_message">Nachricht signieren</string>
     <string name="sign_messages">Nachrichten signieren</string>
     <string name="signature_missing_alert_desc">Der Kanal verlangt für diese Nachricht eine Signatur, welche aber fehlt.</string>
-    <string name="channel_simplex_name">Im Kanal genutzter SimpleX-Name</string>
-    <string name="get_simplex_name_beta">SimpleX-Name erhalten (BETA)</string>
+    <string name="channel_simplex_name">Im Kanal genutzter Ciphertext-Name</string>
+    <string name="get_simplex_name_beta">Ciphertext-Name erhalten (BETA)</string>
     <string name="register_test_name">Wie man einen Test-Namen registriert</string>
     <string name="remove_name">Name entfernen</string>
-    <string name="save_simplex_name_question">SimpleX-Name speichern?</string>
+    <string name="save_simplex_name_question">Ciphertext-Name speichern?</string>
     <string name="add_description">Beschreibung hinzufügen</string>
     <string name="profile_description__field">Beschreibung</string>
     <string name="edit_description">Beschreibung bearbeiten</string>
@@ -3000,7 +3000,7 @@
     <string name="v7_0_channels_wider_messages">Einfacher zu lesen.</string>
     <string name="v7_0_channels_relays">Ihre Relais verwalten.</string>
     <string name="v7_0_simplex_names_descr">Öffentliche Namen für Ihren Kanal oder Ihr Unternehmen.</string>
-    <string name="v7_0_simplex_names">Öffentliche SimpleX-Namen (BETA)</string>
+    <string name="v7_0_simplex_names">Öffentliche Ciphertext-Namen (BETA)</string>
     <string name="info_row_file_servers">Datei-Server</string>
     <string name="share_text_file_servers">Datei-Server: %s</string>
 </resources>

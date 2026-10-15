@@ -12,11 +12,11 @@
     <string name="network_enable_socks_info">Přistupovat k serverům přes SOCKS proxy na portu %d\? Před povolením této možnosti musí být spuštěna proxy.</string>
     <string name="accept_feature">Přijmout</string>
     <string name="allow_your_contacts_to_send_disappearing_messages">Povolit svým kontaktům odesílat mizící zprávy.</string>
-    <string name="about_simplex_chat">O SimpleX Chat</string>
+    <string name="about_simplex_chat">O Ciphertext</string>
     <string name="smp_servers_add_to_another_device">Přidat do jiného zařízení</string>
     <string name="allow_verb">Povolit</string>
     <string name="allow_voice_messages_question">Povolit hlasové zprávy\?</string>
-    <string name="about_simplex">O SimpleX</string>
+    <string name="about_simplex">O Ciphertext</string>
     <string name="a_plus_b">a + b</string>
     <string name="accept_call_on_lock_screen">Přijmout</string>
     <string name="chat_item_ttl_day">1 den</string>
@@ -82,7 +82,7 @@
     <string name="v4_3_irreversible_message_deletion_desc">Vaše kontakty mohou povolit úplné mazání zpráv.</string>
     <string name="v4_4_disappearing_messages">Mizící zprávy</string>
     <string name="v4_4_verify_connection_security_desc">Porovnejte bezpečnostní kódy se svými kontakty.</string>
-    <string name="app_name">SimpleX</string>
+    <string name="app_name">Ciphertext</string>
     <string name="thousand_abbreviation">k</string>
     <string name="connect_via_contact_link">Připojit přes kontaktní adresu?</string>
     <string name="connect_via_invitation_link">Připojit přes jednorázovou pozvánku?</string>
@@ -106,15 +106,15 @@
     <string name="description_via_contact_address_link_incognito">inkognito přes odkaz</string>
     <string name="description_via_one_time_link">jednorázovým odkazem</string>
     <string name="description_via_one_time_link_incognito">inkognito jednorázovým odkazem</string>
-    <string name="simplex_link_contact">SimpleX adresa</string>
-    <string name="simplex_link_invitation">Jednorázová pozvánka SimpleX</string>
-    <string name="simplex_link_group">Skupinový odkaz SimpleX</string>
+    <string name="simplex_link_contact">Ciphertext adresa</string>
+    <string name="simplex_link_invitation">Jednorázová pozvánka Ciphertext</string>
+    <string name="simplex_link_group">Skupinový odkaz Ciphertext</string>
     <string name="simplex_link_connection">prostřednictvím %1$s</string>
-    <string name="simplex_link_mode">Odkazy na SimpleX</string>
+    <string name="simplex_link_mode">Odkazy na Ciphertext</string>
     <string name="simplex_link_mode_description">Popis</string>
     <string name="simplex_link_mode_full">Úplný odkaz</string>
     <string name="simplex_link_mode_browser">Prostřednictvím prohlížeče</string>
-    <string name="simplex_link_mode_browser_warning">Otevření odkazu v prohlížeči může snížit soukromí a bezpečnost připojení. Nedůvěryhodné odkazy SimpleX budou červené.</string>
+    <string name="simplex_link_mode_browser_warning">Otevření odkazu v prohlížeči může snížit soukromí a bezpečnost připojení. Nedůvěryhodné odkazy Ciphertext budou červené.</string>
     <string name="error_saving_smp_servers">Chyba ukládání serverů SMP</string>
     <string name="error_setting_network_config">Chyba změny konfigurace sítě</string>
     <string name="failed_to_parse_chat_title">Nepodařilo se načíst chat</string>
@@ -137,9 +137,9 @@
     <string name="notification_preview_mode_hidden">Skryté</string>
     <string name="notification_preview_mode_message_desc">Zobrazí kontakt a zprávu</string>
     <string name="notification_contact_connected">Připojen</string>
-    <string name="la_notice_title_simplex_lock">SimpleX Zámek</string>
+    <string name="la_notice_title_simplex_lock">Ciphertext Zámek</string>
     <string name="auth_log_in_using_credential">Přihlásit pomocí ověření</string>
-    <string name="auth_enable_simplex_lock">Zapnout zámek SimpleX</string>
+    <string name="auth_enable_simplex_lock">Zapnout zámek Ciphertext</string>
     <string name="reply_verb">Odpověď</string>
     <string name="share_verb">Sdílet</string>
     <string name="copy_verb">Kopírovat</string>
@@ -201,8 +201,8 @@
     <string name="contact_you_shared_link_with_wont_be_able_to_connect">Kontakt, se kterým jste tento odkaz sdíleli, se NEBUDE moci připojit!</string>
     <string name="connection_you_accepted_will_be_cancelled">Připojení, které jste přijali, bude zrušeno!</string>
     <string name="icon_descr_help">help</string>
-    <string name="icon_descr_simplex_team">SimpleX Tým</string>
-    <string name="icon_descr_address">SimpleX Adresa</string>
+    
+    <string name="icon_descr_address">Ciphertext Adresa</string>
     <string name="you_will_be_connected_when_group_host_device_is_online">Ke skupině budete připojeni, až bude zařízení hostitele skupiny online, vyčkejte prosím nebo se podívejte později!</string>
     <string name="you_will_be_connected_when_your_connection_request_is_accepted">Budete připojeni, jakmile bude vaše žádost o připojení přijata, vyčkejte prosím nebo se podívejte později!</string>
     <string name="connection_request_sent">Požadavek na připojení byl odeslán!</string>
@@ -251,7 +251,7 @@
     <string name="icon_descr_audio_call">audio hovor</string>
     <string name="settings_audio_video_calls">Audio a video hovory</string>
     <string name="call_on_lock_screen">Hovory na uzamčené obrazovce:</string>
-    <string name="open_simplex_chat_to_accept_call">Otevřete SimpleX Chat pro přijetí hovoru</string>
+    <string name="open_simplex_chat_to_accept_call">Otevřete Ciphertext pro přijetí hovoru</string>
     <string name="allow_accepting_calls_from_lock_screen">Povolte volání ze zamčené obrazovky prostřednictvím Nastavení.</string>
     <string name="open_verb">Otevřít</string>
     <string name="icon_descr_audio_on">Zvuk zapnut</string>
@@ -325,14 +325,14 @@
     <string name="enter_passphrase_notification_desc">Chcete-li dostávat oznámení, zadejte přístupovou frázi do databáze.</string>
     <string name="database_initialization_error_title">Nelze načíst databázi</string>
     <string name="hide_notification">Skrýt</string>
-    <string name="ntf_channel_calls">Volání SimpleX Chat</string>
+    <string name="ntf_channel_calls">Volání Ciphertext</string>
     <string name="notification_preview_new_message">nová zpráva</string>
     <string name="notification_new_contact_request">Žádost o nový kontakt</string>
     <string name="delete_message_cannot_be_undone_warning">Zpráva bude smazána - nelze to vzít zpět!</string>
     <string name="confirm_verb">Potvrdit</string>
     <string name="send_us_an_email">Pošlete nám e-mail</string>
-    <string name="chat_lock">Zámek SimpleX</string>
-    <string name="install_simplex_chat_for_terminal">Instalovat SimpleX Chat terminál</string>
+    <string name="chat_lock">Zámek Ciphertext</string>
+    
     <string name="star_on_github">Hvězdu na GitHubu</string>
     <string name="rate_the_app">Ohodnoťte aplikaci</string>
     <string name="your_SMP_servers">Vaše servery SMP</string>
@@ -369,7 +369,7 @@
     <string name="clear_verification">Jasné ověření</string>
     <string name="to_verify_compare">Chcete-li ověřit koncové šifrování u svého kontaktu, porovnejte (nebo naskenujte) kód na svých zařízeních.</string>
     <string name="your_settings">Vaše nastavení</string>
-    <string name="your_simplex_contact_address">Vaše SimpleX adresa</string>
+    <string name="your_simplex_contact_address">Vaše Ciphertext adresa</string>
     <string name="database_passphrase_and_export">Přístupová fráze k databázi a export</string>
     <string name="your_chat_profiles">Profily chatu</string>
     <string name="chat_with_the_founder">Zaslat otázky a nápady</string>
@@ -383,11 +383,11 @@
     <string name="delete_address">Smazat adresu</string>
     <string name="full_name__field">Celé jméno:</string>
     <string name="your_current_profile">Váš současný profil</string>
-    <string name="to_preserve_privacy_simplex_has_background_service_instead_of_push_notifications_it_uses_a_few_pc_battery"><![CDATA[Pro zvýšení soukromí, <b>SimpleX běží na pozadí</b> místo používání oznámení.]]></string>
+    <string name="to_preserve_privacy_simplex_has_background_service_instead_of_push_notifications_it_uses_a_few_pc_battery"><![CDATA[Pro zvýšení soukromí, <b>Ciphertext běží na pozadí</b> místo používání oznámení.]]></string>
     <string name="periodic_notifications">Pravidelná oznámení</string>
-    <string name="simplex_service_notification_title">SimpleX Chat služba</string>
+    <string name="simplex_service_notification_title">Ciphertext služba</string>
     <string name="simplex_service_notification_text">Příjem zpráv…</string>
-    <string name="ntf_channel_messages">Zprávy SimpleX Chat</string>
+    <string name="ntf_channel_messages">Zprávy Ciphertext</string>
     <string name="settings_notification_preview_mode_title">Zobrazení náhledu</string>
     <string name="settings_notification_preview_title">Náhled oznámení</string>
     <string name="notifications_mode_off">Spuštěna při otevřené aplikaci</string>
@@ -397,10 +397,10 @@
     <string name="notification_preview_mode_contact_desc">Zobrazí pouze kontakt</string>
     <string name="notification_preview_somebody">Skrytý kontakt:</string>
     <string name="la_notice_turn_on">Zapněte funkci</string>
-    <string name="auth_simplex_lock_turned_on">Zámek SimpleX zapnut</string>
+    <string name="auth_simplex_lock_turned_on">Zámek Ciphertext zapnut</string>
     <string name="auth_unlock">Odemknout</string>
-    <string name="auth_device_authentication_is_not_enabled_you_can_turn_on_in_settings_once_enabled">Ověřování zařízení není povoleno. Jakmile povolíte ověřování zařízení, můžete zámek SimpleX Lock zapnout prostřednictvím Nastavení.</string>
-    <string name="auth_device_authentication_is_disabled_turning_off">Ověřování zařízení je zakázáno. Zámek SimpleX je vypnut.</string>
+    <string name="auth_device_authentication_is_not_enabled_you_can_turn_on_in_settings_once_enabled">Ověřování zařízení není povoleno. Jakmile povolíte ověřování zařízení, můžete zámek Ciphertext Lock zapnout prostřednictvím Nastavení.</string>
+    <string name="auth_device_authentication_is_disabled_turning_off">Ověřování zařízení je zakázáno. Zámek Ciphertext je vypnut.</string>
     <string name="edit_verb">Upravit</string>
     <string name="delete_verb">Smazat</string>
     <string name="for_everybody">Pro všechny</string>
@@ -528,10 +528,10 @@
     <string name="database_initialization_error_desc">Databáze nefunguje správně. Klepnutím se dozvíte více</string>
     <string name="notifications_mode_off_desc">Aplikace může přijímat oznámení pouze při svém běhu, žádná služba na pozadí nebude spuštěna</string>
     <string name="notification_display_mode_hidden_desc">Skryje kontakt i zprávu</string>
-    <string name="la_notice_to_protect_your_information_turn_on_simplex_lock_you_will_be_prompted_to_complete_authentication_before_this_feature_is_enabled">Chcete-li chránit své informace, zapněte zámek SimpleX Lock.
+    <string name="la_notice_to_protect_your_information_turn_on_simplex_lock_you_will_be_prompted_to_complete_authentication_before_this_feature_is_enabled">Chcete-li chránit své informace, zapněte zámek Ciphertext Lock.
 \nPřed zapnutím této funkce budete vyzváni k dokončení ověření.</string>
     <string name="auth_you_will_be_required_to_authenticate_when_you_start_or_resume">Při spuštění, nebo obnovení aplikace po 30 sekundách, budete vyzváni k odemčení.</string>
-    <string name="auth_disable_simplex_lock">Vypnout zámek SimpleX</string>
+    <string name="auth_disable_simplex_lock">Vypnout zámek Ciphertext</string>
     <string name="auth_confirm_credential">Potvrďte vzor</string>
     <string name="auth_unavailable">Ověřování není k dispozici</string>
     <string name="auth_stop_chat">Zastavit chat</string>
@@ -567,10 +567,10 @@
     <string name="send_live_message">Odeslat živou zprávu</string>
     <string name="live_message">Živá zpráva!</string>
     <string name="connect_via_link_or_qr">Připojit se prostřednictvím odkazu / QR kódu</string>
-    <string name="thank_you_for_installing_simplex">Děkujeme za instalaci SimpleX Chat!</string>
-    <string name="you_can_connect_to_simplex_chat_founder"><![CDATA[Můžete se <font color="#0088ff">připojit k SimpleX Chat vývojářům, položit jim případné dotazy a získat aktualizace</font>.]]></string>
+    <string name="thank_you_for_installing_simplex">Děkujeme za instalaci Ciphertext!</string>
+    
     <string name="to_connect_via_link_title">Připojení prostřednictvím odkazu</string>
-    <string name="if_you_received_simplex_invitation_link_you_can_open_in_browser">Pokud jste dostali SimpleX Chat pozvánku, můžete ji otevřít v prohlížeči:</string>
+    <string name="if_you_received_simplex_invitation_link_you_can_open_in_browser">Pokud jste dostali Ciphertext pozvánku, můžete ji otevřít v prohlížeči:</string>
     <string name="if_you_choose_to_reject_the_sender_will_not_be_notified">Pokud zvolíte odmítnutí, odesílatel NEBUDE upozorněn.</string>
     <string name="mobile_tap_open_in_mobile_app_then_tap_connect_in_app"><![CDATA[📱 telefon: <b>Otevřete v mobilní aplikaci</b>, potom v aplikaci klepněte na <b>Připojit</b>.]]></string>
     <string name="reject_contact_button">Odmítnout</string>
@@ -588,7 +588,7 @@
     <string name="alert_title_contact_connection_pending">Kontakt ještě není připojen!</string>
     <string name="image_descr_link_preview">náhled odkazu</string>
     <string name="icon_descr_cancel_link_preview">Zrušit náhled odkazu</string>
-    <string name="image_descr_simplex_logo">SimpleX Logo</string>
+    <string name="image_descr_simplex_logo">Ciphertext Logo</string>
     <string name="icon_descr_email">E-mail</string>
     <string name="icon_descr_more_button">Více</string>
     <string name="show_QR_code">Zobrazit QR kód</string>
@@ -662,7 +662,7 @@
     <string name="privacy_redefined">Nové vymezení soukromí</string>
     <string name="first_platform_without_user_ids">Bez uživatelských identifikátorů</string>
     <string name="immune_to_spam_and_abuse">Odolná vůči spamu</string>
-    <string name="to_protect_privacy_simplex_has_ids_for_queues">K ochraně soukromí, SimpleX používá ID pro každý z vašich kontaktů.</string>
+    <string name="to_protect_privacy_simplex_has_ids_for_queues">K ochraně soukromí, Ciphertext používá ID pro každý z vašich kontaktů.</string>
     <string name="read_more_in_github_with_link"><![CDATA[Další informace najdete v našem <font color="#0088ff">úložišti GitHub</font>.]]></string>
     <string name="use_chat">Použijte chat</string>
     <string name="onboarding_notifications_mode_subtitle">Jak ovlivňuje baterii</string>
@@ -700,7 +700,7 @@
 \n2. Dešifrování zprávy se nezdařilo, protože vy nebo váš kontakt jste použili starou zálohu databáze.
 \n3. Spojení je kompromitováno.</string>
     <string name="settings_section_title_you">Vy</string>
-    <string name="settings_section_title_support">Podpořit SimpleX Chat</string>
+    
     <string name="settings_developer_tools">Nástroje pro vývojáře</string>
     <string name="settings_section_title_incognito">Inkognito mód</string>
     <string name="your_chat_database">Vaše chat databáze</string>
@@ -1025,7 +1025,7 @@
     <string name="network_proxy_port">port %d</string>
     <string name="network_socks_proxy_settings">Nastavení SOCKS proxy</string>
     <string name="la_lock_mode_passcode">Zadat heslo</string>
-    <string name="la_lock_mode">SimpleX zámek</string>
+    <string name="la_lock_mode">Ciphertext zámek</string>
     <string name="la_lock_mode_system">Ověření systému</string>
     <string name="la_authenticate">Ověřit</string>
     <string name="la_auth_failed">Ověření selhalo</string>
@@ -1038,8 +1038,8 @@
     <string name="la_seconds">%d sekund</string>
     <string name="la_immediately">Ihned</string>
     <string name="la_please_remember_to_store_password">Zapamatujte si jej nebo bezpečně uložte - neexistuje způsob, jak obnovit ztracené heslo!</string>
-    <string name="lock_not_enabled">Zámek SimpleX není povolen!</string>
-    <string name="you_can_turn_on_lock">Zámek SimpleX můžete zapnout v Nastavení.</string>
+    <string name="lock_not_enabled">Zámek Ciphertext není povolen!</string>
+    <string name="you_can_turn_on_lock">Zámek Ciphertext můžete zapnout v Nastavení.</string>
     <string name="port_verb">Port</string>
     <string name="disable_onion_hosts_when_not_supported"><![CDATA[Nastavte <i>Použít .onion hostitele</i> na Ne, pokud je SOCKS proxy nepodporuje.]]></string>
     <string name="your_XFTP_servers">Vaše XFTP servery</string>
@@ -1093,7 +1093,7 @@
     <string name="stop_file__action">Zastavit soubor</string>
     <string name="stop_snd_file__title">Zastavit odesílání souboru\?</string>
     <string name="stop_rcv_file__title">Zastavit příjem souboru\?</string>
-    <string name="learn_more_about_address">O adrese SimpleX</string>
+    <string name="learn_more_about_address">O adrese Ciphertext</string>
     <string name="one_time_link_short">Jednorázový odkaz</string>
     <string name="message_reactions">Reakce na zprávy</string>
     <string name="send_disappearing_message_send">Poslat</string>
@@ -1141,7 +1141,7 @@
     <string name="current_version_timestamp">%s (aktuálně)</string>
     <string name="dark_theme">Tmavý motiv</string>
     <string name="import_theme">Import motivu</string>
-    <string name="theme_simplex">SimpleX</string>
+    <string name="theme_simplex">Ciphertext</string>
     <string name="export_theme">Export motivu</string>
     <string name="color_sent_message">Poslaná zpráva</string>
     <string name="color_title">Titul</string>
@@ -1162,21 +1162,21 @@
     <string name="scan_qr_to_connect_to_contact">Pro připojení může váš kontakt naskenovat QR kód, nebo použít odkaz v aplikaci.</string>
     <string name="you_can_accept_or_reject_connection">Když někdo požádá o připojení, můžete žádost přijmout nebo odmítnout.</string>
     <string name="read_more_in_user_guide_with_link"><![CDATA[Přečtěte si více v <font color="#0088ff">Uživatelské příručce</font>.]]></string>
-    <string name="simplex_address">Adresa SimpleX</string>
+    <string name="simplex_address">Adresa Ciphertext</string>
     <string name="theme_colors_section_title">Barvy motivu</string>
     <string name="customize_theme_title">Přizpůsobit motiv</string>
     <string name="profile_update_will_be_sent_to_contacts">Aktualizace profilu bude zaslána vašim kontaktům.</string>
     <string name="share_address_with_contacts_question">Sdílet adresu s kontakty?</string>
     <string name="stop_sharing_address">Přestat sdílet adresu\?</string>
     <string name="create_address_and_let_people_connect">Vytvořit adresu, aby se s vámi lidé mohli spojit.</string>
-    <string name="save_auto_accept_settings">Uložit nastavení SimpleX adresy</string>
+    <string name="save_auto_accept_settings">Uložit nastavení Ciphertext adresy</string>
     <string name="stop_sharing">Přestat sdílet</string>
     <string name="auto_accept_contact">Automaticky přijmout</string>
     <string name="you_can_create_it_later">Můžete vytvořit později</string>
     <string name="dont_create_address">Nevytvářet adresu</string>
     <string name="email_invite_body">Ahoj!
-\nSpojte se se mnou přes SimpleX Chat: %s</string>
-    <string name="email_invite_subject">Promluvme si v SimpleX Chatu</string>
+\nSpojte se se mnou přes Ciphertext: %s</string>
+    <string name="email_invite_subject">Promluvme si v Ciphertextu</string>
     <string name="whats_new_read_more">Přečíst více</string>
     <string name="v5_1_self_destruct_passcode_descr">Všechna data se při zadání vymažou.</string>
     <string name="v5_1_better_messages">Lepší zprávy</string>
@@ -1199,7 +1199,7 @@
     <string name="address_section_title">Adresa</string>
     <string name="allow_message_reactions">Povolit reakce na zprávy.</string>
     <string name="allow_message_reactions_only_if">Povolit reakce na zprávy, pokud je váš kontakt povolí.</string>
-    <string name="create_simplex_address">Vytvořit SimpleX adresu</string>
+    <string name="create_simplex_address">Vytvořit Ciphertext adresu</string>
     <string name="continue_to_next_step">Pokračovat</string>
     <string name="enter_welcome_message_optional">Zadat uvítací zprávu... (volitelně)</string>
     <string name="if_you_cant_meet_in_person">Pokud se nemůžete setkat osobně, zobrazte QR kód ve videohovoru nebo sdílejte odkaz.</string>
@@ -1324,7 +1324,7 @@
     <string name="in_developing_title">Již brzy!</string>
     <string name="connect_use_current_profile">Použít aktuální profil</string>
     <string name="connect_use_new_incognito_profile">Použít nový incognito profil</string>
-    <string name="system_restricted_background_desc">SimpleX nemůže běžet na pozadí. Pouze při spuštěné aplikaci obdržíte upozornění.</string>
+    <string name="system_restricted_background_desc">Ciphertext nemůže běžet na pozadí. Pouze při spuštěné aplikaci obdržíte upozornění.</string>
     <string name="system_restricted_background_warn"><![CDATA[Chcete-li povolit oznámení, vyberte prosím <b>Baterii</b> / <b>bez omezení</b> v nastavení aplikace.]]></string>
     <string name="system_restricted_background_in_call_desc">Aplikace může být uzavřena po 1 minutě na pozadí.</string>
     <string name="system_restricted_background_in_call_warn"><![CDATA[Chcete-li volat na pozadí, vyberte prosím <b>Baterii</b> / <b>bez omezení</b> v nastavení aplikace.]]></string>
@@ -1416,7 +1416,7 @@
     <string name="refresh_qr_code">Obnovit</string>
     <string name="new_mobile_device">Nový telefon</string>
     <string name="only_one_device_can_work_at_the_same_time">Pouze jedno zařízení může pracovat současně</string>
-    <string name="you_can_make_address_visible_via_settings">Můžete ji svým SimpleX kontaktům zviditelnit v Nastavení.</string>
+    <string name="you_can_make_address_visible_via_settings">Můžete ji svým Ciphertext kontaktům zviditelnit v Nastavení.</string>
     <string name="connect_plan_you_are_already_joining_the_group_vName"><![CDATA[Již se připojujete ke skupině <b>%1$s</b>.]]></string>
     <string name="v5_4_link_mobile_desktop">Propojit mobilní a stolní aplikace! 🔗</string>
     <string name="connect_plan_this_is_your_own_one_time_link">To je váš vlastní jednorázový odkaz!</string>
@@ -1450,7 +1450,7 @@
     <string name="connected_to_desktop">Připojeno k PC</string>
     <string name="contact_tap_to_connect">Klepněte na Připojit se</string>
     <string name="connect_plan_you_are_already_in_group_vName"><![CDATA[Již jste ve skupině <b>%1$s</b>.]]></string>
-    <string name="connect_plan_this_is_your_own_simplex_address">To je vaše vlastní SimpleX adresa!</string>
+    <string name="connect_plan_this_is_your_own_simplex_address">To je vaše vlastní Ciphertext adresa!</string>
     <string name="loading_remote_file_title">Načítám soubor</string>
     <string name="connecting_to_desktop">Připojuji k PC</string>
     <string name="alert_text_encryption_renegotiation_failed">Opětovné vyjednávání šifrování selhalo.</string>
@@ -1501,7 +1501,7 @@
     <string name="verify_connection">Ověřit připojení</string>
     <string name="no_connected_mobile">Žádný připojený telefon</string>
     <string name="loading_chats">Nahrávám chat..</string>
-    <string name="search_or_paste_simplex_link">Hledat nebo vložit SimpleX odkaz</string>
+    <string name="search_or_paste_simplex_link">Hledat nebo vložit Ciphertext odkaz</string>
     <string name="camera_not_available">Kamera není k dispozici</string>
     <string name="enable_camera_access">Povolit fotoaparát</string>
     <string name="tap_to_scan">Klepnutím skenovat</string>
@@ -1519,8 +1519,8 @@
     <string name="retry_verb">Zkusit znovu</string>
     <string name="share_this_1_time_link">Sdílejte tento jedorázový odkaz</string>
     <string name="tap_to_paste_link">Klepnutím vložte odkaz</string>
-    <string name="code_you_scanned_is_not_simplex_link_qr_code">Kód který jste naskenovali, není SimpleX QR odkaz.</string>
-    <string name="the_text_you_pasted_is_not_a_link">Text který jste vložili, není SimpleX odkaz.</string>
+    <string name="code_you_scanned_is_not_simplex_link_qr_code">Kód který jste naskenovali, není Ciphertext QR odkaz.</string>
+    <string name="the_text_you_pasted_is_not_a_link">Text který jste vložili, není Ciphertext odkaz.</string>
     <string name="recent_history">Viditelná historie</string>
     <string name="disable_sending_recent_history">Nezasílat historii novým členům.</string>
     <string name="la_app_passcode">Heslo aplikace</string>
@@ -1682,7 +1682,7 @@
     <string name="migrate_to_device_repeat_import">Opakovat import</string>
     <string name="audio_device_bluetooth">Bluetooth</string>
     <string name="settings_section_title_network_connection">Síťové připojení</string>
-    <string name="prohibit_sending_simplex_links">Zákaz odesílání SimpleX odkazů</string>
+    <string name="prohibit_sending_simplex_links">Zákaz odesílání Ciphertext odkazů</string>
     <string name="audio_device_earpiece">Sluchátka</string>
     <string name="audio_device_wired_headphones">Sluchátka</string>
     <string name="audio_device_speaker">Reproduktor</string>
@@ -1691,7 +1691,7 @@
     <string name="v5_7_quantum_resistant_encryption_descr">Bude povoleno v přímém chatu!</string>
     <string name="v5_7_new_interface_languages">Litevské UI</string>
     <string name="v5_7_network_descr">Spolehlivější síťové připojení.</string>
-    <string name="allow_to_send_simplex_links">Povolit odesílat SimpleX odkazy.</string>
+    <string name="allow_to_send_simplex_links">Povolit odesílat Ciphertext odkazy.</string>
     <string name="saved_description">uloženo</string>
     <string name="saved_from_description">Uloženo z %s</string>
     <string name="saved_chat_item_info_tab">Uloženo</string>
@@ -1712,7 +1712,7 @@
     <string name="network_type_ethernet">Kabelový ethernet</string>
     <string name="error_showing_desktop_notification">Chyba zobrazení oznámení, kontaktujte vývojáře.</string>
     <string name="files_and_media_not_allowed">Soubory a média nejsou povoleny</string>
-    <string name="simplex_links_not_allowed">SimpleX odkazy jsou zakázány</string>
+    <string name="simplex_links_not_allowed">Ciphertext odkazy jsou zakázány</string>
     <string name="voice_messages_not_allowed">Hlasové zprávy nejsou povoleny</string>
     <string name="conn_event_enabled_pq">kvantům odolné e2e šifrování</string>
     <string name="conn_event_disabled_pq">standardní koncové šifrování</string>
@@ -1721,9 +1721,9 @@
     <string name="feature_roles_owners">majitelé</string>
     <string name="settings_section_title_profile_images">Obrázky profilů</string>
     <string name="network_option_rcv_concurrency">Souběžné přijímání</string>
-    <string name="simplex_links">SimpleX odkazy</string>
+    <string name="simplex_links">Ciphertext odkazy</string>
     <string name="feature_enabled_for">Povoleno pro</string>
-    <string name="group_members_can_send_simplex_links">Členové mohou odesílat SimpleX odkazy.</string>
+    <string name="group_members_can_send_simplex_links">Členové mohou odesílat Ciphertext odkazy.</string>
     <string name="v5_7_call_sounds">Zvuky v hovoru</string>
     <string name="v5_7_forward_descr">Zdroje zpráv zůstávají důvěrné.</string>
     <string name="v5_7_network">Správa sítě</string>
@@ -1739,7 +1739,7 @@
     <string name="v5_6_quantum_resistant_encryption">Kvantům odolné šifrování</string>
     <string name="permissions_camera">Kamera</string>
     <string name="permissions_camera_and_record_audio">Kamera a mikrofon</string>
-    <string name="simplex_links_are_prohibited_in_group">SimpleX odkazy jsou zakázány.</string>
+    <string name="simplex_links_are_prohibited_in_group">Ciphertext odkazy jsou zakázány.</string>
     <string name="e2ee_info_no_pq"><![CDATA[Zprávy, soubory a hovory jsou chráněny <b>koncovým šifrováním</b> s dokonalým dopředným utajením, odmítnutím a obnovením po vloupání.]]></string>
     <string name="wallpaper_advanced_settings">Pokročilé nastavení</string>
     <string name="chat_theme_apply_to_all_modes">Všechny barevné režimy</string>
@@ -1885,7 +1885,7 @@
     <string name="servers_info_reconnect_servers_title">Znovu připojit servery?</string>
     <string name="completed">Kompletní</string>
     <string name="secured">Zabezpečeno</string>
-    <string name="error_parsing_uri_desc">Prosím zkontrolujte, že SimpleX odkaz je správný.</string>
+    <string name="error_parsing_uri_desc">Prosím zkontrolujte, že Ciphertext odkaz je správný.</string>
     <string name="error_parsing_uri_title">Chybný odkaz</string>
     <string name="proxy_destination_error_broker_version">Verze cílového serveru %1$s je nekompatibilní s nastavením přeposílajícího serveru %2$s.</string>
     <string name="message_forwarded_title">Zpráva předána</string>
@@ -2229,7 +2229,7 @@
     <string name="chat_database_exported_not_all_files">Některé soubory nebyly exportovány</string>
     <string name="unread_mentions">Nepřečtené zmínky</string>
     <string name="share_address_publicly">Sdílet adresu veřejně</string>
-    <string name="share_simplex_address_on_social_media">Sdílent SimpleX adresu na sociálních médiích.</string>
+    <string name="share_simplex_address_on_social_media">Sdílent Ciphertext adresu na sociálních médiích.</string>
     <string name="share_1_time_link_with_a_friend">Sdílejte 1 rázový odkaz s přítelem</string>
     <string name="network_socks_proxy">SOCKS Proxy</string>
     <string name="app_check_for_updates_update_available">Dostupná aktualizace: %s</string>
@@ -2253,7 +2253,7 @@
     <string name="max_group_mentions_per_message_reached">Můžete zmínit až %1$s členů ve zprávě!</string>
     <string name="maximum_message_size_reached_forwarding">Musíte kopírovat a snížit velikost zprávy, abyste ji poslali.</string>
     <string name="network_proxy_username">Jméno</string>
-    <string name="simplex_address_or_1_time_link">SimpleX adresa nebo 1 rázový odkaz?</string>
+    <string name="simplex_address_or_1_time_link">Ciphertext adresa nebo 1 rázový odkaz?</string>
     <string name="toolbar_settings">Nastavení</string>
     <string name="save_list">Uložit seznam</string>
     <string name="app_check_for_updates_canceled">Stažení aktualizace zrušeno</string>
@@ -2269,7 +2269,7 @@
     <string name="uploaded_files">Nahrané soubory</string>
     <string name="subscription_results_ignored">Odběr ignorován</string>
     <string name="srv_error_version">Verze serveru není kompatibilní s nastavením sítě.</string>
-    <string name="address_creation_instruction">Pro pozdější vytvoření adresy, klepněte v menu na Vytvořit SimpleX adresu.</string>
+    <string name="address_creation_instruction">Pro pozdější vytvoření adresy, klepněte v menu na Vytvořit Ciphertext adresu.</string>
     <string name="your_servers">Vaše servery</string>
     <string name="view_updated_conditions">Zobrazit aktualizované podmínky</string>
     <string name="group_reports_active_one">1 report</string>
@@ -2326,7 +2326,7 @@
     <string name="network_smp_web_port_footer">Použít TCP port %1$s, když není zadán žádný port.</string>
     <string name="remote_ctrl_connection_stopped_identity_desc">Tento odkaz byl použit s jiným mobilním zařízením, vytvořte na počítači nový odkaz.</string>
     <string name="v6_3_mentions_descr">Získejte upozornění, když jste zmíněni.</string>
-    <string name="simplex_address_and_1_time_links_are_safe_to_share">SimpleX adresa a jednorázové odkazy je bezpečné sdílet přes všechny komunikátory.</string>
+    <string name="simplex_address_and_1_time_links_are_safe_to_share">Ciphertext adresa a jednorázové odkazy je bezpečné sdílet přes všechny komunikátory.</string>
     <string name="moderate_messages_will_be_deleted_warning">Zprávy budou smazány pro všechny členy.</string>
     <string name="app_will_ask_to_confirm_unknown_file_servers">Aplikace vyžaduje potvrzení stahování z neznámých serverů (s výjimkou .onion nebo při aktivaci SOCKS proxy).</string>
     <string name="you_need_to_allow_calls">Musíte povolit kontaktům volání, abyste jim mohli zavolat.</string>
@@ -2360,13 +2360,13 @@
     <string name="members_will_be_removed_from_group_cannot_be_undone">Členové budou odstraněny ze skupiny - toto nelze zvrátit!</string>
     <string name="button_remove_members_question">Odebrat členy?</string>
     <string name="members_will_be_removed_from_chat_cannot_be_undone">Členové budou odstraněny z chatu - toto nelze zvrátit!</string>
-    <string name="onboarding_conditions_by_using_you_agree">Použitím SimpleX Chatu souhlasíte že:\n- ve veřejných skupinách budete zasílat pouze legální obsah.\n- budete respektovat ostatní uživatele – žádný spam.</string>
+    <string name="onboarding_conditions_by_using_you_agree">Použitím Ciphertextu souhlasíte že:\n- ve veřejných skupinách budete zasílat pouze legální obsah.\n- budete respektovat ostatní uživatele – žádný spam.</string>
     <string name="onboarding_conditions_accept">Přijmout</string>
     <string name="onboarding_conditions_privacy_policy_and_conditions_of_use">Zásady ochrany soukromí a podmínky používání.</string>
     <string name="onboarding_conditions_private_chats_not_accessible">Soukromé konverzace, skupiny a kontakty nejsou přístupné provozovatelům serverů.</string>
     <string name="unsupported_connection_link">Nepodporovaný odkaz k připojení</string>
     <string name="link_requires_newer_app_version_please_upgrade">Tento odkaz vyžaduje novější verzi aplikace. Prosím aktualizujte aplikaci nebo požádejte kontakt o odeslání kompatibilního odkazu.</string>
-    <string name="simplex_link_channel">odkaz SimpleX kanálu</string>
+    <string name="simplex_link_channel">odkaz Ciphertext kanálu</string>
     <string name="full_link_button_text">Úplný odkaz</string>
     <string name="short_link_button_text">Krátký odkaz</string>
     <string name="network_smp_web_port_all">Všechny servery</string>
@@ -2461,7 +2461,7 @@
     <string name="sanitize_links_toggle">Odebrat sledování odkazů</string>
     <string name="v6_4_role_moderator_descr">Odstranit zprávy a blokovat členy.</string>
     <string name="e2ee_info_e2ee"><![CDATA[Zprávy jsou chráněny <b>koncovým šifrováním</b>.]]></string>
-    <string name="simplex_link_relay">SimpleX relé odkaz</string>
+    <string name="simplex_link_relay">Ciphertext relé odkaz</string>
     <string name="private_routing_no_session">Sezení bez soukromého směrování</string>
     <string name="v6_4_1_new_interface_languages">4 nové jazyky rozhraní</string>
     <string name="accept_contact_request">Přijmout žádost o kontakt</string>
@@ -2497,7 +2497,7 @@
     <string name="share_old_link_alert_button">Sdílení starého odkazu</string>
     <string name="v6_4_1_short_address_share">Sdílet vaši adresu</string>
     <string name="group_short_descr_field">Stručný popis:</string>
-    <string name="v6_4_1_short_address">Krátké SimpleX adresy</string>
+    <string name="v6_4_1_short_address">Krátké Ciphertext adresy</string>
     <string name="chat_banner_connect_to_chat">Klepněte na Připojte se k chatu</string>
     <string name="chat_banner_send_request_to_connect">Klepněte na Připojit k odeslání požadavku</string>
     <string name="chat_banner_connect_to_use_bot">Klepněte na Připojit k použití bota</string>
@@ -2676,7 +2676,7 @@
     <string name="error_deleting_message">Chyba odstranění zprávy</string>
     <string name="from_history">Z historie</string>
     <string name="close_behavior_dialog_text">Pokud vyberete Zavřít, zprávy nebudou přijímány.\nMůžete to změnit později v nastavení Vzhledu.</string>
-    <string name="appearance_minimize_to_tray_desc">Nechat SimpleX běžet na pozadí pro přijímání zpráv.</string>
+    <string name="appearance_minimize_to_tray_desc">Nechat Ciphertext běžet na pozadí pro přijímání zpráv.</string>
     <string name="let_someone_connect_to_you">Umožněte ostatním se s vámi spojit</string>
     <string name="action_button_channel_link">Odkaz</string>
     <string name="link_previews_alert_desc_socks">Náhled odkazu bude vyžádán prostřednictvím SOCKS proxy. DNS vyhledávání se stále může uskutečnit lokálně pomocí vašeho DNS resolveru.</string>
@@ -2715,7 +2715,7 @@
     <string name="prohibit_chat_with_admins">Zakázat chat se správci.</string>
     <string name="prohibit_direct_messages_channel">Zakázat odesílání přímých zpráv odběratelům.</string>
     <string name="v6_5_public_channels">Veřejné kanály - mluvte volně 🚀</string>
-    <string name="tray_quit">Opustit SimpleX</string>
+    <string name="tray_quit">Opustit Ciphertext</string>
     <string name="group_member_role_relay">relé</string>
     <string name="member_info_section_title_relay">RELÉ</string>
     <string name="info_row_relay_address">Relé adresa</string>
@@ -2741,10 +2741,10 @@
     <string name="share_channel">Sdílet kanál…</string>
     <string name="share_relay_address">Sdílet adresu relé</string>
     <string name="share_via_chat">Sdílet pomocí chatu</string>
-    <string name="tray_show">Zobrazit SimpleX</string>
+    <string name="tray_show">Zobrazit Ciphertext</string>
     <string name="owner_verification_failed">⚠️ Ověření podpisu selhalo: %s.</string>
-    <string name="tray_tooltip">SimpleX</string>
-    <string name="tray_tooltip_unread">SimpleX - %d nepřečteno</string>
+    <string name="tray_tooltip">Ciphertext</string>
+    <string name="tray_tooltip_unread">Ciphertext - %d nepřečteno</string>
     <string name="member_info_section_title_subscriber">ODBĚRATEL</string>
     <string name="group_reports_subscriber_reports">Hlášení odběratelů</string>
     <string name="channel_members_title_subscribers">Odběratelé</string>
@@ -2755,7 +2755,7 @@
     <string name="group_members_can_send_dms_channel">Odběratelé mohou posílat přímé zprávy.</string>
     <string name="group_members_can_send_disappearing_channel">Odběratelé mohou odesílat mizející zprávy.</string>
     <string name="group_members_can_send_files_channel">Odběratelé mohou posílat soubory a média.</string>
-    <string name="group_members_can_send_simplex_links_channel">Odběratelé mohou odesílat SimpleX odkazy.</string>
+    <string name="group_members_can_send_simplex_links_channel">Odběratelé mohou odesílat Ciphertext odkazy.</string>
     <string name="group_members_can_send_voice_channel">Odběratelé mohou posílat hlasové zprávy.</string>
     <string name="relay_section_footer_owner">Odběratelé použijí relé odkaz pro připojení ke kanálu.\nRelé adresa byla použita pro nastavení tohoto kanálu.</string>
     <string name="subscriber_will_be_removed_from_channel_cannot_be_undone">Odběratelé budou odebráni z kanálu - Nelze zvrátit!</string>
@@ -2770,7 +2770,7 @@
     <string name="channel_owner_count_singular">%1$d vlastník</string>
     <string name="channel_owner_count_plural">%1$d vlastníci</string>
     <string name="channel_owners_contributors_count">%1$d vlastníků &amp; přispěvatelů</string>
-    <string name="badge_supported_simplex">%1$s podpořilo SimpleX Chat. Odznak prošel %2$s.</string>
+    
     <string name="settings_section_title_about">O aplikaci</string>
     <string name="relay_status_rejected">odmítnuto</string>
     <string name="member_info_relay_status_rejected_by_operator">odmítnuto operátorem relé</string>

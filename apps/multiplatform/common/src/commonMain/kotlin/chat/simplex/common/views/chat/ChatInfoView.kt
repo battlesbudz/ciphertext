@@ -708,16 +708,11 @@ fun ChatInfoHeader(cInfo: ChatInfo, contact: Contact) {
   ) {
     ChatInfoImage(cInfo, size = 192.dp, iconColor = if (isInDarkTheme()) GroupDark else SettingsSecondaryLight)
     val displayName = contact.profile.displayName.trim()
-    val badge = cInfo.nameBadge
     val text = buildAnnotatedString {
       if (contact.verified) {
         appendInlineContent(id = "shieldIcon")
       }
       append(displayName)
-      if (badge != null) {
-        append(" ")
-        appendInlineContent(id = "nameBadge")
-      }
     }
     val nameFontSize = MaterialTheme.typography.h1.fontSize
     val uriHandler = LocalUriHandler.current
@@ -730,9 +725,6 @@ fun ChatInfoHeader(cInfo: ChatInfo, contact: Contact) {
           Icon(painterResource(MR.images.ic_verified_user), null, tint = MaterialTheme.colors.secondary)
         }
       )
-      if (badge != null) {
-        put("nameBadge", nameBadgeInline(badge, nameFontSize) { showBadgeInfoAlert(displayName, badge, uriHandler) })
-      }
     }
     val clipboard = LocalClipboardManager.current
     val copyNameToClipboard = fun (name: String) {

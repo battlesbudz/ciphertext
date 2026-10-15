@@ -8,7 +8,7 @@ plugins {
   id("com.github.gmazzo.buildconfig") version "5.3.5"
 }
 
-group = "chat.simplex"
+group = "chat.ciphertext"
 version = extra["android.version_name"] as String
 
 val simplexAssetsDir = rootProject.findProperty("simplex.assets.dir") as String?
@@ -157,7 +157,7 @@ kotlin {
 }
 
 android {
-  namespace = "chat.simplex.common"
+  namespace = "chat.ciphertext.common"
   compileSdk = 35
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
   defaultConfig {
@@ -177,7 +177,7 @@ android {
 }
 
 multiplatformResources {
-  multiplatformResourcesPackage = "chat.simplex.res"
+  multiplatformResourcesPackage = "chat.ciphertext.res"
   //  multiplatformResourcesClassName = "MR"
 }
 
