@@ -522,7 +522,10 @@ fi
 # =====================================================================
 log "=== Phase 4: live session + heartbeat invisibility ==="
 SESS_OK=0
-if maestro_run "$SERIAL_A" "$FLOWS/start_session.yaml" \
+# Ensure A is inside the chat first (Phase 3 may have left A on the
+# chat list if it failed; start_session taps the chat toolbar menu).
+if maestro_run "$SERIAL_A" "$FLOWS/open_chat.yaml" CONTACT_NAME="$NAME_B" \
+  && maestro_run "$SERIAL_A" "$FLOWS/start_session.yaml" \
   && maestro_run "$SERIAL_B" "$FLOWS/assert_banner.yaml"; then
   SESS_OK=1
 fi
@@ -584,10 +587,11 @@ else
     LINK2="$(get_invite_link "$SERIAL_A" || true)"
     if [ -n "$LINK2" ]; then
       deliver_invite "$SERIAL_B" "$LINK2"
-      if maestro_run "$SERIAL_B" "$FLOWS/assert_text_visible.yaml" TEXT="Connect"; then
-        maestro_run "$SERIAL_B" "$FLOWS/tap_text.yaml" TEXT="Connect" || true
-      fi
-      if maestro_run "$SERIAL_A" "$FLOWS/accept_request.yaml" CONTACT_NAME="$NAME_B" \
+      # B connects via the fresh invitation (prepare + Connect — the
+      # same path as Phase 2; NO accept_request: the prepare path
+      # needs no manual Accept). Then A opens the chat and starts a
+      # brand-new session manually.
+      if maestro_run "$SERIAL_B" "$FLOWS/connect_via_invite.yaml" \
         && maestro_run "$SERIAL_A" "$FLOWS/open_chat.yaml" CONTACT_NAME="$NAME_B" \
         && maestro_run "$SERIAL_A" "$FLOWS/start_session.yaml" \
         && maestro_run "$SERIAL_B" "$FLOWS/assert_banner.yaml"; then
