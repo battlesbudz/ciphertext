@@ -225,22 +225,46 @@ timeout 300 adb -s "$SERIAL_A" install -r -g "$APK" >"$OUT_DIR/install-a.log" 2>
 timeout 300 adb -s "$SERIAL_B" install -r -g "$APK" >"$OUT_DIR/install-b.log" 2>&1 || fail "install on B"
 
 # =====================================================================
-# Phase 1: onboarding on both (parallel)
+# Phase 0.5: UI dump diagnostic (first-launch screen ground truth)
 # =====================================================================
+# Onboarding assumes the welcome screen says "Private and secure messaging".
+# Dump the real first-screen texts/content-descriptions into the job log
+# so a wrong assumption is visible instead of a bare "not visible" failure.
+dump_ui() {
+  local serial="$1" tag="$2"
+  log "--- UI dump [$serial] $tag ---"
+  timeout 60 adb -s "$serial" shell uiautomator dump /sdcard/window_dump.xml >/dev/null 2>&1 || true
+  timeout 60 adb -s "$serial" pull /sdcard/window_dump.xml "$OUT_DIR/ui-${serial}-${tag}.xml" >/dev/null 2>&1 || true
+  if [ -f "$OUT_DIR/ui-${serial}-${tag}.xml" ]; then
+    grep -o 'text="[^"]*"' "$OUT_DIR/ui-${serial}-${tag}.xml" | sort -u | head -60 | sed 's/^/    TEXT: /'
+    grep -o 'content-desc="[^"]*"' "$OUT_DIR/ui-${serial}-${tag}.xml" | sort -u | head -60 | sed 's/^/    DESC: /'
+  else
+    log "UI dump failed for $serial ($tag)"
+  fi
+}
+log "=== Phase 0.5: launch app on A, dump first screen ==="
+timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$APP_ID.MainActivity" >"$OUT_DIR/firstlaunch-a.log" 2>&1 || true
+log "waiting 30s for first launch (slow under native-bridge translation)"
+sleep 30
+dump_ui "$SERIAL_A" "first-screen"
+
+# =====================================================================
+# Phase 1: onboarding on both (SEQUENTIAL)
+# =====================================================================
+# Sequential, not parallel: two concurrent `maestro test` processes
+# coincided with a Maestro CLI NPE crash (picocli error printer, null
+# message) on one phone in the previous run. Serializing removes that
+# variable; it costs a few minutes at most.
 log "=== Phase 1: onboarding ==="
-maestro_run "$SERIAL_A" "$FLOWS/onboarding.yaml" PROFILE_NAME="$NAME_A" >"$OUT_DIR/onboard-a.log" 2>&1 &
-ONB_A=$!
-maestro_run "$SERIAL_B" "$FLOWS/onboarding.yaml" PROFILE_NAME="$NAME_B" >"$OUT_DIR/onboard-b.log" 2>&1 &
-ONB_B=$!
-wait $ONB_A; RC_A=$?
-wait $ONB_B; RC_B=$?
+RC_A=0; RC_B=0
+maestro_run "$SERIAL_A" "$FLOWS/onboarding.yaml" PROFILE_NAME="$NAME_A" || RC_A=$?
+maestro_run "$SERIAL_B" "$FLOWS/onboarding.yaml" PROFILE_NAME="$NAME_B" || RC_B=$?
 if [ $RC_A -eq 0 ] && [ $RC_B -eq 0 ]; then
   R_A="PASS"; pass "(a) both phones onboarded"
 else
   R_A="FAIL"; fail "(a) onboarding (A rc=$RC_A, B rc=$RC_B)"
-  # Onboarding runs backgrounded, so its Maestro output is NOT in the job
-  # log. Dump the tails here so the failure is diagnosable without the
-  # artifact (artifact download needs Actions write scope).
+  # Dump the onboarding Maestro tails here so the failure is diagnosable
+  # without the artifact (artifact download needs Actions write scope).
   for s in "$SERIAL_A" "$SERIAL_B"; do
     log "--- onboarding Maestro tail [$s] ---"
     tail -n 40 "$OUT_DIR/maestro-${s}-onboarding.log" 2>/dev/null | sed 's/^/    /' || true
