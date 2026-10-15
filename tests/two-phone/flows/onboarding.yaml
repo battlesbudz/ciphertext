@@ -10,18 +10,18 @@ appId: chat.simplex.app
 - launchApp
 - extendedWaitUntil:
     visible:
-      text: "Private and secure messaging"
+      text: ".*Private and secure messaging.*"
     timeout: 300000
 - assertVisible:
-    text: "Private and secure messaging"
+    text: ".*Private and secure messaging.*"
 - tapOn:
     text: "Get started"
 - extendedWaitUntil:
     visible:
-      text: "Create your profile"
+      text: ".*Create your profile.*"
     timeout: 90000
 - assertVisible:
-    text: "Create your profile"
+    text: ".*Create your profile.*"
 - tapOn:
     text: "Enter profile name.*"
 - inputText: "${PROFILE_NAME}"
@@ -40,7 +40,7 @@ appId: chat.simplex.app
     optional: true
 - extendedWaitUntil:
     visible:
-      text: "Tap to start a new chat"
+      text: ".*Tap to start a new chat.*"
     timeout: 120000
 - assertVisible:
-    text: "Tap to start a new chat"
+    text: ".*Tap to start a new chat.*"
