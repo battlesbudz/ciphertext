@@ -1,5 +1,11 @@
-# Accept an incoming contact request (tap the request chat, tap Accept).
+# Accept an incoming contact request.
 # Env: CONTACT_NAME (profile name of the requester)
+# TRUE UI (ComposeContextContactRequestActionsView.kt): the request chat
+# shows a bar with "Reject" / "Accept" buttons. Tapping "Accept" accepts
+# directly if the user has a short link set, otherwise it opens an alert
+# dialog titled "Accept contact request" with "Accept" / "Accept incognito"
+# / "Cancel". Handle both branches: tap bar Accept, then (optionally)
+# wait for + tap the dialog Accept.
 appId: chat.simplex.app
 ---
 - launchApp
@@ -13,12 +19,20 @@ appId: chat.simplex.app
     text: "${CONTACT_NAME}"
 - extendedWaitUntil:
     visible:
-      text: "Accept contact request"
+      text: "Accept"
     timeout: 90000
 - assertVisible:
-    text: ".*Accept contact request.*"
+    text: "Accept"
 - tapOn:
     text: "Accept"
+- extendedWaitUntil:
+    visible:
+      text: "Accept contact request"
+    timeout: 15000
+    optional: true
+- tapOn:
+    text: "Accept"
+    optional: true
 - extendedWaitUntil:
     visible:
       text: "Message"
