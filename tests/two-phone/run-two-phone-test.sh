@@ -494,6 +494,10 @@ if maestro_run "$SERIAL_A" "$FLOWS/open_chat.yaml" CONTACT_NAME="$NAME_B" \
   MSG_AB=1; log "A->B message delivered"
 else
   log "A->B message NOT delivered"
+  # Ground truth: alert? chat closed? contact gone? (Run 33: B's msg
+  # appeared then vanished; A's never appeared.)
+  dump_maestro_hierarchy "$SERIAL_A" "send-fail-A"
+  dump_maestro_hierarchy "$SERIAL_B" "send-fail-B"
 fi
 if maestro_run "$SERIAL_B" "$FLOWS/open_chat.yaml" CONTACT_NAME="$NAME_A" \
   && maestro_run "$SERIAL_B" "$FLOWS/send_message.yaml" TEXT="$MSG_B" \
@@ -502,6 +506,8 @@ if maestro_run "$SERIAL_B" "$FLOWS/open_chat.yaml" CONTACT_NAME="$NAME_A" \
   MSG_BA=1; log "B->A message delivered"
 else
   log "B->A message NOT delivered"
+  dump_maestro_hierarchy "$SERIAL_A" "send-fail-A2"
+  dump_maestro_hierarchy "$SERIAL_B" "send-fail-B2"
 fi
 MSG_OK=0
 if [ "$MSG_AB" = "1" ] && [ "$MSG_BA" = "1" ]; then MSG_OK=1; fi
