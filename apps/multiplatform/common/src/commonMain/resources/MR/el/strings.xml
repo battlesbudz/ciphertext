@@ -2,10 +2,10 @@
 <resources>
     <string name="chat_item_ttl_day">1 ημέρα</string>
     <string name="chat_item_ttl_month">1 μήνας</string>
-    <string name="about_simplex">Για το SimpleX</string>
+    <string name="about_simplex">Για το Ciphertext</string>
     <string name="scan_QR_code">Σάρωσε τον QR κωδικό</string>
     <string name="a_plus_b">α + β</string>
-    <string name="about_simplex_chat">Για το SimpleX Chat</string>
+    <string name="about_simplex_chat">Για το Ciphertext</string>
     <string name="scan_code_from_contacts_app">Σάρωσε τον κωδικό ασφαλείας από την εφαρμογή επαφών σου</string>
     <string name="smp_server_test_secure_queue">Ασφαλή ουρά</string>
     <string name="network_option_seconds_label">δε</string>
@@ -37,7 +37,7 @@
     <string name="allow_direct_messages">Να επιτρέπεται η αποστολή άμεσων μηνυμάτων στα μέλη.</string>
     <string name="allow_to_send_disappearing">Επιτρέπεται η αποστολή μηνυμάτων που εξαφανίζονται.</string>
     <string name="allow_to_send_voice">Επιτρέπεται η αποστολή φωνητικών μηνυμάτων.</string>
-    <string name="app_name">SimpleX</string>
+    <string name="app_name">Ciphertext</string>
     <string name="accept">Αποδοχή</string>
     <string name="accept_connection_request__question">Αποδοχή αιτήματος σύνδεσης;</string>
     <string name="callstatus_accepted">αποδεκτή κλήση</string>
@@ -57,7 +57,7 @@
     <string name="search_verb">Αναζήτησε</string>
     <string name="la_mode_off">Ανενεργό</string>
     <string name="connect__your_profile_will_be_shared">Το προφίλ σου %1$s θα διαμοιραστεί</string>
-    <string name="your_simplex_contact_address">Η SimpleX διεύθυνση σου</string>
+    <string name="your_simplex_contact_address">Η Ciphertext διεύθυνση σου</string>
     <string name="full_backup">Αντίγραφο δεδομένων εφαρμογής</string>
     <string name="send_disappearing_message_5_minutes">5 λεπτά</string>
     <string name="you_will_be_connected_when_your_contacts_device_is_online">Θα συνδεθείς όταν η συσκευή της επαφής σου είναι συνδεδεμένη, παρακαλώ περίμενε ή έλεγξε αργότερα!</string>
@@ -136,7 +136,7 @@
     <string name="icon_descr_call_progress">Κλήση σε εξέλιξη</string>
     <string name="la_auth_failed">Πιστοποίηση απέτυχε</string>
     <string name="connection_local_display_name">σύνδεση %1$d</string>
-    <string name="create_simplex_address">Δημιουργία διεύθυνση SimpleX</string>
+    <string name="create_simplex_address">Δημιουργία διεύθυνση Ciphertext</string>
     <string name="status_contact_has_e2e_encryption">η επαφή έχει κρυπτογράφηση από άκρη-σε-άκρη</string>
     <string name="v5_4_incognito_groups_descr">Δημιουργία μια ομάδας χρησιμοποιώντας ένα τυχαίο προφίλ.</string>
     <string name="create_group_button">Δημιουργία ομάδας</string>
@@ -223,7 +223,7 @@
     <string name="deleted_description">διαγράφτηκε</string>
     <string name="moderated_item_description">με συντονιστή %s</string>
     <string name="blocked_item_description">φραγμένος</string>
-    <string name="learn_more_about_address">Σχετικά με τη διεύθυνση SimpleX</string>
+    <string name="learn_more_about_address">Σχετικά με τη διεύθυνση Ciphertext</string>
     <string name="conn_event_ratchet_sync_started">συμφωνία κρυπτογράφησης…</string>
     <string name="chat_theme_apply_to_all_modes">Όλες οι χρωματικές λειτουργίες</string>
     <string name="abort_switch_receiving_address_desc">Η αλλαγή διεύθυνσης θα ακυρωθεί. Θα χρησιμοποιηθεί η παλιά διεύθυνση παραλαβής.</string>
@@ -294,7 +294,7 @@
     <string name="block_for_all">Αποκλεισμός για όλους</string>
     <string name="both_you_and_your_contact_can_add_message_reactions">Και εσύ και η επαφή σου μπορείτε να προσθέστε αντιδράσεις μηνυμάτων.</string>
     <string name="both_you_and_your_contact_can_make_calls">Και εσύ και η επαφή σου μπορείτε να κάνετε κλήσεις.</string>
-    <string name="allow_to_send_simplex_links">Επιτρέψτε την αποστολή συνδέσμων SimpleX.</string>
+    <string name="allow_to_send_simplex_links">Επιτρέψτε την αποστολή συνδέσμων Ciphertext.</string>
     <string name="v5_3_new_interface_languages_descr">Αραβικά, Βουλγαρικά, Φινλανδικά, Εβραϊκά, Ταϊλανδέζικα και Ουκρανικά - χάρη στους χρήστες και το Weblate.</string>
     <string name="v5_6_app_data_migration">Μεταφορά δεδομένων εφαρμογής</string>
     <string name="v6_0_privacy_blur">Θάμπωμα για καλύτερη ιδιωτικότητα.</string>
@@ -456,7 +456,7 @@
     <string name="v6_2_business_chats">Επαγγελματικές συνομιλίες</string>
     <string name="chat_banner_business_connection">Επαγγελματική σύνδεση</string>
     <string name="chat_list_businesses">Επιχειρήσεις</string>
-    <string name="onboarding_conditions_by_using_you_agree">Χρησιμοποιώντας το SimpleX Chat συμφωνείς να:\n- στέλνεις μόνο νόμιμο περιεχόμενο στις δημόσιες ομάδες.\n- σέβεσαι τους άλλους χρήστες – όχι spam.</string>
+    <string name="onboarding_conditions_by_using_you_agree">Χρησιμοποιώντας το Ciphertext συμφωνείς να:\n- στέλνεις μόνο νόμιμο περιεχόμενο στις δημόσιες ομάδες.\n- σέβεσαι τους άλλους χρήστες – όχι spam.</string>
     <string name="context_user_picker_cant_change_profile_alert_title">Δεν μπορείς να αλλάξεις το προφίλ</string>
     <string name="cant_send_message_generic">δεν μπορείς να στείλεις μηνύματα</string>
     <string name="v6_4_1_new_interface_languages_descr">Καταλανικά, Ινδονησιακά, Ρουμανικά και Βιετναμέζικα – ευχαριστούμε τους χρήστες μας!</string>
@@ -496,7 +496,7 @@
     <string name="connect_plan_this_is_your_link_for_group_vName"><![CDATA[Αυτός είναι ο σύνδεσμός σου για την ομάδα <b>%1$s</b>!]]></string>
     <string name="remote_host_error_timeout"><![CDATA[Ο χρόνος σύνδεσης με το κινητό, εξαντλήθηκε <b>%s</b>]]></string>
     <string name="system_restricted_background_warn"><![CDATA[Για να ενεργοποιηθούν οι ειδοποιήσεις, επέλεξε <b>Χρήση μπαταρίας εφαρμογής</b> / <b>Απεριόριστη</b> στις ρυθμίσεις της εφαρμογής.]]></string>
-    <string name="to_preserve_privacy_simplex_has_background_service_instead_of_push_notifications_it_uses_a_few_pc_battery"><![CDATA[Για καλύτερη προστασία της ιδιωτικότητας, <b>το SimpleX τρέχει στο παρασκήνιο</b> αντί να χρησιμοποιεί ειδοποιήσεις push.]]></string>
+    <string name="to_preserve_privacy_simplex_has_background_service_instead_of_push_notifications_it_uses_a_few_pc_battery"><![CDATA[Για καλύτερη προστασία της ιδιωτικότητας, <b>το Ciphertext τρέχει στο παρασκήνιο</b> αντί να χρησιμοποιεί ειδοποιήσεις push.]]></string>
     <string name="system_restricted_background_in_call_warn"><![CDATA[Για να μπορείς να κάνεις κλήσεις στο παρασκήνιο, επέλεξε <b>Χρήση μπαταρίας εφαρμογής</b> / <b>Απεριόριστη</b> στις ρυθμίσεις της εφαρμογής.]]></string>
     <string name="operator_in_order_to_use_accept_conditions"><![CDATA[Για να χρησιμοποιήσεις τους διακομιστές του <b>%s</b>, αποδέξου τους όρους χρήσης.]]></string>
     <string name="connect_plan_you_are_already_connected_with_vName"><![CDATA[Είσαι ήδη συνδεδεμένος/η με <b>%1$s</b>.]]></string>
@@ -505,7 +505,7 @@
     <string name="connect_plan_you_are_already_joining_the_group_vName"><![CDATA[Ήδη προσπαθείς να μπεις στην ομάδα <b>%1$s</b>.]]></string>
     <string name="migrate_from_device_you_must_not_start_database_on_two_device"><![CDATA[Δεν <b>πρέπει να</b> χρησιμοποιείς την ίδια βάση δεδομένων σε δύο συσκευές.]]></string>
     <string name="you_can_also_connect_by_clicking_the_link"><![CDATA[Μπορείς επίσης να συνδεθείς κάνοντας κλικ στο σύνδεσμο. Αν ανοίξει στον browser, πάτα το <b>Άνοιγμα στην εφαρμογή κινητού</b> κουμπί.]]></string>
-    <string name="you_can_connect_to_simplex_chat_founder"><![CDATA[Μπορείς να <font color="#0088ff">συνδεθείς με τους δημιουργούς του SimpleX Chat για να κάνεις ερωτήσεις και να λαμβάνεις ενημερώσεις</font>.]]></string>
+    
     <string name="compose_view_send_contact_request_alert_text"><![CDATA[Θα μπορείς να στέλνεις μηνύματα <b>μόνο αφού γίνει αποδεκτό το αίτημά σου</b>.]]></string>
     <string name="change_automatic_deletion_question">Να αλλάξεις την αυτόματη διαγραφή μηνυμάτων;</string>
     <string name="auth_open_chat_profiles">Αλλαγή των προφίλ συνομιλίας</string>
@@ -760,8 +760,8 @@
     <string name="developer_options_section">Επιλογές προγραμματιστή</string>
     <string name="settings_developer_tools">Εργαλεία προγραμματιστή</string>
     <string name="settings_section_title_device">Συσκευή</string>
-    <string name="auth_device_authentication_is_disabled_turning_off">Η επαλήθευση συσκευής είναι απενεργοποιημένη. Απενεργοποιείται το SimpleX Lock.</string>
-    <string name="auth_device_authentication_is_not_enabled_you_can_turn_on_in_settings_once_enabled">Η επαλήθευση συσκευής δεν είναι ενεργοποιημένη. Μπορείς να ενεργοποιήσεις το SimpleX Lock από τις Ρυθμίσεις, αφού πρώτα ενεργοποιήσεις την επαλήθευση συσκευής.</string>
+    <string name="auth_device_authentication_is_disabled_turning_off">Η επαλήθευση συσκευής είναι απενεργοποιημένη. Απενεργοποιείται το Ciphertext Lock.</string>
+    <string name="auth_device_authentication_is_not_enabled_you_can_turn_on_in_settings_once_enabled">Η επαλήθευση συσκευής δεν είναι ενεργοποιημένη. Μπορείς να ενεργοποιήσεις το Ciphertext Lock από τις Ρυθμίσεις, αφού πρώτα ενεργοποιήσεις την επαλήθευση συσκευής.</string>
     <string name="devices">Συσκευές</string>
     <string name="total_files_count_and_size">%d αρχείο/α με συνολικό μέγεθος %s</string>
     <string name="rcv_group_events_count">%d συμβάντα ομάδας</string>
@@ -789,7 +789,7 @@
     <string name="disable_notifications_button">Απενεργοποίηση ειδοποιήσεων</string>
     <string name="receipts_contacts_title_disable">Απενεργοποίηση αναφορών παράδοσης;</string>
     <string name="receipts_groups_title_disable">Απενεργοποιίηση αναφορών παράδοσης για τις ομάδες;</string>
-    <string name="auth_disable_simplex_lock">Απερνεργοποίση SimpleX Lock</string>
+    <string name="auth_disable_simplex_lock">Απερνεργοποίση Ciphertext Lock</string>
     <string name="disappearing_message">Μήνυμα που εξαφανίζεται</string>
     <string name="timed_messages">Μηνύματα που εξαφανίζονται</string>
     <string name="v4_4_disappearing_messages">Μηνύματα που εξαφανίζονται</string>
@@ -988,7 +988,7 @@
     <string name="icon_descr_help">βοήθεια</string>
     <string name="settings_section_title_help">Βοήθεια</string>
     <string name="v6_3_reports_descr">Βοήθησε τους διαχειριστές να διαχειρίζονται τις ομάδες τους.</string>
-    <string name="email_invite_body">Γεια σου!\nΣυνδέσου μαζί μου μέσω SimpleX Chat: %s</string>
+    <string name="email_invite_body">Γεια σου!\nΣυνδέσου μαζί μου μέσω Ciphertext: %s</string>
     <string name="notification_preview_mode_hidden">Κρυφό</string>
     <string name="v4_6_hidden_chat_profiles">Κρυμμένα προφίλ συνομιλίας</string>
     <string name="hidden_profile_password">Κρυφό συνθηματικό προφίλ</string>
@@ -1017,7 +1017,7 @@
     <string name="network_disable_socks_info">Αν επιβεβαιώσεις, οι διακομιστές μηνυμάτων θα μπορούν να δουν τη διεύθυνση IP σου, και ο πάροχός σου – σε ποιους διακομιστές συνδέεσαι.</string>
     <string name="if_you_enter_passcode_data_removed">Αν εισάγεις αυτόν τον κωδικό κατά το άνοιγμα της εφαρμογής, όλα τα δεδομένα της εφαρμογής θα διαγραφούν οριστικά!</string>
     <string name="if_you_enter_self_destruct_code">Αν εισάγεις τον κωδικό αυτοκαταστροφής κατά το άνοιγμα της εφαρμογής:</string>
-    <string name="if_you_received_simplex_invitation_link_you_can_open_in_browser">Αν έλαβες σύνδεσμο πρόσκλησης για SimpleX Chat, μπορείς να τον ανοίξεις στον περιηγητή σου:</string>
+    <string name="if_you_received_simplex_invitation_link_you_can_open_in_browser">Αν έλαβες σύνδεσμο πρόσκλησης για Ciphertext, μπορείς να τον ανοίξεις στον περιηγητή σου:</string>
     <string name="ignore">Αγνόησε</string>
     <string name="image_descr">Εικόνα</string>
     <string name="gallery_image_button">Εικόνα</string>
@@ -1063,7 +1063,7 @@
     <string name="migrate_from_device_chat_should_be_stopped">Για να συνεχίσεις, η συνομιλία θα πρέπει να σταματήσει.</string>
     <string name="in_reply_to">Σε απάντηση του</string>
     <string name="app_check_for_updates_installed_successfully_title">Εγκαταστάθηκε επιτυχημένα</string>
-    <string name="install_simplex_chat_for_terminal">Εγκατέστησε το SimpleX Chat για το τερματικό</string>
+    
     <string name="app_check_for_updates_button_install">Εγκατάσταση αναβάθμισης</string>
     <string name="onboarding_notifications_mode_service">Άμεσα</string>
     <string name="icon_descr_instant_notifications">Άμεσες ειδοποιήσεις</string>
@@ -1132,7 +1132,7 @@
     <string name="rcv_group_event_member_left">αποχώρησε</string>
     <string name="group_member_status_left">αποχώρησε</string>
     <string name="v6_4_message_delivery_descr">Λιγότερη κίνηση στα δίκτυα κινητής τηλεφωνίας.</string>
-    <string name="email_invite_subject">Ας μιλήσουμε στο SimpleX Chat</string>
+    <string name="email_invite_subject">Ας μιλήσουμε στο Ciphertext</string>
     <string name="theme_light">Ανοιχτόχρωμο</string>
     <string name="color_mode_light">Ανοιχτόχρωμο</string>
     <string name="chat_theme_apply_to_light_mode">Ανοιχτόχρωμη λειτουργία</string>
@@ -1190,7 +1190,7 @@
     <string name="group_members_can_send_dms">Τα μέλη μπορούν να στέλνουν απευθείας μηνύματα.</string>
     <string name="group_members_can_send_disappearing">Τα μέλη μπορούν να στέλνουν μηνύματα που εξαφανίζονται.</string>
     <string name="group_members_can_send_files">Τα μέλη μπορούν να στέλνουν αρχεία και πολυμέσα.</string>
-    <string name="group_members_can_send_simplex_links">Τα μέλη μπορούν να στέλνουν συνδέσμους SimpleX.</string>
+    <string name="group_members_can_send_simplex_links">Τα μέλη μπορούν να στέλνουν συνδέσμους Ciphertext.</string>
     <string name="group_members_can_send_voice">Τα μέλη μπορούν να στέλνουν φωνητικά μηνύματα.</string>
     <string name="members_will_be_removed_from_chat_cannot_be_undone">Τα μέλη θα αφαιρεθούν από τη συνομιλία – αυτό δεν μπορεί να αναιρεθεί!</string>
     <string name="members_will_be_removed_from_group_cannot_be_undone">Τα μέλη θα αφαιρεθούν από τη ομάδα – αυτό δεν μπορεί να αναιρεθεί!</string>
@@ -1289,7 +1289,7 @@
     <string name="chat_banner_connect_to_chat">Πάτα Σύνδεση για να συνομιλήσεις</string>
     <string name="chat_banner_send_request_to_connect">Πάτα Σύνδεση για αποστολή αιτήματος</string>
     <string name="chat_banner_connect_to_use_bot">Πάτα Σύνδεση για να χρησιμοποιήσεις το μποτ</string>
-    <string name="address_creation_instruction">Πατήστε Δημιουργία διεύθυνσης SimpleX στο μενού, για να τη δημιουργήσετε αργότερα.</string>
+    <string name="address_creation_instruction">Πατήστε Δημιουργία διεύθυνσης Ciphertext στο μενού, για να τη δημιουργήσετε αργότερα.</string>
     <string name="chat_banner_join_group">Πάτα Συμμετοχή στην ομάδα</string>
     <string name="tap_to_activate_profile">Πάτα για να ενεργοποιήσεις το προφίλ.</string>
     <string name="contact_tap_to_connect">Πάτα για Σύνδεση</string>
@@ -1311,14 +1311,14 @@
     <string name="v4_6_chinese_spanish_interface_descr">Ευχαριστούμε τους χρήστες – συνεισφέρετε μέσω του Weblate!</string>
     <string name="v5_0_polish_interface_descr">Ευχαριστούμε τους χρήστες – συνεισφέρετε μέσω του Weblate!</string>
     <string name="whats_new_thanks_to_users_contribute_weblate">Ευχαριστούμε τους χρήστες – συνεισφέρετε μέσω του Weblate!</string>
-    <string name="thank_you_for_installing_simplex">Σε ευχαριστούμε που εγκατέστησες το SimpleX Chat!</string>
+    <string name="thank_you_for_installing_simplex">Σε ευχαριστούμε που εγκατέστησες το Ciphertext!</string>
     <string name="share_profile_via_link_alert_text">Η διεύθυνση θα είναι σύντομη και το προφίλ σου θα κοινοποιηθεί μέσω αυτής.</string>
     <string name="periodic_notifications_desc">Η εφαρμογή λαμβάνει νέα μηνύματα περιοδικά — καταναλώνει ένα μικρό ποσοστό της μπαταρίας ανά ημέρα. Η εφαρμογή δεν χρησιμοποιεί ειδοποιήσεις push — τα δεδομένα από τη συσκευή σου δεν αποστέλλονται στους διακομιστές.</string>
     <string name="system_restricted_background_in_call_desc">Η εφαρμογή ενδέχεται να κλείσει μετά από 1 λεπτό στο παρασκήνιο.</string>
     <string name="onboarding_network_operators_app_will_use_different_operators">Η εφαρμογή προστατεύει το απόρρητό σου χρησιμοποιώντας διαφορετικούς χειριστές σε κάθε συνομιλία.</string>
     <string name="app_will_ask_to_confirm_unknown_file_servers">Η εφαρμογή θα ζητήσει επιβεβαίωση για λήψεις από άγνωστους διακομιστές αρχείων (εκτός από .onion ή όταν είναι ενεργοποιημένος ο διακομιστής μεσολάβησης SOCKS).</string>
     <string name="database_backup_can_be_restored">Η προσπάθεια αλλαγής της φράσης πρόσβασης της βάσης δεδομένων δεν ολοκληρώθηκε.</string>
-    <string name="code_you_scanned_is_not_simplex_link_qr_code">Ο κωδικός που σάρωσες δεν είναι κωδικός QR ενός συνδέσμου SimpleX.</string>
+    <string name="code_you_scanned_is_not_simplex_link_qr_code">Ο κωδικός που σάρωσες δεν είναι κωδικός QR ενός συνδέσμου Ciphertext.</string>
     <string name="connection_error_quota_desc">Η σύνδεση έφτασε στο όριο των μη παραδοθέντων μηνυμάτων, η επαφή σου ενδέχεται να είναι εκτός σύνδεσης.</string>
     <string name="connection_you_accepted_will_be_cancelled">Η σύνδεση που αποδέχθηκες θα ακυρωθεί!</string>
     <string name="contact_you_shared_link_with_wont_be_able_to_connect">Η επαφή με την οποία μοιράστηκες αυτόν το σύνδεσμο, ΔΕΝ θα μπορεί να συνδεθεί!</string>
@@ -1351,7 +1351,7 @@
     <string name="smp_servers_per_user">Οι διακομιστές για τις νέες συνδέσεις του τρέχοντος προφίλ συνομιλίας σου</string>
     <string name="xftp_servers_per_user">Οι διακομιστές για τα νέα αρχεία του τρέχοντος προφίλ συνομιλίας σου</string>
     <string name="receipts_section_description">Αυτές οι ρυθμίσεις ισχύουν για το τρέχον προφίλ σου</string>
-    <string name="the_text_you_pasted_is_not_a_link">Το κείμενο που επικόλλησες δεν είναι σύνδεσμος SimpleX.</string>
+    <string name="the_text_you_pasted_is_not_a_link">Το κείμενο που επικόλλησες δεν είναι σύνδεσμος Ciphertext.</string>
     <string name="migrate_from_device_uploaded_archive_will_be_removed">Το αρχείο της βάσης δεδομένων που μεταφορτώθηκε, θα διαγραφεί οριστικά από τους διακομιστές.</string>
     <string name="video_decoding_exception_desc">Το βίντεο δεν μπορεί να αποκωδικοποιηθεί. Δοκίμασε ένα άλλο βίντεο ή επικοινώνησε με τους προγραμματιστές.</string>
     <string name="receipts_section_description_1">Μπορούν να παρακαμφθούν στις ρυθμίσεις επαφών και ομάδων.</string>
@@ -1392,9 +1392,9 @@
     <string name="videos_limit_title">Πάρα πολλά βίντεο!</string>
     <string name="to_protect_against_your_link_replaced_compare_codes">Για να προστατευτείς από αντικατάσταση του συνδέσμου σου, μπορείς να συγκρίνεις τους κωδικούς ασφαλείας των επαφών σου.</string>
     <string name="v4_5_private_filenames_descr">Για την προστασία της ζώνης ώρας, τα αρχεία εικόνας/φωνής χρησιμοποιούν UTC ώρα.</string>
-    <string name="la_notice_to_protect_your_information_turn_on_simplex_lock_you_will_be_prompted_to_complete_authentication_before_this_feature_is_enabled">Για να προστατεύσεις τις πληροφορίες σου, ενεργοποίησε το SimpleX Lock.\nΘα σου ζητηθεί να ολοκληρώσεις την επαλήθευση ταυτότητας πριν ενεργοποιηθεί αυτή η λειτουργία.</string>
+    <string name="la_notice_to_protect_your_information_turn_on_simplex_lock_you_will_be_prompted_to_complete_authentication_before_this_feature_is_enabled">Για να προστατεύσεις τις πληροφορίες σου, ενεργοποίησε το Ciphertext Lock.\nΘα σου ζητηθεί να ολοκληρώσεις την επαλήθευση ταυτότητας πριν ενεργοποιηθεί αυτή η λειτουργία.</string>
     <string name="private_routing_explanation">Για την προστασία της IP διεύθυνσής σου, η ιδιωτική δρομολόγηση χρησιμοποιεί τους διακομιστές SMP για την παράδοση μηνυμάτων.</string>
-    <string name="to_protect_privacy_simplex_has_ids_for_queues">Για την προστασία της ιδιωτικότητάς σου, το SimpleX χρησιμοποιεί ξεχωριστά αναγνωριστικά για κάθε μία από τις επαφές σου.</string>
+    <string name="to_protect_privacy_simplex_has_ids_for_queues">Για την προστασία της ιδιωτικότητάς σου, το Ciphertext χρησιμοποιεί ξεχωριστά αναγνωριστικά για κάθε μία από τις επαφές σου.</string>
     <string name="operator_use_for_messages_receiving">Για λήψη</string>
     <string name="enter_passphrase_notification_desc">Για να λαμβάνεις ειδοποιήσεις, παρακαλώ εισήγαγε τη φράση πρόσβασης της βάσης δεδομένων.</string>
     <string name="to_reveal_profile_enter_password">Για να αποκαλύψεις το κρυφό προφίλ σου, εισήγαγε έναν πλήρη κωδικό στο πεδίο αναζήτησης στη σελίδα Τα προφίλ συνομιλίας σου.</string>
@@ -1752,7 +1752,7 @@
     <string name="app_check_for_updates_button_open">Άνοιγμα θέσης αρχείου</string>
     <string name="privacy_chat_list_open_full_web_link">Άνοιγμα πλήρους συνδέσμου</string>
     <string name="connect_plan_open_group">Άνοιγμα ομάδας</string>
-    <string name="simplex_link_mode_browser_warning">Το άνοιγμα του συνδέσμου στον περιηγητή μπορεί να μειώσει την ιδιωτικότητα και την ασφάλεια της σύνδεσης. Οι μη αξιόπιστοι σύνδεσμοι SimpleX θα εμφανίζονται με κόκκινο χρώμα.</string>
+    <string name="simplex_link_mode_browser_warning">Το άνοιγμα του συνδέσμου στον περιηγητή μπορεί να μειώσει την ιδιωτικότητα και την ασφάλεια της σύνδεσης. Οι μη αξιόπιστοι σύνδεσμοι Ciphertext θα εμφανίζονται με κόκκινο χρώμα.</string>
     <string name="privacy_chat_list_open_web_link">Άνοιγμα συνδέσμου</string>
     <string name="privacy_chat_list_open_links">Άνοιγμα συνδέσμων από τη λίστα συνομιλιών</string>
     <string name="auth_open_migration_to_another_device">Άνοιξε την οθόνη μετεγκατάστασης</string>
@@ -1762,7 +1762,7 @@
     <string name="call_desktop_permission_denied_safari">Άνοιξε τις Ρυθμίσεις Safari / Ιστοσελίδες / Μικρόφωνο και στη συνέχεια επέλεξε Να επιτρέπεται για το localhost.</string>
     <string name="open_server_settings_button">Άνοιγμα ρυθμίσεων διακομιστή</string>
     <string name="permissions_open_settings">Άνοιγμα ρυθμίσεων</string>
-    <string name="open_simplex_chat_to_accept_call">Άνοιξε το SimpleX Chat για να αποδεχθείς την κλήση</string>
+    <string name="open_simplex_chat_to_accept_call">Άνοιξε το Ciphertext για να αποδεχθείς την κλήση</string>
     <string name="open_to_accept">Άνοιξε για να αποδεχθείς</string>
     <string name="open_to_connect">Άνοιξε για να συνδεθείς</string>
     <string name="group_preview_open_to_join">Άνοιξε για να συμμετάσχεις</string>
@@ -1823,7 +1823,7 @@
     <string name="calls_prohibited_ask_to_enable_calls_alert_text">Παρακαλώ ζήτησε από την επαφή σου να ενεργοποιήσει τις κλήσεις.</string>
     <string name="ask_your_contact_to_enable_voice">Παρακαλώ ζήτησε από την επαφή σου να ενεργοποιήσει τα φωνητικά μηνύματα.</string>
     <string name="remote_ctrl_connection_stopped_desc">Έλεγξε ότι το κινητό και ο υπολογιστής είναι συνδεδεμένοι στο ίδιο τοπικό δίκτυο και ότι το τείχος προστασίας του υπολογιστή επιτρέπει τη σύνδεση.\nΕνημέρωσε τους προγραμματιστές για τυχόν άλλα προβλήματα.</string>
-    <string name="error_parsing_uri_desc">Έλεγξε ότι ο σύνδεσμος SimpleX είναι σωστός.</string>
+    <string name="error_parsing_uri_desc">Έλεγξε ότι ο σύνδεσμος Ciphertext είναι σωστός.</string>
     <string name="please_check_correct_link_and_maybe_ask_for_a_new_one">Έλεγξε ότι χρησιμοποιείς το σωστό σύνδεσμο ή ζήτησε από την επαφή σου να σου στείλει έναν άλλο.</string>
     <string name="network_error_desc">Έλεγξε τη σύνδεσή σου στο δίκτυο με %1$s και δοκίμασε ξανά.</string>
     <string name="migrate_to_device_confirm_network_settings_footer">Επιβεβαίωσε ότι οι ρυθμίσεις δικτύου είναι σωστές για αυτήν τη συσκευή.</string>
@@ -1888,7 +1888,7 @@
     <string name="prohibit_sending_disappearing">Απαγόρευση αποστολής μηνυμάτων που εξαφανίζονται.</string>
     <string name="prohibit_sending_files">Απαγόρευση αποστολής αρχείων και πολυμέσων.</string>
     <string name="prohibit_sending_files_and_media">Απαγόρευση αποστολής αρχείων και πολυμέσων.</string>
-    <string name="prohibit_sending_simplex_links">Απαγόρευση αποστολής συνδέσμων SimpleX</string>
+    <string name="prohibit_sending_simplex_links">Απαγόρευση αποστολής συνδέσμων Ciphertext</string>
     <string name="prohibit_sending_voice_messages">Απαγόρευση αποστολής φωνητικών μηνυμάτων.</string>
     <string name="prohibit_sending_voice">Απαγόρευση αποστολής φωνητικών μηνυμάτων.</string>
     <string name="protect_app_screen">Προστασία οθόνης εφαρμογής</string>
@@ -2064,7 +2064,7 @@
     <string name="smp_servers_save">Αποθήκευση διακομιστών</string>
     <string name="smp_save_servers_question">Αποθήκευση διακομιστών;</string>
     <string name="save_settings_question">Αποθήκευση ρυθμίσεων;</string>
-    <string name="save_auto_accept_settings">Αποθήκευση ρυθμίσεων διεύθυνσης SimpleX</string>
+    <string name="save_auto_accept_settings">Αποθήκευση ρυθμίσεων διεύθυνσης Ciphertext</string>
     <string name="save_welcome_message_question">Αποθήκευση μηνύματος καλωσορίσματος;</string>
     <string name="compose_save_messages_n">Αποθήκευση %1$s μηνυμάτων</string>
     <string name="wallpaper_scale">Κλιμάκωση στην οθόνη</string>
@@ -2078,7 +2078,7 @@
     <string name="migrate_to_device_bytes_downloaded">%s κατέβηκαν</string>
     <string name="info_view_search_button">αναζήτηση</string>
     <string name="v5_5_simpler_connect_ui_descr">Η γραμμή αναζήτησης δέχεται συνδέσμους πρόσκλησης.</string>
-    <string name="search_or_paste_simplex_link">Αναζήτηση ή επικόλληση συνδέσμου SimpleX</string>
+    <string name="search_or_paste_simplex_link">Αναζήτηση ή επικόλληση συνδέσμου Ciphertext</string>
     <string name="color_secondary">Δευτερεύων</string>
     <string name="secured">Ασφαλής</string>
     <string name="rcv_conn_event_verification_code_reset">ο κωδικός ασφαλείας άλλαξε</string>
@@ -2195,13 +2195,13 @@
     <string name="share_old_address_alert_button">Διαμοιρασμός παλιάς διεύθυνσης</string>
     <string name="share_old_link_alert_button">Διαμοιρασμός παλιού συνδέσμου</string>
     <string name="new_chat_share_profile">Διαμοιρασμός προφίλ</string>
-    <string name="share_simplex_address_on_social_media">Διαμοιρασμός διεύθυνσης SimpleX σε εφαρμογές κοινωνικής δικτύωσης.</string>
+    <string name="share_simplex_address_on_social_media">Διαμοιρασμός διεύθυνσης Ciphertext σε εφαρμογές κοινωνικής δικτύωσης.</string>
     <string name="share_this_1_time_link">Διαμοιρασμός αυτού του συνδέσμου 1-χρήσης</string>
     <string name="share_with_contacts">Διαμοιρασμός με τις επαφές</string>
     <string name="v6_4_1_short_address_share">Διαμοιρασμός της διεύθυνσής σου</string>
     <string name="group_short_descr_field">Σύντομη περιγραφή:</string>
     <string name="short_link_button_text">Σύντομος σύνδεσμος</string>
-    <string name="v6_4_1_short_address">Σύντομη διεύθυνση SimpleX</string>
+    <string name="v6_4_1_short_address">Σύντομη διεύθυνση Ciphertext</string>
     <string name="show_call_on_lock_screen">Εμφάνιση</string>
     <string name="show_dev_options">Εμφάνιση:</string>
     <string name="chat_list_always_visible">Εμφάνιση λίστας μηνυμάτων σε νέο παράθυρο</string>
@@ -2220,34 +2220,34 @@
     <string name="settings_shutdown">Απενεργοποίηση</string>
     <string name="shutdown_alert_question">Απενεργοποίηση;</string>
     <string name="theme_simplex">SImpleX</string>
-    <string name="simplex_address">SimpleX διεύθυνση</string>
-    <string name="icon_descr_address">Διεύθυνση SimpleX</string>
-    <string name="simplex_address_and_1_time_links_are_safe_to_share">Η διεύθυνση SimpleX και οι σύνδεσμοι 1-χρήσης είναι ασφαλές να διαμοιράζονται μέσω οποιασδήποτε εφαρμογής ανταλλαγής μηνυμάτων.</string>
-    <string name="simplex_address_or_1_time_link">Διεύθυνση SimpleX ή σύνδεσμος 1-χρήσης;</string>
-    <string name="system_restricted_background_desc">Το SimpleX δεν μπορεί να λειτουργήσει στο παρασκήνιο. Θα λαμβάνεις τις ειδοποιήσεις μόνο όταν η εφαρμογή είναι σε λειτουργία.</string>
-    <string name="simplex_link_channel">Σύνδεσμος καναλιού SimpleX</string>
+    <string name="simplex_address">Ciphertext διεύθυνση</string>
+    <string name="icon_descr_address">Διεύθυνση Ciphertext</string>
+    <string name="simplex_address_and_1_time_links_are_safe_to_share">Η διεύθυνση Ciphertext και οι σύνδεσμοι 1-χρήσης είναι ασφαλές να διαμοιράζονται μέσω οποιασδήποτε εφαρμογής ανταλλαγής μηνυμάτων.</string>
+    <string name="simplex_address_or_1_time_link">Διεύθυνση Ciphertext ή σύνδεσμος 1-χρήσης;</string>
+    <string name="system_restricted_background_desc">Το Ciphertext δεν μπορεί να λειτουργήσει στο παρασκήνιο. Θα λαμβάνεις τις ειδοποιήσεις μόνο όταν η εφαρμογή είναι σε λειτουργία.</string>
+    <string name="simplex_link_channel">Σύνδεσμος καναλιού Ciphertext</string>
     <string name="onboarding_network_operators_simplex_flux_agreement">Η SimpleX Chat και η Flux σύναψαν συμφωνία για την ενσωμάτωση των διακομιστών που λειτουργεί η Flux, στην εφαρμογή.</string>
-    <string name="ntf_channel_calls">Κλήσεις SimpleX Chat</string>
-    <string name="ntf_channel_messages">Μηνύματα SimpleX Chat</string>
+    <string name="ntf_channel_calls">Κλήσεις Ciphertext</string>
+    <string name="ntf_channel_messages">Μηνύματα Ciphertext</string>
     <string name="v4_2_security_assessment_desc">Η ασφάλεια του SimpleX Chat ελέγχθηκε από την Trail of Bits.</string>
-    <string name="simplex_service_notification_title">Υπηρεσία SimpleX Chat</string>
-    <string name="simplex_link_contact">Διεύθυνση επικοινωνίας SimpleX</string>
-    <string name="simplex_link_group">Σύνδεσμος ομάδας SimpleX</string>
-    <string name="simplex_link_mode">Σύνδεσμοι SimpleX</string>
-    <string name="simplex_links">Σύνδεσμοι SimpleX</string>
-    <string name="simplex_links_are_prohibited_in_group">Οι σύνδεσμοι SimpleX απαγορεύονται.</string>
-    <string name="simplex_links_not_allowed">Οι σύνδεσμοι SimpleX δεν επιτρέπονται</string>
-    <string name="la_notice_title_simplex_lock">SimpleX Lock</string>
-    <string name="chat_lock">SimpleX Lock</string>
-    <string name="la_lock_mode">Λειτουργία SimpleX Lock</string>
-    <string name="lock_not_enabled">Το SimpleX Lock δεν είναι ενεργοποιημένο!</string>
-    <string name="auth_simplex_lock_turned_on">Το SimpleX Lock είναι ενεργοποιημένο</string>
-    <string name="image_descr_simplex_logo">SimpleX Logo</string>
+    <string name="simplex_service_notification_title">Υπηρεσία Ciphertext</string>
+    <string name="simplex_link_contact">Διεύθυνση επικοινωνίας Ciphertext</string>
+    <string name="simplex_link_group">Σύνδεσμος ομάδας Ciphertext</string>
+    <string name="simplex_link_mode">Σύνδεσμοι Ciphertext</string>
+    <string name="simplex_links">Σύνδεσμοι Ciphertext</string>
+    <string name="simplex_links_are_prohibited_in_group">Οι σύνδεσμοι Ciphertext απαγορεύονται.</string>
+    <string name="simplex_links_not_allowed">Οι σύνδεσμοι Ciphertext δεν επιτρέπονται</string>
+    <string name="la_notice_title_simplex_lock">Ciphertext Lock</string>
+    <string name="chat_lock">Ciphertext Lock</string>
+    <string name="la_lock_mode">Λειτουργία Ciphertext Lock</string>
+    <string name="lock_not_enabled">Το Ciphertext Lock δεν είναι ενεργοποιημένο!</string>
+    <string name="auth_simplex_lock_turned_on">Το Ciphertext Lock είναι ενεργοποιημένο</string>
+    <string name="image_descr_simplex_logo">Ciphertext Logo</string>
     <string name="core_simplexmq_version">simplexmq: v%s (%2s)</string>
-    <string name="simplex_link_invitation">Πρόσκληση 1-χρήσης SimpleX</string>
+    <string name="simplex_link_invitation">Πρόσκληση 1-χρήσης Ciphertext</string>
     <string name="v6_1_better_security_descr">Πρωτόκολλα SimpleX που έχουν ελεγχθεί από την Trail of Bits.</string>
-    <string name="simplex_link_relay">Σύνδεσμος αναμεταδότη SimpleX</string>
-    <string name="icon_descr_simplex_team">SimpleX Team</string>
+    <string name="simplex_link_relay">Σύνδεσμος αναμεταδότη Ciphertext</string>
+    
     <string name="v5_3_simpler_incognito_mode">Απλοποιημένη ανώνυμη λειτουργία</string>
     <string name="is_not_verified">%s δεν έχει επαληθευτεί</string>
     <string name="is_verified">%s έχει επαληθευτεί</string>
@@ -2309,7 +2309,7 @@
     <string name="subscription_results_ignored">Η εγγραφή αγνοήθηκε</string>
     <string name="migrate_from_device_bytes_uploaded">%s ανεβασμένα</string>
     <string name="v4_6_audio_video_calls_descr">Υποστήριξη bluetooth και άλλων βελτιώσεων.</string>
-    <string name="settings_section_title_support">Υποστήριξη SimpleX Chat</string>
+    
     <string name="switch_verb">Ενάλλαξε</string>
     <string name="v6_1_better_calls_descr">Εναλλαγή ήχου και βίντεο κατά τη διάρκεια της κλήσης.</string>
     <string name="v6_1_switch_chat_profile_descr">Αλλαγή προφίλ συνομιλίας για προσκλήσεις 1-χρήσης.</string>
@@ -2441,7 +2441,7 @@
     <string name="migrate_to_device_try_again">Μπορείς να δοκιμάσεις ξανά.</string>
     <string name="migrate_from_device_try_again">Μπορείς να δοκιμάσεις ξανά.</string>
     <string name="you_can_hide_or_mute_user_profile">Μπορείς να αποκρύψεις ή να σιγάσεις ένα προφίλ χρήστη - κράτησέ το πατημένο για να εμφανιστεί το μενού.</string>
-    <string name="you_can_make_address_visible_via_settings">Μπορείς να το κάνεις ορατό στις επαφές σου στο SimpleX μέσω των Ρυθμίσεων.</string>
+    <string name="you_can_make_address_visible_via_settings">Μπορείς να το κάνεις ορατό στις επαφές σου στο Ciphertext μέσω των Ρυθμίσεων.</string>
     <string name="max_group_mentions_per_message_reached">Μπορείς να αναφέρεις εώς και %1$s μέλη ανά μήνυμα!</string>
     <string name="you_can_still_send_messages_to_contact">Μπορείς να στείλεις μηνύματα στην επαφή %1$s από τις αρχειοθετημένες επαφές.</string>
     <string name="you_can_set_connection_name_to_remember">Μπορείς να ορίσεις το όνομα της σύνδεσης για να θυμάσε με ποιον μοιράστηκες το σύνδεσμο.</string>
@@ -2451,7 +2451,7 @@
     <string name="you_can_start_chat_via_setting_or_by_restarting_the_app">Μπορείς να ξεκινήσεις τη συνομιλία μέσω της εφαρμογής Ρυθμίσεις / Βάση δεδομένων ή επανεκκινώντας την εφαρμογή.</string>
     <string name="you_can_still_view_conversation_with_contact">Μπορείς ακόμα να δεις τη συνομιλία με την επαφή %1$s, στη λίστα των συνομιλιών.</string>
     <string name="cant_send_message_alert_title">Δεν μπορείς να στείλεις μηνύματα!</string>
-    <string name="you_can_turn_on_lock">Μπορείς να ενεργοποιήσεις το SimpleX Lock μέσω των Ρυθμίσεων.</string>
+    <string name="you_can_turn_on_lock">Μπορείς να ενεργοποιήσεις το Ciphertext Lock μέσω των Ρυθμίσεων.</string>
     <string name="you_can_use_markdown_to_format_messages__prompt">Μπορείς να χρησιμοποιήσεις σύνταξη markdown για να μορφοποιήσεις τα μηνύματα:</string>
     <string name="you_can_view_invitation_link_again">Μπορείς να δεις ξανά το σύνδεσμο πρόσκλησης στις λεπτομέρειες σύνδεσης.</string>
     <string name="report_sent_alert_msg_view_in_support_chat">Μπορείς να δείς τις αναφορές σου στη Συνομιλία με τους διαχειριστές.</string>

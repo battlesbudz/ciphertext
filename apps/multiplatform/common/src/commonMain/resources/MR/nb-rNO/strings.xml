@@ -14,9 +14,9 @@
     <string name="abort_switch_receiving_address">Avbryt adresseendring</string>
     <string name="abort_switch_receiving_address_question">Avbryt adresseendring?</string>
     <string name="onboarding_network_about_operators">Om operatører</string>
-    <string name="about_simplex">Om SimpleX</string>
-    <string name="learn_more_about_address">Om SimpleX-adressen</string>
-    <string name="about_simplex_chat">Om SimpleX Chat</string>
+    <string name="about_simplex">Om Ciphertext</string>
+    <string name="learn_more_about_address">Om Ciphertext-adressen</string>
+    <string name="about_simplex_chat">Om Ciphertext</string>
     <string name="color_primary">Aksentfarge</string>
     <string name="accept_contact_button">Aksepter</string>
     <string name="onboarding_conditions_accept">Aksepter</string>
@@ -94,7 +94,7 @@
     <string name="enable_sending_member_reports">Tillat å rapportere meldinger til moderatorer.</string>
     <string name="allow_to_send_disappearing">Tillat å sende forsvinnende meldinger.</string>
     <string name="allow_to_send_files">Tillat å sende filer og medier.</string>
-    <string name="allow_to_send_simplex_links">Tillat sending av SimpleX-lenker.</string>
+    <string name="allow_to_send_simplex_links">Tillat sending av Ciphertext-lenker.</string>
     <string name="allow_to_send_voice">Tillat sending av talemeldinger.</string>
     <string name="allow_voice_messages_question">Tillat talemeldinger?</string>
     <string name="allow_voice_messages_only_if">Tillat talemeldinger kun vis kontakten din tillater det.</string>
