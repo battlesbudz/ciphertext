@@ -126,7 +126,8 @@ even programmatically. The 1:1-only invariant is enforced in
 ## Threat model notes
 
 - Heartbeat messages are visible to the SMP server as opaque encrypted
-  blobs (same as regular messages). They reveal timing but not content.
+  blobs (same as regular messages). They reveal coarse timing
+  (jittered ±2 s) but not content.
 - The `nextInvitation` exchange is the only cross-session linkage. Invitations
   are single-use; once consumed, they cannot be reused.
 - If the app crashes before `APIEndLiveSession`, heartbeat markers may remain
@@ -148,6 +149,8 @@ fork's Haskell core).
 Behavioral compliance with this spec:
 
 - **Heartbeat**: sent every 10 seconds as a marked text message
+  (with ±2 s random jitter per send, so the send times do not form an
+  exact 10 s beacon for a timing observer)
   (`\u001fLIVE_HB:<sessionId>:<token>`), via the standard send-message API.
 - **Filtering**: incoming heartbeats and session invites are intercepted in
   the chat-response pipeline, never surface in the UI, and are deleted from

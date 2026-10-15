@@ -37,6 +37,11 @@ object LiveSessionManager {
   const val INVITE_PREFIX = "\u001fLIVE_INVITE:"
   const val HEARTBEAT_INTERVAL_MS = 10_000L
   const val HEARTBEAT_TIMEOUT_MS = 30_000L
+  // Random jitter applied to each heartbeat delay so send times do not
+  // form an exact 10 s beacon for a timing observer. Worst-case gap
+  // between peer heartbeats is ~12 s + network latency, far inside
+  // the 30 s timeout, so session liveness is unaffected.
+  const val HEARTBEAT_JITTER_MS = 2_000L
   const val WATCHDOG_INTERVAL_MS = 5_000L
 
   // UI-observable session state. Null = no active live session.
@@ -341,7 +346,7 @@ object LiveSessionManager {
     stopTimers()
     heartbeatJob = scope.launch {
       while (isActive) {
-        delay(HEARTBEAT_INTERVAL_MS)
+        delay(HEARTBEAT_INTERVAL_MS + Random.nextLong(-HEARTBEAT_JITTER_MS, HEARTBEAT_JITTER_MS + 1))
         try { sendHeartbeat() } catch (e: Exception) { /* keep trying */ }
       }
     }
