@@ -12,9 +12,11 @@ appId: chat.simplex.app
 # The sender's own chat is SLOW to show the sent message under houdini
 # (run 34: A's msg reached B at 11:46 but only appeared in A's own chat
 # by ~11:49, ~5 min after Send). Wait up to 5 min, not 90s.
+# Chat item node is "text + timestamp" ("hello-from-A-7f3a9c  12:21 PM"),
+# so an exact full-regex match can NEVER hit. Substring match.
 - extendedWaitUntil:
     visible:
-      text: "${TEXT}"
+      text: ".*${TEXT}.*"
     timeout: 300000
 - assertVisible:
-    text: "${TEXT}"
+    text: ".*${TEXT}.*"
