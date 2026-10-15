@@ -3,5 +3,7 @@
 appId: chat.simplex.app
 ---
 - launchApp
+# Substring match: a row node carrying extra text must still count
+# as the contact being present (else "gone" passes vacuously).
 - assertNotVisible:
-    text: "${CONTACT_NAME}"
+    text: ".*${CONTACT_NAME}.*"
