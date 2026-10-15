@@ -1,22 +1,34 @@
 # B: connect via A's 1-time invitation (already deep-linked by the driver).
-# TRUE UI (ConnectPlan.kt): profile-picker dialog "Connect via one-time
-# link?" -> tap "Use current profile" -> "Connection request sent!" alert.
-# There is NO "Connect" button on the 1-time-link path.
+# TRUE UI (ConnectPlan.kt planAndConnect): the dialog depends on whether
+# the plan carries short-link data (contactSLinkData_).
+#   - NO short-link data (full link): profile-picker dialog
+#     "Connect via one-time link?" -> "Use current profile" ->
+#     "Connection request sent!" alert.
+#   - SHORT-LINK data present: showPrepareContactAlert -> dialog shows
+#     the inviter's profile name ("PhoneA") with "Open new chat" /
+#     "Cancel". Tapping "Open new chat" calls apiPrepareContact and
+#     opens the chat.
+# The test ALWAYS uses the short link (the InviteView only ever shows
+# the short link — showShortLink defaults true, and the toggle only
+# renders with developerTools on). The short link carries the inviter's
+# profile, so contactSLinkData_ is non-null, so B ALWAYS shows
+# "Open new chat" (run 29 proved it: B sat on "PhoneA / Open new
+# chat / Cancel"). This flow handles the short-link path.
 appId: chat.simplex.app
 ---
 - extendedWaitUntil:
     visible:
-      text: "Use current profile"
+      text: "Open new chat"
     timeout: 180000
 - assertVisible:
-    text: "Use current profile"
+    text: "Open new chat"
 - tapOn:
-    text: "Use current profile"
+    text: "Open new chat"
+# Prepare completes and the chat opens: the compose input placeholder
+# ("Message") confirms B is inside the chat with A.
 - extendedWaitUntil:
     visible:
-      text: "Connection request sent!"
+      text: "Message"
     timeout: 120000
 - assertVisible:
-    text: "Connection request sent!"
-- tapOn:
-    text: "OK"
+    text: "Message"
