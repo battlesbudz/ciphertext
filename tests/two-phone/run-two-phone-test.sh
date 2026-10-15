@@ -10,12 +10,13 @@
 # printed at the end and logs land in $OUT_DIR (uploaded as an artifact).
 #
 # NOTE: the APK is arm64-only (abiFilters in build.gradle.kts), so the
-# emulators are x86_64 Google-APIs images on the x86_64 runner with KVM.
-# The arm64 APK installs and runs via the image's native bridge (houdini:
-# ro.product.cpu.abilist includes arm64-v8a), so no app-code change is
-# needed. arm64 emulator images are NOT an option: emulator 37.x on an
-# x86_64 host refuses them ("Avd's CPU Architecture 'arm64' is not
-# supported by the QEMU2 emulator on x86_64 host").
+# runner is ubuntu-24.04-arm and the emulators are arm64-v8a images
+# running NATIVELY (no translation). The earlier x86_64-runner path ran
+# the APK via the houdini native bridge, but the app hung on
+# "Opening database…" for 300s+ under translation; native arm64 removes
+# that variable. (Emulator 37.x on an x86_64 host refuses arm64 images:
+# "Avd's CPU Architecture 'arm64' is not supported by the QEMU2 emulator
+# on x86_64 host" — hence the ARM64 runner, not x86_64 emulators.)
 
 set -u
 APK="${1:?usage: run-two-phone-test.sh <path-to-signed-apk>}"
@@ -96,20 +97,20 @@ deliver_invite() {
 # =====================================================================
 # Phase 0: emulators
 # =====================================================================
-log "=== Phase 0: create + boot emulators (x86_64, KVM) ==="
+log "=== Phase 0: create + boot emulators (arm64 native, KVM) ==="
 # Pin the AVD home BEFORE creating anything, so avdmanager and the
 # emulator binary agree on where AVDs live.
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 mkdir -p "$ANDROID_AVD_HOME"
-sdkmanager --install "emulator" "platform-tools" "system-images;android-30;google_apis;x86_64" >"$OUT_DIR/sdkmanager.log" 2>&1 || {
+sdkmanager --install "emulator" "platform-tools" "system-images;android-30;google_apis;arm64-v8a" >"$OUT_DIR/sdkmanager.log" 2>&1 || {
   fail "sdkmanager install of emulator + system image"
   cat "$OUT_DIR/sdkmanager.log"
   exit 1
 }
-echo "no" | avdmanager create avd -n "$AVD_A" -k "system-images;android-30;google_apis;x86_64" --device "pixel_5" --force >"$OUT_DIR/avd-a.log" 2>&1 || {
+echo "no" | avdmanager create avd -n "$AVD_A" -k "system-images;android-30;google_apis;arm64-v8a" --device "pixel_5" --force >"$OUT_DIR/avd-a.log" 2>&1 || {
   fail "avdmanager create AVD A"; cat "$OUT_DIR/avd-a.log"; exit 1
 }
-echo "no" | avdmanager create avd -n "$AVD_B" -k "system-images;android-30;google_apis;x86_64" --device "pixel_5" --force >"$OUT_DIR/avd-b.log" 2>&1 || {
+echo "no" | avdmanager create avd -n "$AVD_B" -k "system-images;android-30;google_apis;arm64-v8a" --device "pixel_5" --force >"$OUT_DIR/avd-b.log" 2>&1 || {
   fail "avdmanager create AVD B"; cat "$OUT_DIR/avd-b.log"; exit 1
 }
 # Verify the AVD .ini files actually landed in the pinned home.
@@ -128,17 +129,16 @@ for avd in "$AVD_A" "$AVD_B"; do
   fi
 done
 
-# KVM: x86_64 emulation REQUIRES hardware acceleration. The runner user
-# is not in the kvm group on this image (group line shows no members), so
-# grant /dev/kvm access directly. Group membership would need a re-login;
-# chmod takes effect immediately in this shell. sudo is passwordless on
-# GitHub-hosted runners.
+# KVM: emulation REQUIRES hardware acceleration. The runner user may not
+# be in the kvm group on this image, so grant /dev/kvm access directly.
+# Group membership would need a re-login; chmod takes effect immediately
+# in this shell. sudo is passwordless on GitHub-hosted runners.
 if [ -e /dev/kvm ]; then
   sudo chmod 666 /dev/kvm 2>/dev/null || sudo chown "$USER" /dev/kvm 2>/dev/null || true
   if [ -w /dev/kvm ]; then
     log "KVM available (/dev/kvm writable)"
   else
-    fail "KVM NOT available: /dev/kvm not writable even after chmod; x86_64 emulation cannot start"
+    fail "KVM NOT available: /dev/kvm not writable even after chmod; emulation cannot start"
     ls -la /dev/kvm || true
     exit 1
   fi
@@ -212,13 +212,13 @@ for s in "$SERIAL_A" "$SERIAL_B"; do
 done
 
 log "=== Install APK on both ==="
-# The arm64 APK needs the native bridge: abilist must include arm64-v8a.
+# Sanity: the (native arm64) emulator's abilist must include arm64-v8a.
 for s in "$SERIAL_A" "$SERIAL_B"; do
   ABIS="$(timeout 30 adb -s "$s" shell getprop ro.product.cpu.abilist 2>/dev/null | tr -d '\r')"
   log "abilist [$s]: $ABIS"
   case "$ABIS" in
     *arm64-v8a*) ;;
-    *) fail "native bridge missing on $s (no arm64-v8a in abilist); arm64 APK cannot install"; exit 1 ;;
+    *) fail "arm64-v8a missing from abilist on $s; arm64 APK cannot install"; exit 1 ;;
   esac
 done
 timeout 300 adb -s "$SERIAL_A" install -r -g "$APK" >"$OUT_DIR/install-a.log" 2>&1 || fail "install on A"
