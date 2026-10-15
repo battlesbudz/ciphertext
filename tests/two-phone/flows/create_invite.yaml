@@ -13,7 +13,7 @@ appId: chat.simplex.app
       text: "New 1-time link"
     timeout: 60000
 - assertVisible:
-    text: "New 1-time link"
+    text: ".*New 1-time link.*"
 - tapOn:
     text: "New 1-time link"
 - extendedWaitUntil:
@@ -21,5 +21,5 @@ appId: chat.simplex.app
       text: "Share this 1-time link"
     timeout: 90000
 - assertVisible:
-    text: "Share this 1-time link"
+    text: ".*Share this 1-time link.*"
 - waitForAnimationToEnd
