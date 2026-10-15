@@ -136,14 +136,18 @@ object LiveSessionManager {
   // protocol message (caller filters it from the UI). Deletes the message
   // from the store so heartbeats/invites never persist.
   suspend fun handleProtocolMessage(text: String, contactId: Long, chatItemId: Long): Boolean {
+    // Accept both the \u001f-marked form and the bare form (in case any
+    // pipeline stage strips the control char). Normalize before dispatch
+    // so a bare-prefix message is processed + deleted, not just hidden.
+    val normalized = text.removePrefix("\u001f")
     when {
-      text.startsWith(HEARTBEAT_PREFIX) -> {
-        handleHeartbeat(text, contactId)
+      normalized.startsWith("LIVE_HB:") -> {
+        handleHeartbeat(normalized, contactId)
         deleteProtocolMessage(contactId, chatItemId)
         return true
       }
-      text.startsWith(INVITE_PREFIX) -> {
-        handleInvite(text, contactId)
+      normalized.startsWith("LIVE_INVITE:") -> {
+        handleInvite(normalized, contactId)
         deleteProtocolMessage(contactId, chatItemId)
         return true
       }
@@ -152,7 +156,7 @@ object LiveSessionManager {
   }
 
   private fun handleHeartbeat(text: String, contactId: Long) {
-    val parts = text.removePrefix(HEARTBEAT_PREFIX).split(":")
+    val parts = text.removePrefix("LIVE_HB:").split(":")
     if (parts.size != 2) return
     val sessionId = parts[0]
     val token = parts[1].toULongOrNull() ?: return
@@ -165,7 +169,7 @@ object LiveSessionManager {
 
   private suspend fun handleInvite(text: String, contactId: Long) {
     // Format: <prefix><sessionId>:<initiatorId>:<token>:<link> (link may contain colons)
-    val parts = text.removePrefix(INVITE_PREFIX).split(":", limit = 4)
+    val parts = text.removePrefix("LIVE_INVITE:").split(":", limit = 4)
     if (parts.size != 4) return
     val sessionId = parts[0]
     val peerToken = parts[2].toULongOrNull() ?: return
