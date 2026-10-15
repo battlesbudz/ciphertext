@@ -543,6 +543,11 @@ if [ "$SESS_OK" = "1" ]; then
     R_D="PASS"; pass "(d) heartbeats invisible, messaging works during session"
   else
     R_D="FAIL"; fail "(d) heartbeat leak or messaging broke during session"
+    # Ground truth: heartbeat leak (protocol text visible) or the
+    # compose input is gone/has a different placeholder during a
+    # session? (Run 36: send_message could not find "Message".)
+    dump_maestro_hierarchy "$SERIAL_A" "session-send-fail"
+    dump_maestro_hierarchy "$SERIAL_B" "session-send-fail"
   fi
 else
   R_D="FAIL"; fail "(d) live session did not start on both phones"
