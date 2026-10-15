@@ -386,10 +386,11 @@ if maestro_run "$SERIAL_A" "$FLOWS/create_invite.yaml"; then
   if [ -n "$LINK" ]; then
     log "invite link decoded (${#LINK} chars)"
     deliver_invite "$SERIAL_B" "$LINK"
-    # B: connect via the deep-linked invitation.
-    # The app opens the connect plan; tap Connect.
-    if maestro_run "$SERIAL_B" "$FLOWS/assert_text_visible.yaml" TEXT="Connect"; then
-      maestro_run "$SERIAL_B" "$FLOWS/tap_text.yaml" TEXT="Connect" || true
+    log "deep-link am start output:"
+    sed 's/^/    /' "$OUT_DIR/deeplink-${SERIAL_B}.log" 2>/dev/null || true
+    # B: connect via the deep-linked invitation (profile picker dialog).
+    if ! maestro_run "$SERIAL_B" "$FLOWS/connect_via_invite.yaml"; then
+      fail "B could not connect via invitation"
     fi
     # A: accept B's contact request.
     if maestro_run "$SERIAL_A" "$FLOWS/accept_request.yaml" CONTACT_NAME="$NAME_B"; then
