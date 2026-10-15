@@ -55,6 +55,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # ARM64 runners ship WITHOUT a preinstalled Android SDK (unlike
+      # ubuntu-latest x86_64), so install it: cmdline-tools + platform-tools
+      # + android-35 platform + build-tools 35.0.0 (compileSdk/targetSdk 35).
+      # Sets ANDROID_HOME / ANDROID_SDK_ROOT for the build and the driver.
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools platforms;android-35 build-tools;35.0.0"
+
       - name: Extract native libraries from upstream APKs (arm64-v8a + armeabi-v7a)
         run: |
           set -euo pipefail
