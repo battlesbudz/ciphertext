@@ -1,9 +1,10 @@
 # Assert a specific text IS visible. Env: TEXT
 appId: chat.simplex.app
 ---
+# Delivery can take ~2 min under houdini (run 34); wait up to 5 min.
 - extendedWaitUntil:
     visible:
       text: "${TEXT}"
-    timeout: 120000
+    timeout: 300000
 - assertVisible:
     text: "${TEXT}"
