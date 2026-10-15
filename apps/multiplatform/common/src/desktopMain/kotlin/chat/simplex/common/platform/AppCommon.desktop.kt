@@ -15,6 +15,11 @@ actual val deviceName = generalGetString(MR.strings.desktop_device)
 
 actual fun isAppVisibleAndFocused() = simplexWindowState.windowFocused.value
 
+// No Orbot on desktop: Tor is configured via the SOCKS proxy settings
+// against a system Tor daemon (e.g. localhost:9050).
+actual fun isOrbotInstalled(): Boolean = false
+actual fun openOrbotInstallPage() {}
+
 @Suppress("ConstantLocale")
 val defaultLocale: Locale = Locale.getDefault()
 

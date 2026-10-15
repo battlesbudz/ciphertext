@@ -261,6 +261,9 @@ fun ModalData.NetworkAndServersView(closeNetworkAndServers: () -> Unit) {
 
       if (currentRemoteHost == null) {
         UseSocksProxySwitch(networkUseSocksProxy, toggleSocksProxy)
+        if (appPlatform.isAndroid) {
+          OrbotTorRow(networkUseSocksProxy, toggleSocksProxy)
+        }
         SettingsActionItem(painterResource(MR.images.ic_settings_ethernet), stringResource(MR.strings.network_socks_proxy_settings), { showCustomModal { SocksProxySettings(networkUseSocksProxy.value, appPrefs.networkProxy, onionHosts, sessionMode = appPrefs.networkSessionMode.get(), false, it) } })
         SettingsActionItem(painterResource(MR.images.ic_cable), stringResource(MR.strings.network_settings), { ModalManager.start.showCustomModal { AdvancedNetworkSettingsView(showModal, it) } })
       }
@@ -358,6 +361,34 @@ fun UseSocksProxySwitch(
       checked = networkUseSocksProxy.value,
       onCheckedChange = toggleSocksProxy,
     )
+  }
+}
+
+@Composable
+fun OrbotTorRow(
+  networkUseSocksProxy: MutableState<Boolean>,
+  toggleSocksProxy: (Boolean) -> Unit,
+) {
+  // Tor (Orbot) routing. The app already routes through a SOCKS proxy
+  // (default :9050, Orbot's port) when the switch above is on; this row
+  // is the one-tap front end for it. Shown only while the proxy is off.
+  // If Orbot is installed, one tap enables the proxy (existing confirm
+  // dialog). If not, one tap opens Orbot's install page. Nothing changes
+  // unless the user taps.
+  if (networkUseSocksProxy.value) return
+  if (isOrbotInstalled()) {
+    SettingsActionItem(
+      painterResource(MR.images.ic_settings_ethernet),
+      stringResource(MR.strings.tor_route_via_orbot),
+      { toggleSocksProxy(true) }
+    )
+  } else {
+    SettingsActionItem(
+      painterResource(MR.images.ic_settings_ethernet),
+      stringResource(MR.strings.tor_install_orbot),
+      { openOrbotInstallPage() }
+    )
+    SectionTextFooter(generalGetString(MR.strings.tor_orbot_description))
   }
 }
 

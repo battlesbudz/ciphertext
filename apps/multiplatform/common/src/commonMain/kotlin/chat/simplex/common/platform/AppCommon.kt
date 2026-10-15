@@ -25,6 +25,11 @@ expect val deviceName: String
 
 expect fun isAppVisibleAndFocused(): Boolean
 
+// Tor (Orbot) integration - Android only. Desktop returns false / no-op.
+// Used by the Network & servers settings to offer one-tap Tor routing.
+expect fun isOrbotInstalled(): Boolean
+expect fun openOrbotInstallPage()
+
 val appVersionInfo: Pair<String, Int?> = if (appPlatform == AppPlatform.ANDROID)
   BuildConfigCommon.ANDROID_VERSION_NAME to BuildConfigCommon.ANDROID_VERSION_CODE
 else

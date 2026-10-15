@@ -25,6 +25,40 @@ val defaultLocale: Locale = Locale.getDefault()
 
 actual fun isAppVisibleAndFocused(): Boolean = isAppOnForeground
 
+// Orbot (Tor) presence check. On Android 11+ (API 30) package visibility
+// rules apply: org.torproject.android must be declared in the manifest
+// <queries> block or getPackageInfo reports it as missing.
+actual fun isOrbotInstalled(): Boolean {
+  return try {
+    if (android.os.Build.VERSION.SDK_INT >= 33) {
+      androidAppContext.packageManager.getPackageInfo(
+        "org.torproject.android",
+        android.content.pm.PackageManager.PackageInfoFlags.of(0)
+      )
+    } else {
+      @Suppress("DEPRECATION")
+      androidAppContext.packageManager.getPackageInfo("org.torproject.android", 0)
+    }
+    true
+  } catch (e: Exception) {
+    false
+  }
+}
+
+actual fun openOrbotInstallPage() {
+  val intent = android.content.Intent(
+    android.content.Intent.ACTION_VIEW,
+    android.net.Uri.parse("https://play.google.com/store/apps/details?id=org.torproject.android")
+  ).apply {
+    addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+  }
+  try {
+    androidAppContext.startActivity(intent)
+  } catch (e: Exception) {
+    Log.e(TAG, "openOrbotInstallPage: ${e.stackTraceToString()}")
+  }
+}
+
 @SuppressLint("StaticFieldLeak")
 lateinit var androidAppContext: Context
 var mainActivity: WeakReference<FragmentActivity> = WeakReference(null)

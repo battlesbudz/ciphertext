@@ -1110,6 +1110,9 @@
   <string name="network_enable_socks_info">Access the servers via SOCKS proxy on port %d? Proxy must be started before enabling this option.</string>
   <string name="network_disable_socks">Use direct Internet connection?</string>
   <string name="network_disable_socks_info">If you confirm, the messaging servers will be able to see your IP address, and your provider - which servers you are connecting to.</string>
+  <string name="tor_route_via_orbot">Route through Tor (Orbot)</string>
+  <string name="tor_install_orbot">Install Orbot to use Tor</string>
+  <string name="tor_orbot_description">Route messaging traffic through Tor using Orbot. Orbot must be installed and running. Your IP address stays hidden from the messaging servers.</string>
   <string name="network_use_onion_hosts">Use .onion hosts</string>
   <string name="network_use_onion_hosts_prefer">When available</string>
   <string name="network_use_onion_hosts_no">No</string>
