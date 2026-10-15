@@ -29,7 +29,7 @@ import chat.simplex.common.ui.theme.CurrentColors
 import chat.simplex.common.ui.theme.DEFAULT_PADDING
 import chat.simplex.common.views.chat.SelectionHighlightColor
 import chat.simplex.common.views.helpers.*
-import chat.simplex.res.*
+import chat.ciphertext.res.*
 import kotlinx.coroutines.*
 
 val reserveTimestampStyle = SpanStyle(color = Color.Transparent)
