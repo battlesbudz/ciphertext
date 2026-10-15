@@ -5,7 +5,7 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import chat.simplex.common.views.helpers.AlertManager
 import chat.simplex.common.views.helpers.generalGetString
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import java.security.KeyStore
 import javax.crypto.*
 import javax.crypto.spec.GCMParameterSpec

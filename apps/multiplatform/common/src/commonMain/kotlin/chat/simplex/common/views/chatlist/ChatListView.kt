@@ -31,7 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import chat.simplex.common.AppLock
-import chat.simplex.common.BuildConfigCommon
+import chat.ciphertext.common.BuildConfigCommon
 import chat.simplex.common.model.*
 import chat.simplex.common.model.ChatController.appPrefs
 import chat.simplex.common.model.ChatController.stopRemoteHostAndReloadHosts
@@ -44,7 +44,7 @@ import chat.simplex.common.views.chat.topPaddingToContent
 import chat.simplex.common.views.newchat.*
 import chat.simplex.common.views.onboarding.*
 import chat.simplex.common.views.usersettings.*
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
 import kotlinx.coroutines.*

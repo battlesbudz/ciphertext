@@ -29,7 +29,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import chat.simplex.common.BuildConfigCommon
+import chat.ciphertext.common.BuildConfigCommon
 import chat.simplex.common.model.*
 import chat.simplex.common.model.ChatController.appPrefs
 import chat.simplex.common.model.ChatModel.controller
@@ -45,7 +45,7 @@ import chat.simplex.common.views.onboarding.*
 import chat.simplex.common.views.usersettings.DeleteImageButton
 import chat.simplex.common.views.usersettings.EditImageButton
 import chat.simplex.common.views.usersettings.SettingsActionItem
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch

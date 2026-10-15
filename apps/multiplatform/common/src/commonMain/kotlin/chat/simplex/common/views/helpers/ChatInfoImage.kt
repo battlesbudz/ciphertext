@@ -36,7 +36,7 @@ import chat.simplex.common.model.LocalBadge
 import chat.simplex.common.model.localDate
 import chat.simplex.common.platform.*
 import chat.simplex.common.ui.theme.*
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import dev.icerock.moko.resources.ImageResource
 import kotlin.math.max
 import kotlin.math.roundToInt

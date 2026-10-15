@@ -10,7 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
-import chat.simplex.common.BuildConfigCommon
+import chat.ciphertext.common.BuildConfigCommon
 import chat.simplex.common.model.ChatModel
 import chat.simplex.common.model.CoreVersionInfo
 import chat.simplex.common.platform.ColumnWithScrollBar
@@ -18,7 +18,7 @@ import chat.simplex.common.platform.appPlatform
 import chat.simplex.common.platform.chatModel
 import chat.simplex.common.ui.theme.DEFAULT_PADDING_HALF
 import chat.simplex.common.views.helpers.AppBarTitle
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 
 @Composable
 fun VersionInfoView(

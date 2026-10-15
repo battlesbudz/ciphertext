@@ -3,7 +3,7 @@ package chat.simplex.common.platform
 import androidx.compose.runtime.*
 import chat.simplex.common.model.*
 import chat.simplex.common.views.helpers.*
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import kotlinx.coroutines.*
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory
 import uk.co.caprica.vlcj.player.base.MediaPlayer

@@ -3,7 +3,7 @@ package chat.simplex.common.ui.theme
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.platform.Font
 import chat.simplex.common.platform.desktopPlatform
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 
 actual val Inter: FontFamily = FontFamily(
   Font(MR.fonts.Inter.regular.file),

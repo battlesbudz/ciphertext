@@ -27,7 +27,7 @@ import chat.simplex.common.views.chat.item.ItemAction
 import chat.simplex.common.views.contacts.onRequestAccepted
 import chat.simplex.common.views.helpers.*
 import chat.simplex.common.views.newchat.*
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import kotlinx.coroutines.*
 import kotlinx.datetime.Clock
 

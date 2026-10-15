@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import chat.simplex.common.BuildConfigCommon
+import chat.ciphertext.common.BuildConfigCommon
 import chat.simplex.common.ui.theme.DEFAULT_PADDING
 import chat.simplex.common.ui.theme.isInDarkTheme
 import chat.simplex.common.views.helpers.ModalManager
@@ -26,7 +26,7 @@ import chat.simplex.common.views.helpers.mixWith
 import chat.simplex.common.views.newchat.darkStops
 import chat.simplex.common.views.newchat.gradientPoints
 import chat.simplex.common.views.newchat.lightStops
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.compose.painterResource
 

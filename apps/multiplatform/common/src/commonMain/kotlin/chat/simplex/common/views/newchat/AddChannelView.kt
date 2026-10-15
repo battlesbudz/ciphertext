@@ -24,13 +24,13 @@ import chat.simplex.common.model.ChatController.getUserServers
 import chat.simplex.common.platform.*
 import chat.simplex.common.ui.theme.*
 import androidx.compose.ui.layout.ContentScale
-import chat.simplex.common.BuildConfigCommon
+import chat.ciphertext.common.BuildConfigCommon
 import chat.simplex.common.views.*
 import chat.simplex.common.views.chatlist.openGroupChat
 import chat.simplex.common.views.helpers.*
 import chat.simplex.common.views.usersettings.*
 import chat.simplex.common.views.usersettings.networkAndServers.NetworkAndServersView
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import java.net.URI
 import dev.icerock.moko.resources.compose.painterResource
 import kotlinx.coroutines.*

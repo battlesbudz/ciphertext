@@ -32,14 +32,14 @@ import androidx.core.view.inputmethod.EditorInfoCompat
 import androidx.core.view.inputmethod.InputConnectionCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
-import chat.simplex.common.R
+import chat.ciphertext.common.R
 import chat.simplex.common.helpers.toURI
 import chat.simplex.common.model.ChatController.appPrefs
 import chat.simplex.common.model.ChatModel
 import chat.simplex.common.ui.theme.CurrentColors
 import chat.simplex.common.views.chat.*
 import chat.simplex.common.views.helpers.*
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import dev.icerock.moko.resources.StringResource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter

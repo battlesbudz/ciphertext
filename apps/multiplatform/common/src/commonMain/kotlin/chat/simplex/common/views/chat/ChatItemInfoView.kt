@@ -30,7 +30,7 @@ import chat.simplex.common.ui.theme.*
 import chat.simplex.common.views.chat.item.*
 import chat.simplex.common.views.chatlist.*
 import chat.simplex.common.views.usersettings.networkAndServers.serverHostname
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import dev.icerock.moko.resources.ImageResource
 import kotlinx.serialization.encodeToString
 

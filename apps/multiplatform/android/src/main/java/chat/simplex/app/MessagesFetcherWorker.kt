@@ -3,6 +3,7 @@ package chat.simplex.app
 import android.content.Context
 import android.util.Log
 import androidx.work.*
+import chat.ciphertext.app.BuildConfig
 import chat.simplex.app.SimplexService.Companion.showPassphraseNotification
 import chat.simplex.common.model.ChatController
 import chat.simplex.common.platform.*

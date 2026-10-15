@@ -3,6 +3,7 @@ package chat.simplex.app
 import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
+import chat.ciphertext.app.BuildConfig
 import chat.simplex.common.platform.Log
 import android.content.Intent
 import android.content.pm.ActivityInfo

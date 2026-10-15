@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import chat.simplex.app.*
-import chat.simplex.app.R
+import chat.ciphertext.app.R
 import chat.simplex.app.TAG
 import chat.simplex.app.model.NtfManager
 import chat.simplex.app.model.NtfManager.AcceptCallAction
@@ -44,7 +44,7 @@ import chat.simplex.common.platform.chatModel
 import chat.simplex.common.ui.theme.*
 import chat.simplex.common.views.call.*
 import chat.simplex.common.views.helpers.*
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.launch

@@ -26,7 +26,7 @@ import chat.simplex.common.model.ChatModel
 import chat.simplex.common.model.PendingContactConnection
 import chat.simplex.common.platform.*
 import chat.simplex.common.views.usersettings.*
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import kotlinx.coroutines.*
 
 @Composable

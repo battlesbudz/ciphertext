@@ -30,7 +30,7 @@ import chat.simplex.common.views.helpers.*
 import chat.simplex.common.views.CreateProfile
 import chat.simplex.common.views.database.*
 import chat.simplex.common.views.onboarding.OnboardingStage
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import dev.icerock.moko.resources.StringResource
 import kotlinx.coroutines.*
 

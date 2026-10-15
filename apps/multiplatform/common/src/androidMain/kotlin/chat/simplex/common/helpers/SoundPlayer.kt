@@ -4,7 +4,7 @@ import android.media.*
 import android.net.Uri
 import android.os.*
 import androidx.core.content.ContextCompat
-import chat.simplex.common.R
+import chat.ciphertext.common.R
 import chat.simplex.common.platform.*
 import chat.simplex.common.views.helpers.withApi
 import kotlinx.coroutines.*

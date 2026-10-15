@@ -32,8 +32,8 @@ import chat.simplex.common.model.MsgContent
 import chat.simplex.common.platform.*
 import chat.simplex.common.views.chat.*
 import chat.simplex.common.views.newchat.*
-import chat.simplex.common.BuildConfigCommon
-import chat.simplex.res.MR
+import chat.ciphertext.common.BuildConfigCommon
+import chat.ciphertext.res.MR
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

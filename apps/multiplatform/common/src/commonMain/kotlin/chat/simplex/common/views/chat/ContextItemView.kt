@@ -22,7 +22,7 @@ import chat.simplex.common.views.chat.item.*
 import chat.simplex.common.model.*
 import chat.simplex.common.platform.getLoadedFilePath
 import chat.simplex.common.views.helpers.*
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import dev.icerock.moko.resources.ImageResource
 import kotlinx.datetime.Clock
 

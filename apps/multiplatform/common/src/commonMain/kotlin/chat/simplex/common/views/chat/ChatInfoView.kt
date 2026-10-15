@@ -42,7 +42,7 @@ import chat.simplex.common.platform.*
 import chat.simplex.common.views.chat.item.MarkdownText
 import chat.simplex.common.views.chatlist.updateChatSettings
 import chat.simplex.common.views.newchat.*
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import kotlinx.coroutines.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*

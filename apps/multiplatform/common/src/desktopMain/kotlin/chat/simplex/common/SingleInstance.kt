@@ -98,8 +98,8 @@ private fun createShowFile() {
 }
 
 private fun showSingleInstanceAlert(): Boolean {
-  val title = chat.simplex.common.views.helpers.generalGetString(chat.simplex.res.MR.strings.another_instance_title)
-  val message = chat.simplex.common.views.helpers.generalGetString(chat.simplex.res.MR.strings.another_instance_not_responding)
+  val title = chat.simplex.common.views.helpers.generalGetString(chat.ciphertext.res.MR.strings.another_instance_title)
+  val message = chat.simplex.common.views.helpers.generalGetString(chat.ciphertext.res.MR.strings.another_instance_not_responding)
   val result = javax.swing.JOptionPane.showConfirmDialog(
     null, message, title,
     javax.swing.JOptionPane.YES_NO_OPTION,

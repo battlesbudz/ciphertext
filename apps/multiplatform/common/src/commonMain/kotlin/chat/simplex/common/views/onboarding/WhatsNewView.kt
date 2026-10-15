@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import chat.simplex.common.BuildConfigCommon
+import chat.ciphertext.common.BuildConfigCommon
 import chat.simplex.common.model.ChatController.appPrefs
 import chat.simplex.common.model.ChatModel
 import chat.simplex.common.model.*
@@ -59,7 +59,7 @@ import chat.simplex.common.views.helpers.*
 import chat.simplex.common.views.usersettings.UserAddressView
 import chat.simplex.common.views.usersettings.networkAndServers.UsageConditionsView
 import chat.simplex.common.views.usersettings.showAddShortLinkAlert
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
 import kotlin.math.absoluteValue
@@ -943,7 +943,7 @@ private val versionDescriptions: List<VersionDescription> = listOf(
   ),
   VersionDescription(
     // the trailing space differs from the previously released "v7.0", so that What's new is shown again
-    version = if (isInUs()) "v7.0.1" else "v7.0",
+    version = "v7.0",
     post = "https://simplex.chat/blog/20260819-simplex-chat-crowdfunding.html",
     features = listOf(
       VersionFeature.FeatureDescription(

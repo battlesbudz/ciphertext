@@ -17,7 +17,7 @@ import chat.simplex.common.ui.theme.CurrentColors
 import chat.simplex.common.ui.theme.appColors
 import chat.simplex.common.views.helpers.AlertManager
 import chat.simplex.common.views.helpers.generalGetString
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 

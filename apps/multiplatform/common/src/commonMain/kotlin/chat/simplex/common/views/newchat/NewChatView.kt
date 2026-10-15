@@ -41,8 +41,8 @@ import chat.simplex.common.views.chat.item.CIFileViewScope
 import chat.simplex.common.views.chat.topPaddingToContent
 import chat.simplex.common.views.helpers.*
 import chat.simplex.common.views.usersettings.*
-import chat.simplex.common.BuildConfigCommon
-import chat.simplex.res.MR
+import chat.ciphertext.common.BuildConfigCommon
+import chat.ciphertext.res.MR
 import kotlinx.coroutines.*
 
 enum class NewChatOption {

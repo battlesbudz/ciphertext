@@ -15,7 +15,7 @@ import chat.simplex.common.ui.theme.DEFAULT_PADDING
 import androidx.compose.material.CircularProgressIndicator
 import chat.simplex.common.views.helpers.SimpleButton
 import chat.simplex.common.views.helpers.*
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 
 @Composable
 fun PasscodeView(

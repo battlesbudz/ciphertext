@@ -18,7 +18,7 @@ import chat.simplex.common.views.helpers.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import kotlinx.serialization.Transient
 import java.util.UUID
 

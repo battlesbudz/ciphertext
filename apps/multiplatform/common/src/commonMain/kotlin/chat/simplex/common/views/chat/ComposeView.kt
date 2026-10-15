@@ -39,7 +39,7 @@ import chat.simplex.common.views.helpers.*
 import chat.simplex.common.views.newchat.RelayProgressIndicator
 import chat.simplex.common.views.newchat.RelayStatusIndicator
 import chat.simplex.common.views.newchat.relayDisplayName
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import dev.icerock.moko.resources.ImageResource
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.distinctUntilChanged

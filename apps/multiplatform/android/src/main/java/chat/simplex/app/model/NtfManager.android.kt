@@ -12,6 +12,7 @@ import android.net.Uri
 import android.view.Display
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.app.*
+import chat.ciphertext.app.R
 import chat.simplex.app.*
 import chat.simplex.app.TAG
 import chat.simplex.app.views.call.CallActivity
@@ -22,7 +23,7 @@ import chat.simplex.common.platform.*
 import chat.simplex.common.views.call.CallMediaType
 import chat.simplex.common.views.call.RcvCallInvitation
 import kotlinx.datetime.Clock
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 
 object NtfManager {
   const val MessageChannel: String = "chat.simplex.app.MESSAGE_NOTIFICATION"

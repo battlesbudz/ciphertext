@@ -4,7 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.*
 import chat.simplex.common.views.helpers.*
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import kotlinx.coroutines.*
 import org.jetbrains.compose.videoplayer.SkiaBitmapVideoSurface
 import uk.co.caprica.vlcj.media.Media

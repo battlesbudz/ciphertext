@@ -21,6 +21,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import androidx.work.*
+import chat.ciphertext.app.BuildConfig
+import chat.ciphertext.app.R
 import chat.simplex.app.model.NtfManager
 import chat.simplex.common.AppLock
 import chat.simplex.common.helpers.requiresIgnoringBattery
@@ -29,7 +31,7 @@ import chat.simplex.common.model.NotificationsMode
 import chat.simplex.common.platform.*
 import chat.simplex.common.views.helpers.*
 import kotlinx.coroutines.*
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlin.system.exitProcess

@@ -12,7 +12,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.scale
 import boofcv.android.ConvertBitmap
 import boofcv.struct.image.GrayU8
-import chat.simplex.common.R
+import chat.ciphertext.common.R
 import chat.simplex.common.views.helpers.errorBitmap
 import chat.simplex.common.views.helpers.getFileName
 import java.io.ByteArrayOutputStream

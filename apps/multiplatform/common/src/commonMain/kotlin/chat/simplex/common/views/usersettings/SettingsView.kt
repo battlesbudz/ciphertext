@@ -32,7 +32,7 @@ import chat.simplex.common.views.migration.MigrateFromDeviceView
 import chat.simplex.common.views.onboarding.SimpleXInfo
 import chat.simplex.common.views.onboarding.WhatsNewView
 import chat.simplex.common.views.usersettings.networkAndServers.NetworkAndServersView
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 
 @Composable
 fun SettingsView(chatModel: ChatModel, setPerformLA: (Boolean) -> Unit, close: () -> Unit) {

@@ -17,7 +17,7 @@ import chat.simplex.common.ui.theme.SimpleXTheme
 import chat.simplex.common.views.helpers.annotatedStringResource
 import chat.simplex.common.views.onboarding.ReadableTextWithLink
 import chat.simplex.common.views.usersettings.MarkdownHelpView
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 
 val bold = SpanStyle(fontWeight = FontWeight.Bold)
 

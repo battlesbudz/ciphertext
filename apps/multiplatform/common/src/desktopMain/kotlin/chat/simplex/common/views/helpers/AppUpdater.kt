@@ -8,14 +8,14 @@ import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import chat.simplex.common.BuildConfigCommon
+import chat.ciphertext.common.BuildConfigCommon
 import chat.simplex.common.model.ChatController.appPrefs
 import chat.simplex.common.model.ChatController.getNetCfg
 import chat.simplex.common.model.json
 import chat.simplex.common.platform.*
 import chat.simplex.common.ui.theme.WarningOrange
 import chat.simplex.common.views.onboarding.ReadMoreButton
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import kotlinx.coroutines.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

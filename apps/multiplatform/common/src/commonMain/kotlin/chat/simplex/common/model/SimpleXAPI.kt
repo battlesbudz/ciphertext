@@ -39,7 +39,7 @@ import chat.simplex.common.views.usersettings.networkAndServers.defaultCondition
 import chat.simplex.common.views.usersettings.networkAndServers.serverHostname
 import com.charleskorn.kaml.Yaml
 import com.charleskorn.kaml.YamlConfiguration
-import chat.simplex.res.MR
+import chat.ciphertext.res.MR
 import com.russhwolf.settings.Settings
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
