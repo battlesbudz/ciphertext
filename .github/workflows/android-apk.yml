@@ -4,8 +4,11 @@
 # repo, so they are extracted from the upstream release APK and placed where the CMake
 # build expects them (common/src/commonMain/cpp/android/libs/<abi>/).
 # The fossRelease APK is unsigned by Gradle (no signing config in
-# build.gradle.kts), so the workflow signs it with a throwaway debug keystore
-# generated at build time, then uploads the signed APK as an artifact.
+# build.gradle.kts), so the workflow signs it with the stable release key
+# from GitHub Secrets (one key for ALL releases), then uploads the signed
+# APK as an artifact. It fails closed if the secrets are missing: it never
+# falls back to a throwaway key, or releases would get different keys again
+# and stop updating in place.
 
 name: Build Android APK
 
@@ -70,6 +73,10 @@ jobs:
           ./gradlew :android:assembleFossRelease --no-daemon
 
       - name: Sign, align and rename APK
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
         run: |
           set -euo pipefail
           VERSION="$(grep '^android.version_name=' apps/multiplatform/gradle.properties | cut -d= -f2)"
@@ -78,13 +85,13 @@ jobs:
           UNSIGNED_APK="$(ls "$APK_DIR"/*arm64-v8a*.apk | head -n 1)"
           echo "Unsigned APK: ${UNSIGNED_APK}"
 
-          # Throwaway debug keystore: makes the APK installable, not a release identity
-          keytool -genkeypair -v \
-            -keystore /tmp/debug.keystore \
-            -alias androiddebugkey \
-            -storepass android -keypass android \
-            -keyalg RSA -keysize 2048 -validity 10000 \
-            -dname "CN=Android Debug,O=Android,C=US"
+          # Stable release key from GitHub Secrets (one key for ALL releases).
+          # Fail closed: never fall back to a throwaway key.
+          if [ -z "${ANDROID_KEYSTORE_BASE64:-}" ] || [ -z "${ANDROID_KEYSTORE_PASSWORD:-}" ] || [ -z "${ANDROID_KEY_ALIAS:-}" ]; then
+            echo "ERROR: release signing secrets are not set (ANDROID_KEYSTORE_BASE64 / ANDROID_KEYSTORE_PASSWORD / ANDROID_KEY_ALIAS). Refusing to sign with a throwaway key." >&2
+            exit 1
+          fi
+          printf '%s' "${ANDROID_KEYSTORE_BASE64}" | base64 -d > /tmp/release.p12
 
           SDK="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
           BUILD_TOOLS="$(ls -d "${SDK}"/build-tools/* | sort -V | tail -n 1)"
@@ -94,9 +101,11 @@ jobs:
           OUT_APK="${APK_DIR}/simplex-private-${VERSION}-arm64.apk"
           "${ZIPALIGN}" -f 4 "${UNSIGNED_APK}" /tmp/aligned.apk
           "${APKSIGNER}" sign \
-            --ks /tmp/debug.keystore \
-            --ks-pass pass:android \
-            --key-pass pass:android \
+            --ks /tmp/release.p12 \
+            --ks-type PKCS12 \
+            --ks-key-alias "${ANDROID_KEY_ALIAS}" \
+            --ks-pass "pass:${ANDROID_KEYSTORE_PASSWORD}" \
+            --key-pass "pass:${ANDROID_KEYSTORE_PASSWORD}" \
             --out "${OUT_APK}" /tmp/aligned.apk
           "${APKSIGNER}" verify --print-certs "${OUT_APK}"
           "${ZIPALIGN}" -c 4 "${OUT_APK}"
