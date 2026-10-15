@@ -75,9 +75,12 @@ appId: chat.simplex.app
     text: ".*Network commitments.*"
 - tapOn:
     text: "Accept"
+# Post-onboarding chat list shows onboarding cards ("Talk to someone",
+# etc.), not the "Tap to start a new chat" empty-state hint. The FAB
+# ("Start new chat") is the stable chat-list signal — and Phase 2 taps it.
 - extendedWaitUntil:
     visible:
-      text: ".*Tap to start a new chat.*"
+      text: "Start new chat"
     timeout: 180000
 - assertVisible:
-    text: ".*Tap to start a new chat.*"
+    text: "Start new chat"
