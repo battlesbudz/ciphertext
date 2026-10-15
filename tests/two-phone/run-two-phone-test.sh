@@ -258,25 +258,46 @@ diag_app_stuck() {
     timeout 30 adb -s "$serial" shell cat "/proc/$pid/stat" 2>/dev/null | awk '{print "    state="$3" utime="$14" stime="$15}' || true
     log "top snapshot (simplex lines):"
     timeout 30 adb -s "$serial" shell top -n 1 -b 2>/dev/null | grep -i simplex | sed 's/^/    /' || true
+    log "SIGQUIT thread dump (kill -3 $pid):"
+    timeout 30 adb -s "$serial" shell kill -3 "$pid" >/dev/null 2>&1 || true
+    sleep 5
   fi
+  log "activity state (MainActivity / simplex records):"
+  timeout 60 adb -s "$serial" shell dumpsys activity activities 2>/dev/null | grep -i "simplex\|MainActivity" | head -n 20 | sed 's/^/    /' || true
+  log "thread dump after SIGQUIT (main thread + lock lines):"
+  timeout 60 adb -s "$serial" logcat -d 2>/dev/null | grep -E '"main" prio|at chat\.simplex|waiting on|locked <|BLOCKED|tid=1 ' | tail -n 60 | sed 's/^/    /' || true
   log "logcat crash buffer (last 40 lines):"
   timeout 60 adb -s "$serial" logcat -d -b crash 2>/dev/null | tail -n 40 | sed 's/^/    /' || true
   log "logcat main buffer (death/crash/kill signals, excl. uiautomator noise, last 40 lines):"
   timeout 60 adb -s "$serial" logcat -d 2>/dev/null | grep -i "fatal\|exception\|has died\|killing\|force finishing\|tombstone\|signal\|lowmemorykiller\|ANR\|chat.simplex" | grep -v "uiautomator" | tail -n 40 | sed 's/^/    /' || true
 }
-log "=== Phase 0.5: launch app on A, watch first screen (up to 300s) ==="
+log "=== Phase 0.5: launch app on A, watch first screen (up to 450s) ==="
 timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$APP_ID.MainActivity" >"$OUT_DIR/firstlaunch-a.log" 2>&1 || true
 log "first-launch am start output:"
 sed 's/^/    /' "$OUT_DIR/firstlaunch-a.log" || true
 WELCOME_SEEN=0
 RELAUNCHED=0
-for i in $(seq 1 10); do
+for i in $(seq 1 15); do
   sleep 30
   ROUND_PID="$(timeout 30 adb -s "$SERIAL_A" shell pidof "$APP_ID" 2>/dev/null | tr -d '\r' | awk '{print $1}')"
   ROUND_FOCUS="$(timeout 30 adb -s "$SERIAL_A" shell dumpsys window 2>/dev/null | grep -m1 "mCurrentFocus" | tr -d '\r' | sed 's/^ *//')"
   log "round $i: app PID=${ROUND_PID:-<not running>} focus: ${ROUND_FOCUS:-<unknown>}"
   timeout 60 adb -s "$SERIAL_A" shell uiautomator dump /sdcard/window_dump.xml >/dev/null 2>&1 || true
   timeout 60 adb -s "$SERIAL_A" pull /sdcard/window_dump.xml "$OUT_DIR/ui-${SERIAL_A}-poll${i}.xml" >/dev/null 2>&1 || true
+  # If a system ANR dialog ("<App> isn't responding") is covering the
+  # screen it can mask the app's window. Tap "Wait" to dismiss it.
+  if grep -q "isn't responding" "$OUT_DIR/ui-${SERIAL_A}-poll${i}.xml" 2>/dev/null; then
+    WAIT_LINE="$(grep 'text="Wait"' "$OUT_DIR/ui-${SERIAL_A}-poll${i}.xml" | head -1)"
+    WAIT_BOUNDS="$(echo "$WAIT_LINE" | grep -o 'bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' | head -1)"
+    WAIT_XY="$(echo "$WAIT_BOUNDS" | sed -E 's/bounds="\[([0-9]+),([0-9]+)\]\[([0-9]+),([0-9]+)\]"/\1 \2 \3 \4/' | awk '{print int(($1+$3)/2), int(($2+$4)/2)}')"
+    if [ -n "$WAIT_XY" ]; then
+      log "ANR dialog present; tapping Wait at $WAIT_XY"
+      timeout 30 adb -s "$SERIAL_A" shell input tap $WAIT_XY >/dev/null 2>&1 || true
+      sleep 5
+    else
+      log "ANR dialog present but no Wait button bounds found"
+    fi
+  fi
   if grep -q "Private and secure messaging" "$OUT_DIR/ui-${SERIAL_A}-poll${i}.xml" 2>/dev/null; then
     log "welcome screen visible after ~$((i * 30))s"
     WELCOME_SEEN=1
@@ -291,7 +312,7 @@ for i in $(seq 1 10); do
     fi
     break
   fi
-  log "still not on welcome screen after ~$((i * 30))s (round $i/10)"
+  log "still not on welcome screen after ~$((i * 30))s (round $i/15)"
   if [ "$i" = "5" ] && [ "$RELAUNCHED" != "1" ] && [ -z "$ROUND_PID" ]; then
     log "RELAUNCH RETRY (round 5): app process gone; force-stop + relaunch once"
     timeout 60 adb -s "$SERIAL_A" shell am force-stop "$APP_ID" >/dev/null 2>&1 || true
@@ -306,7 +327,7 @@ if [ "$WELCOME_SEEN" != "1" ]; then
   log "app never reached the welcome screen in 300s; last UI dump:"
   dump_ui "$SERIAL_A" "stuck"
   diag_app_stuck "$SERIAL_A"
-  fail "app never reached welcome screen in 300s (see last UI dump above)"
+  fail "app never reached welcome screen in 450s (see last UI dump above)"
   exit 1
 fi
 
