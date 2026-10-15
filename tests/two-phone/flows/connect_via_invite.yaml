@@ -1,0 +1,22 @@
+# B: connect via A's 1-time invitation (already deep-linked by the driver).
+# TRUE UI (ConnectPlan.kt): profile-picker dialog "Connect via one-time
+# link?" -> tap "Use current profile" -> "Connection request sent!" alert.
+# There is NO "Connect" button on the 1-time-link path.
+appId: chat.simplex.app
+---
+- extendedWaitUntil:
+    visible:
+      text: "Use current profile"
+    timeout: 180000
+- assertVisible:
+    text: "Use current profile"
+- tapOn:
+    text: "Use current profile"
+- extendedWaitUntil:
+    visible:
+      text: "Connection request sent!"
+    timeout: 120000
+- assertVisible:
+    text: "Connection request sent!"
+- tapOn:
+    text: "OK"
