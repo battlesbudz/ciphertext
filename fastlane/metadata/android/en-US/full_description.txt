@@ -1,25 +1,20 @@
-<h1>SimpleX - the first messaging platform that has no user identifiers, not even random numbers!</h1>
-<p><a href="https://simplex.chat/blog/20221108-simplex-chat-v4.2-security-audit-new-website.html" target="_blank">Security assessment</a> was done by Trail of Bits in November 2022.</p>
-<p>SimpleX Chat features:</p>
+<h1>Ciphertext</h1>
+
+<p>Ephemeral 1:1 live-session messenger. No user IDs, no accounts, no history that outlives the conversation.</p>
+
+<p>Ciphertext is a fork of SimpleX Chat, licensed under AGPLv3. It is compatible with the SimpleX network: messages travel over SimpleX relay servers, but Ciphertext adds a strict ephemeral session model on top. When a session ends, for any reason, everything is wiped and both sides start a brand new session. Nothing carries over.</p>
+
 <ul>
-  <li>end-to-end encrypted messages, with editing, replies and deletion of messages.</li>
-  <li>sending end-to-end encrypted images and files.</li>
-  <li>single-use and long-term user addresses.</li>
-  <li>secret chat groups - only group members know it exists and who is the member.</li>
-  <li>end-to-end encrypted audio and video calls.</li>
-  <li>private instant notifications.</li>
-  <li>portable chat profile - you can transfer your chat contacts and history to another device (terminal or mobile).</li>
+<li>1:1 live sessions only. A session exists only while both parties are connected.</li>
+<li>Disconnect kills the session. Clean exit, network blip, or heartbeat timeout: the session dies, messages, keys, and relay state are destroyed.</li>
+<li>Fresh reconnect. Both clients automatically establish a brand new session with fresh keys. Nothing is preserved.</li>
+<li>10 second grace window when you leave the app, for the image picker or a brief app switch. Still gone after 10 seconds and the session is wiped on both sides.</li>
+<li>Heartbeats and session invites never appear in the chat.</li>
+<li>Optional Tor routing through Orbot, one tap in Settings, Network and servers.</li>
+<li>No user IDs of any kind. No phone numbers, no emails, no handles.</li>
+<li>Your profile lives on your device and is shared only with your contacts.</li>
 </ul>
-<p>SimpleX Chat advantages:</p>
-<ul>
-  <li><strong>Full privacy of your identity, profile, contacts and metadata</strong>: unlike any other existing messaging platform, SimpleX uses no phone numbers or any other identifiers assigned to the users - not even random numbers. This protects the privacy of who you are communicating with, hiding it from SimpleX platform servers and from any observers.</li>
-  <li><strong>Complete protection against spam and abuse</strong>: as you have no identifier on SimpleX platform, you cannot be contacted unless you share a one-time invitation link or an optional temporary user address.</li>
-  <li><strong>Full ownership, control and security of your data</strong>: SimpleX stores all user data on client devices, the messages are only held temporarily on SimpleX relay servers until they are received.</li>
-  <li><strong>Decentralized network</strong>: you can use SimpleX with your own servers and still communicate with people using the servers that are pre-configured in the apps or any other SimpleX servers.</li>
-</ul>
-<p>You can connect to anybody you know via link or scan QR code (in the video call or in person) and start sending messages instantly - no emails, phone numbers or passwords needed.</p> 
-<p>Your profile and contacts are only stored in the app on your device - our servers do not have access to this information.</p>
-<p>All messages are end-to-end encrypted using open-source double-ratchet protocol; the messages are routed via our servers using open-source SimpleX Messaging Protocol.</p>
-<p>Please send us any questions via the app (connect to the team via settings!), <a href="mailto:chat@simplex.chat?subject=SimpleX Chat on F-Droid">email us</a> or submit an <a href="https://github.com/simplex-chat/simplex-chat/issues" target="_blank">issue on GitHub</a>.</p>
-<p>Follow us on Mastodon (<a href="https://mastodon.social/@simplex" target="_blank">@simplex@mastodon.social</a>), Twitter (<a href="https://twitter.com/SimpleXChat" target="_blank">@SimpleXChat</a>) and Reddit (<a href="https://www.reddit.com/r/SimpleXChat/" target="_blank">r/SimpleXChat</a>) for the latest updates.</p>
-<p>Once you install SimpleX Chat, join the group of users via <a href="https://simplex.chat/contact#/?v=1-2&smp=smp%3A%2F%2Fu2dS9sG8nMNURyZwqASV4yROM28Er0luVTx5X1CsMrU%3D%40smp4.simplex.im%2FWHV0YU1sYlU7NqiEHkHDB6gxO1ofTync%23%2F%3Fv%3D1-2%26dh%3DMCowBQYDK2VuAyEAWbebOqVYuBXaiqHcXYjEHCpYi6VzDlu6CVaijDTmsQU%253D%26srv%3Do5vmywmrnaxalvz6wi3zicyftgio6psuvyniis6gco6bp6ekl4cqj4id.onion&data=%7B%22type%22%3A%22group%22%2C%22groupLinkId%22%3A%22mL-7Divb94GGmGmRBef5Dg%3D%3D%22%7D" target="_blank">this link</a> to share your ideas and feedback.</p>
+
+<p>Install from GitHub Releases. Ciphertext runs no servers. Sessions are ephemeral and wiped on disconnect. See the privacy policy in the repo.</p>
+
+<p>Ciphertext is a fork of SimpleX Chat, licensed under AGPLv3. The SimpleX name and logo are trademarks of SimpleX Chat Ltd and are not used by this fork.</p>
