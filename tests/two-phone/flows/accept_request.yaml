@@ -16,7 +16,7 @@ appId: chat.simplex.app
       text: "Accept contact request"
     timeout: 90000
 - assertVisible:
-    text: "Accept contact request"
+    text: ".*Accept contact request.*"
 - tapOn:
     text: "Accept"
 - extendedWaitUntil:
