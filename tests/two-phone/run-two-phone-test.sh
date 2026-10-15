@@ -235,6 +235,15 @@ timeout 300 adb -s "$SERIAL_B" install -r -g "$APK" >"$OUT_DIR/install-b.log" 2>
 # welcome screen never appears, capture process/CPU/logcat diagnostics
 # (spin loop vs blocked vs crash loop) and fail fast instead of burning
 # another 600s in onboarding waits.
+# Dump MAESTRO's view of the hierarchy and print its text values.
+# Ground truth for "the flow says X is not visible": shows what screen
+# the app is actually on, in the terms Maestro itself sees.
+dump_maestro_hierarchy() {
+  local serial="$1" tag="$2"
+  log "--- Maestro hierarchy [$serial] $tag (text values) ---"
+  timeout 120 maestro --device "$serial" hierarchy >"$OUT_DIR/maestro-hierarchy-${serial}-${tag}.txt" 2>&1 || log "maestro hierarchy rc=$?"
+  grep -o '"text" : "[^"]*"' "$OUT_DIR/maestro-hierarchy-${serial}-${tag}.txt" 2>/dev/null | sed 's/"text" : /    TEXT: /' | head -n 100 || true
+}
 dump_ui() {
   local serial="$1" tag="$2"
   log "--- UI dump [$serial] $tag ---"
@@ -351,6 +360,10 @@ else
   for s in "$SERIAL_A" "$SERIAL_B"; do
     log "--- onboarding Maestro tail [$s] ---"
     tail -n 40 "$OUT_DIR/maestro-${s}-onboarding.log" 2>/dev/null | sed 's/^/    /' || true
+  done
+  # Ground truth: what screen is each phone actually on?
+  for s in "$SERIAL_A" "$SERIAL_B"; do
+    dump_maestro_hierarchy "$s" "onboarding-fail"
   done
 fi
 
