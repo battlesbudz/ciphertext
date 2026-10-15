@@ -6,13 +6,22 @@
 # session is re-established, (g) zero carryover into the new session.
 #
 # Test infrastructure ONLY. Does not modify app code or the release workflow.
-# Builds its own signed APK from the current commit (same steps as
-# android-apk.yml) so it tests exactly what is on stable.
 #
-# The APK is arm64-only (abiFilters), so the emulators must be arm64-v8a
-# images (QEMU software emulation on the x86_64 runner — slow, hence the
-# generous timeouts). Triggers: manual dispatch, or pushes touching the test
-# files / this workflow.
+# Two jobs, split by host arch:
+# - build-apk (ubuntu-latest x86_64): builds + signs the APK from the
+#   current commit (same steps as android-apk.yml) and uploads it.
+#   The build MUST stay on x86_64: AGP resolves AAPT2 from Maven as an
+#   x86_64-only binary (com.android.tools.build:aapt2:<ver>:linux, no
+#   linux-aarch64 variant), and it fails on ARM64 hosts with
+#   "AAPT2 ... Daemon startup failed".
+# - two-phone-test (ubuntu-24.04-arm): downloads the APK and runs two
+#   arm64-v8a emulators NATIVELY. The x86_64-runner path ran the APK via
+#   the houdini native bridge, but the app hung on "Opening database…"
+#   for 300s+ under translation (run 38658640258). Native arm64 removes
+#   that variable. Maestro 1.39.0 is a JVM app (JARs + shell launcher),
+#   so it runs on ARM64 Linux with Java 17.
+#
+# Triggers: manual dispatch, or pushes touching the test files / workflow.
 
 name: Two-Phone Test
 
@@ -29,40 +38,14 @@ permissions:
   contents: read
 
 jobs:
-  two-phone-test:
-    name: Two emulators, live ephemeral session
-    # ARM64 runner: the emulators are arm64-v8a images running NATIVELY.
-    # The x86_64 runner path was abandoned: the arm64 APK runs via the
-    # houdini native bridge there, but the app hung on "Opening database…"
-    # for 300s+ under translation (run 38658640258). Native arm64 removes
-    # the entire translation variable, and Maestro 1.39.0 is a JVM app
-    # (JARs + shell launcher), so it runs on ARM64 Linux with Java 17.
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 180
-    # Only the latest run matters; cancel superseded ones (each push
-    # of test files used to queue a full run).
-    concurrency:
-      group: two-phone-test
-      cancel-in-progress: true
-
-    env:
-      AVD_A: phoneA
-      AVD_B: phoneB
-      SERIAL_A: emulator-5554
-      SERIAL_B: emulator-5556
+  build-apk:
+    name: Build + sign APK (x86_64)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      # ARM64 runners ship WITHOUT a preinstalled Android SDK (unlike
-      # ubuntu-latest x86_64), so install it: cmdline-tools + platform-tools
-      # + android-35 platform + build-tools 35.0.0 (compileSdk/targetSdk 35).
-      # Sets ANDROID_HOME / ANDROID_SDK_ROOT for the build and the driver.
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          packages: "platform-tools platforms;android-35 build-tools;35.0.0"
 
       - name: Extract native libraries from upstream APKs (arm64-v8a + armeabi-v7a)
         run: |
@@ -117,8 +100,56 @@ jobs:
             --key-pass pass:android \
             --out "${APK_DIR}/simplex-private-${VERSION}-arm64.apk" /tmp/aligned.apk
           "${BUILD_TOOLS}/apksigner" verify --print-certs "${APK_DIR}/simplex-private-${VERSION}-arm64.apk"
-          echo "APK_PATH=${APK_DIR}/simplex-private-${VERSION}-arm64.apk" >> "$GITHUB_ENV"
           ls -la "${APK_DIR}/simplex-private-${VERSION}-arm64.apk"
+
+      - name: Upload signed APK for the test job
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-apk
+          path: apps/multiplatform/android/build/outputs/apk/foss/release/simplex-private-*-arm64.apk
+          if-no-files-found: error
+
+  two-phone-test:
+    name: Two emulators, live ephemeral session
+    runs-on: ubuntu-24.04-arm
+    needs: build-apk
+    timeout-minutes: 180
+    # Only the latest run matters; cancel superseded ones (each push
+    # of test files used to queue a full run).
+    concurrency:
+      group: two-phone-test
+      cancel-in-progress: true
+
+    env:
+      AVD_A: phoneA
+      AVD_B: phoneB
+      SERIAL_A: emulator-5554
+      SERIAL_B: emulator-5556
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ARM64 runners ship WITHOUT a preinstalled Android SDK (unlike
+      # ubuntu-latest x86_64). Install cmdline-tools + platform-tools
+      # (adb/sdkmanager); the driver installs the emulator package and
+      # the arm64 system image itself. Sets ANDROID_HOME for the driver.
+      - name: Set up Android SDK (cmdline-tools + platform-tools)
+        uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools"
+
+      - name: Set up JDK 17 (Maestro is a JVM app)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Download signed APK from the build job
+        uses: actions/download-artifact@v4
+        with:
+          name: test-apk
+          path: test-apk
 
       - name: Install Maestro CLI
         # Pin Maestro 1.39.0 (last 1.x). The flows use 1.x YAML syntax
@@ -140,6 +171,8 @@ jobs:
       - name: Run two-phone test
         run: |
           set -euo pipefail
+          APK_PATH="$(ls test-apk/*.apk | head -n 1)"
+          echo "Testing APK: $APK_PATH"
           bash tests/two-phone/run-two-phone-test.sh "$APK_PATH"
 
       - name: Upload test logs and screenshots
