@@ -92,6 +92,9 @@ get_invite_link() {
   local attempt link
   for attempt in 1 2 3; do
     rm -f "$png"
+    # Wake the screen first: screencap of a sleeping device fails/empties.
+    timeout 30 adb -s "$serial" shell input keyevent KEYCODE_WAKEUP >/dev/null 2>&1 || true
+    sleep 2
     # Method 1: on-device screencap + pull (avoids binary-stdout mangling).
     timeout 60 adb -s "$serial" shell screencap -p /sdcard/invite.png >"$OUT_DIR/screencap-${serial}.log" 2>&1 || true
     timeout 60 adb -s "$serial" pull /sdcard/invite.png "$png" >"$OUT_DIR/pull-${serial}.log" 2>&1 || true
@@ -113,6 +116,12 @@ get_invite_link() {
     sleep 5
   done
   log "invite screenshot failed for $serial after 3 attempts" >&2
+  # Surface the adb errors in the job log (the .log files are only in
+  # the artifact, which is not downloadable with Contents-scope).
+  for f in "$OUT_DIR/screencap-${serial}.log" "$OUT_DIR/pull-${serial}.log" "$OUT_DIR/execout-${serial}.log"; do
+    echo "--- $f ---" >&2
+    tail -n 5 "$f" 2>/dev/null | sed 's/^/    /' >&2 || true
+  done
   return 1
 }
 
@@ -237,6 +246,12 @@ fi
 
 for s in "$SERIAL_A" "$SERIAL_B"; do
   timeout 30 adb -s "$s" shell input keyevent 82 || true
+  # Keep the screen ON: a sleeping screen makes `adb screencap` fail
+  # (run 26: capture failed on both methods in Phase 2 and Phase 6).
+  # 30-min timeout + stay-on-while-plugged-in + svc power stayon.
+  timeout 30 adb -s "$s" shell settings put system screen_off_timeout 1800000 || true
+  timeout 30 adb -s "$s" shell settings put global stay_on_while_plugged_in 3 || true
+  timeout 30 adb -s "$s" shell svc power stayon true || true
   timeout 30 adb -s "$s" shell settings put global window_animation_scale 0
   timeout 30 adb -s "$s" shell settings put global transition_animation_scale 0
   timeout 30 adb -s "$s" shell settings put global animator_duration_scale 0
