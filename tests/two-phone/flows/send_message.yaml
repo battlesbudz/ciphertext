@@ -9,9 +9,12 @@ appId: chat.simplex.app
 - inputText: "${TEXT}"
 - tapOn:
     text: "Send Message"
+# The sender's own chat is SLOW to show the sent message under houdini
+# (run 34: A's msg reached B at 11:46 but only appeared in A's own chat
+# by ~11:49, ~5 min after Send). Wait up to 5 min, not 90s.
 - extendedWaitUntil:
     visible:
       text: "${TEXT}"
-    timeout: 90000
+    timeout: 300000
 - assertVisible:
     text: "${TEXT}"
