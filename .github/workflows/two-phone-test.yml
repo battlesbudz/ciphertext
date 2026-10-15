@@ -31,7 +31,13 @@ permissions:
 jobs:
   two-phone-test:
     name: Two emulators, live ephemeral session
-    runs-on: ubuntu-latest
+    # ARM64 runner: the emulators are arm64-v8a images running NATIVELY.
+    # The x86_64 runner path was abandoned: the arm64 APK runs via the
+    # houdini native bridge there, but the app hung on "Opening database…"
+    # for 300s+ under translation (run 38658640258). Native arm64 removes
+    # the entire translation variable, and Maestro 1.39.0 is a JVM app
+    # (JARs + shell launcher), so it runs on ARM64 Linux with Java 17.
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 180
     # Only the latest run matters; cancel superseded ones (each push
     # of test files used to queue a full run).
