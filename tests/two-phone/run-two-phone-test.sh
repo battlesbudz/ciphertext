@@ -272,6 +272,15 @@ for i in $(seq 1 10); do
   if grep -q "Private and secure messaging" "$OUT_DIR/ui-${SERIAL_A}-poll${i}.xml" 2>/dev/null; then
     log "welcome screen visible after ~$((i * 30))s"
     WELCOME_SEEN=1
+    # Diagnostic: does MAESTRO's own view of the hierarchy contain the
+    # welcome text? uiautomator saw it; Maestro could not. Dump it.
+    log "Maestro hierarchy diagnostic (does Maestro see the welcome text?)"
+    timeout 120 maestro --device "$SERIAL_A" hierarchy >"$OUT_DIR/maestro-hierarchy-a.txt" 2>&1 || log "maestro hierarchy rc=$?"
+    if grep -qi "private and secure" "$OUT_DIR/maestro-hierarchy-a.txt" 2>/dev/null; then
+      grep -i "private and secure" "$OUT_DIR/maestro-hierarchy-a.txt" | head -5 | while IFS= read -r line; do log "MAESTRO-HIER: $line"; done
+    else
+      log "MAESTRO-HIER: 'private and secure' NOT in Maestro hierarchy ($(wc -l < "$OUT_DIR/maestro-hierarchy-a.txt" 2>/dev/null || echo 0) lines)"
+    fi
     break
   fi
   log "still not on welcome screen after ~$((i * 30))s (round $i/10)"
