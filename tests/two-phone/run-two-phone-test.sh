@@ -82,7 +82,16 @@ maestro_run() {
 get_invite_link() {
   local serial="$1"
   local png="$OUT_DIR/invite-${serial}.png"
-  timeout 60 adb -s "$serial" exec-out screencap -p > "$png"
+  # File-based capture: `adb exec-out screencap` can return an empty or
+  # non-PNG stream (run 22: "could not read image" instantly). Writing
+  # the PNG on-device and pulling it avoids the binary-stdout path.
+  timeout 60 adb -s "$serial" shell screencap -p /sdcard/invite.png >/dev/null 2>&1 || true
+  timeout 60 adb -s "$serial" pull /sdcard/invite.png "$png" >/dev/null 2>&1 || true
+  if [ ! -s "$png" ]; then
+    log "invite screenshot missing/empty for $serial (screencap+pull failed)"
+    return 1
+  fi
+  log "invite screenshot for $serial: $(stat -c%s "$png") bytes"
   python3 "$TEST_DIR/qr_decode.py" "$png"
 }
 
