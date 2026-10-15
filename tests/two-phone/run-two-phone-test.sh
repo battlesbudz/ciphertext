@@ -10,13 +10,14 @@
 # printed at the end and logs land in $OUT_DIR (uploaded as an artifact).
 #
 # NOTE: the APK is arm64-only (abiFilters in build.gradle.kts), so the
-# runner is ubuntu-24.04-arm and the emulators are arm64-v8a images
-# running NATIVELY (no translation). The earlier x86_64-runner path ran
-# the APK via the houdini native bridge, but the app hung on
-# "Opening database…" for 300s+ under translation; native arm64 removes
-# that variable. (Emulator 37.x on an x86_64 host refuses arm64 images:
-# "Avd's CPU Architecture 'arm64' is not supported by the QEMU2 emulator
-# on x86_64 host" — hence the ARM64 runner, not x86_64 emulators.)
+# emulators are x86_64 Google-APIs images on the x86_64 runner with KVM.
+# The arm64 APK installs and runs via the image's native bridge (houdini:
+# ro.product.cpu.abilist includes arm64-v8a). The ARM64-runner path was
+# tried and abandoned: Google's Android SDK host tools (emulator,
+# AAPT2) are x86_64-only for Linux, so ARM64 runners have no official
+# emulator package and AGP's AAPT2 fails there. If the app hangs on
+# "Opening database…" under translation, Phase 0.5 diagnostics (logcat +
+# CPU) identify whether it is spinning, blocked, or crash-looping.
 
 set -u
 APK="${1:?usage: run-two-phone-test.sh <path-to-signed-apk>}"
@@ -97,20 +98,20 @@ deliver_invite() {
 # =====================================================================
 # Phase 0: emulators
 # =====================================================================
-log "=== Phase 0: create + boot emulators (arm64 native, KVM) ==="
+log "=== Phase 0: create + boot emulators (x86_64, KVM) ==="
 # Pin the AVD home BEFORE creating anything, so avdmanager and the
 # emulator binary agree on where AVDs live.
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 mkdir -p "$ANDROID_AVD_HOME"
-sdkmanager --install "emulator" "platform-tools" "system-images;android-30;google_apis;arm64-v8a" >"$OUT_DIR/sdkmanager.log" 2>&1 || {
+sdkmanager --install "emulator" "platform-tools" "system-images;android-30;google_apis;x86_64" >"$OUT_DIR/sdkmanager.log" 2>&1 || {
   fail "sdkmanager install of emulator + system image"
   cat "$OUT_DIR/sdkmanager.log"
   exit 1
 }
-echo "no" | avdmanager create avd -n "$AVD_A" -k "system-images;android-30;google_apis;arm64-v8a" --device "pixel_5" --force >"$OUT_DIR/avd-a.log" 2>&1 || {
+echo "no" | avdmanager create avd -n "$AVD_A" -k "system-images;android-30;google_apis;x86_64" --device "pixel_5" --force >"$OUT_DIR/avd-a.log" 2>&1 || {
   fail "avdmanager create AVD A"; cat "$OUT_DIR/avd-a.log"; exit 1
 }
-echo "no" | avdmanager create avd -n "$AVD_B" -k "system-images;android-30;google_apis;arm64-v8a" --device "pixel_5" --force >"$OUT_DIR/avd-b.log" 2>&1 || {
+echo "no" | avdmanager create avd -n "$AVD_B" -k "system-images;android-30;google_apis;x86_64" --device "pixel_5" --force >"$OUT_DIR/avd-b.log" 2>&1 || {
   fail "avdmanager create AVD B"; cat "$OUT_DIR/avd-b.log"; exit 1
 }
 # Verify the AVD .ini files actually landed in the pinned home.
@@ -129,16 +130,17 @@ for avd in "$AVD_A" "$AVD_B"; do
   fi
 done
 
-# KVM: emulation REQUIRES hardware acceleration. The runner user may not
-# be in the kvm group on this image, so grant /dev/kvm access directly.
-# Group membership would need a re-login; chmod takes effect immediately
-# in this shell. sudo is passwordless on GitHub-hosted runners.
+# KVM: x86_64 emulation REQUIRES hardware acceleration. The runner user
+# is not in the kvm group on this image (group line shows no members), so
+# grant /dev/kvm access directly. Group membership would need a re-login;
+# chmod takes effect immediately in this shell. sudo is passwordless on
+# GitHub-hosted runners.
 if [ -e /dev/kvm ]; then
   sudo chmod 666 /dev/kvm 2>/dev/null || sudo chown "$USER" /dev/kvm 2>/dev/null || true
   if [ -w /dev/kvm ]; then
     log "KVM available (/dev/kvm writable)"
   else
-    fail "KVM NOT available: /dev/kvm not writable even after chmod; emulation cannot start"
+    fail "KVM NOT available: /dev/kvm not writable even after chmod; x86_64 emulation cannot start"
     ls -la /dev/kvm || true
     exit 1
   fi
@@ -212,24 +214,27 @@ for s in "$SERIAL_A" "$SERIAL_B"; do
 done
 
 log "=== Install APK on both ==="
-# Sanity: the (native arm64) emulator's abilist must include arm64-v8a.
+# The arm64 APK needs the native bridge: abilist must include arm64-v8a.
 for s in "$SERIAL_A" "$SERIAL_B"; do
   ABIS="$(timeout 30 adb -s "$s" shell getprop ro.product.cpu.abilist 2>/dev/null | tr -d '\r')"
   log "abilist [$s]: $ABIS"
   case "$ABIS" in
     *arm64-v8a*) ;;
-    *) fail "arm64-v8a missing from abilist on $s; arm64 APK cannot install"; exit 1 ;;
+    *) fail "native bridge missing on $s (no arm64-v8a in abilist); arm64 APK cannot install"; exit 1 ;;
   esac
 done
 timeout 300 adb -s "$SERIAL_A" install -r -g "$APK" >"$OUT_DIR/install-a.log" 2>&1 || fail "install on A"
 timeout 300 adb -s "$SERIAL_B" install -r -g "$APK" >"$OUT_DIR/install-b.log" 2>&1 || fail "install on B"
 
 # =====================================================================
-# Phase 0.5: UI dump diagnostic (first-launch screen ground truth)
+# Phase 0.5: first-launch watch + stuck-app diagnostics
 # =====================================================================
-# Onboarding assumes the welcome screen says "Private and secure messaging".
-# Dump the real first-screen texts/content-descriptions into the job log
-# so a wrong assumption is visible instead of a bare "not visible" failure.
+# The app must reach the welcome screen ("Private and secure messaging").
+# On the x86_64 runner it runs under houdini translation, and a previous
+# run sat on "Opening database…" for 300s+. Poll the UI for 300s; if the
+# welcome screen never appears, capture process/CPU/logcat diagnostics
+# (spin loop vs blocked vs crash loop) and fail fast instead of burning
+# another 600s in onboarding waits.
 dump_ui() {
   local serial="$1" tag="$2"
   log "--- UI dump [$serial] $tag ---"
@@ -242,11 +247,42 @@ dump_ui() {
     log "UI dump failed for $serial ($tag)"
   fi
 }
-log "=== Phase 0.5: launch app on A, dump first screen ==="
+diag_app_stuck() {
+  local serial="$1"
+  log "--- app diagnostics [$serial] ---"
+  local pid
+  pid="$(timeout 30 adb -s "$serial" shell pidof "$APP_ID" 2>/dev/null | tr -d '\r' | awk '{print $1}')"
+  log "app PID: ${pid:-<not running>}"
+  if [ -n "$pid" ]; then
+    log "proc stat (state + utime/stime ticks):"
+    timeout 30 adb -s "$serial" shell cat "/proc/$pid/stat" 2>/dev/null | awk '{print "    state="$3" utime="$14" stime="$15}' || true
+    log "top snapshot (simplex lines):"
+    timeout 30 adb -s "$serial" shell top -n 1 -b 2>/dev/null | grep -i simplex | sed 's/^/    /' || true
+  fi
+  log "logcat (FATAL/exception/simplex, last 40 lines):"
+  timeout 60 adb -s "$serial" logcat -d 2>/dev/null | grep -i "fatal\|exception\|AndroidRuntime\|chat.simplex\|simplex" | tail -n 40 | sed 's/^/    /' || true
+}
+log "=== Phase 0.5: launch app on A, watch first screen (up to 300s) ==="
 timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$APP_ID.MainActivity" >"$OUT_DIR/firstlaunch-a.log" 2>&1 || true
-log "waiting 30s for first launch (slow under native-bridge translation)"
-sleep 30
-dump_ui "$SERIAL_A" "first-screen"
+WELCOME_SEEN=0
+for i in $(seq 1 10); do
+  sleep 30
+  timeout 60 adb -s "$SERIAL_A" shell uiautomator dump /sdcard/window_dump.xml >/dev/null 2>&1 || true
+  timeout 60 adb -s "$SERIAL_A" pull /sdcard/window_dump.xml "$OUT_DIR/ui-${SERIAL_A}-poll${i}.xml" >/dev/null 2>&1 || true
+  if grep -q "Private and secure messaging" "$OUT_DIR/ui-${SERIAL_A}-poll${i}.xml" 2>/dev/null; then
+    log "welcome screen visible after ~$((i * 30))s"
+    WELCOME_SEEN=1
+    break
+  fi
+  log "still not on welcome screen after ~$((i * 30))s (round $i/10)"
+done
+if [ "$WELCOME_SEEN" != "1" ]; then
+  log "app never reached the welcome screen in 300s; last UI dump:"
+  dump_ui "$SERIAL_A" "stuck"
+  diag_app_stuck "$SERIAL_A"
+  fail "app stuck before welcome screen (still 'Opening database…' after 300s)"
+  exit 1
+fi
 
 # =====================================================================
 # Phase 1: onboarding on both (SEQUENTIAL)
