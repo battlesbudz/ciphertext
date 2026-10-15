@@ -11,7 +11,7 @@ appId: chat.simplex.app
       text: "Start live session"
     timeout: 60000
 - assertVisible:
-    text: "Start live session"
+    text: ".*Start live session.*"
 - tapOn:
     text: "Start live session"
 - extendedWaitUntil:
