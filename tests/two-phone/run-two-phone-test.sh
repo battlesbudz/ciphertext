@@ -259,14 +259,22 @@ diag_app_stuck() {
     log "top snapshot (simplex lines):"
     timeout 30 adb -s "$serial" shell top -n 1 -b 2>/dev/null | grep -i simplex | sed 's/^/    /' || true
   fi
-  log "logcat (FATAL/exception/simplex, last 40 lines):"
-  timeout 60 adb -s "$serial" logcat -d 2>/dev/null | grep -i "fatal\|exception\|AndroidRuntime\|chat.simplex\|simplex" | tail -n 40 | sed 's/^/    /' || true
+  log "logcat crash buffer (last 40 lines):"
+  timeout 60 adb -s "$serial" logcat -d -b crash 2>/dev/null | tail -n 40 | sed 's/^/    /' || true
+  log "logcat main buffer (death/crash/kill signals, excl. uiautomator noise, last 40 lines):"
+  timeout 60 adb -s "$serial" logcat -d 2>/dev/null | grep -i "fatal\|exception\|has died\|killing\|force finishing\|tombstone\|signal\|lowmemorykiller\|ANR\|chat.simplex" | grep -v "uiautomator" | tail -n 40 | sed 's/^/    /' || true
 }
 log "=== Phase 0.5: launch app on A, watch first screen (up to 300s) ==="
 timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$APP_ID.MainActivity" >"$OUT_DIR/firstlaunch-a.log" 2>&1 || true
+log "first-launch am start output:"
+sed 's/^/    /' "$OUT_DIR/firstlaunch-a.log" || true
 WELCOME_SEEN=0
+RELAUNCHED=0
 for i in $(seq 1 10); do
   sleep 30
+  ROUND_PID="$(timeout 30 adb -s "$SERIAL_A" shell pidof "$APP_ID" 2>/dev/null | tr -d '\r' | awk '{print $1}')"
+  ROUND_FOCUS="$(timeout 30 adb -s "$SERIAL_A" shell dumpsys window 2>/dev/null | grep -m1 "mCurrentFocus" | tr -d '\r' | sed 's/^ *//')"
+  log "round $i: app PID=${ROUND_PID:-<not running>} focus: ${ROUND_FOCUS:-<unknown>}"
   timeout 60 adb -s "$SERIAL_A" shell uiautomator dump /sdcard/window_dump.xml >/dev/null 2>&1 || true
   timeout 60 adb -s "$SERIAL_A" pull /sdcard/window_dump.xml "$OUT_DIR/ui-${SERIAL_A}-poll${i}.xml" >/dev/null 2>&1 || true
   if grep -q "Private and secure messaging" "$OUT_DIR/ui-${SERIAL_A}-poll${i}.xml" 2>/dev/null; then
@@ -284,12 +292,21 @@ for i in $(seq 1 10); do
     break
   fi
   log "still not on welcome screen after ~$((i * 30))s (round $i/10)"
+  if [ "$i" = "5" ] && [ "$RELAUNCHED" != "1" ] && [ -z "$ROUND_PID" ]; then
+    log "RELAUNCH RETRY (round 5): app process gone; force-stop + relaunch once"
+    timeout 60 adb -s "$SERIAL_A" shell am force-stop "$APP_ID" >/dev/null 2>&1 || true
+    sleep 5
+    timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$APP_ID.MainActivity" >"$OUT_DIR/relaunch-a.log" 2>&1 || true
+    log "relaunch am start output:"
+    sed 's/^/    /' "$OUT_DIR/relaunch-a.log" || true
+    RELAUNCHED=1
+  fi
 done
 if [ "$WELCOME_SEEN" != "1" ]; then
   log "app never reached the welcome screen in 300s; last UI dump:"
   dump_ui "$SERIAL_A" "stuck"
   diag_app_stuck "$SERIAL_A"
-  fail "app stuck before welcome screen (still 'Opening database…' after 300s)"
+  fail "app never reached welcome screen in 300s (see last UI dump above)"
   exit 1
 fi
 
