@@ -481,15 +481,30 @@ fi
 # Phase 3: message exchange
 # =====================================================================
 log "=== Phase 3: message exchange ==="
-MSG_OK=0
+# Try each direction INDEPENDENTLY (do not short-circuit): if A->B fails
+# we still learn whether B->A works (directional signal). Settle 30s
+# first - the connection handshake needs time after B's Connect.
+log "letting the connection handshake settle (30s)"
+sleep 30
+MSG_AB=0; MSG_BA=0
 if maestro_run "$SERIAL_A" "$FLOWS/open_chat.yaml" CONTACT_NAME="$NAME_B" \
   && maestro_run "$SERIAL_A" "$FLOWS/send_message.yaml" TEXT="$MSG_A" \
   && maestro_run "$SERIAL_B" "$FLOWS/open_chat.yaml" CONTACT_NAME="$NAME_A" \
-  && maestro_run "$SERIAL_B" "$FLOWS/assert_text_visible.yaml" TEXT="$MSG_A" \
-  && maestro_run "$SERIAL_B" "$FLOWS/send_message.yaml" TEXT="$MSG_B" \
-  && maestro_run "$SERIAL_A" "$FLOWS/assert_text_visible.yaml" TEXT="$MSG_B"; then
-  MSG_OK=1
+  && maestro_run "$SERIAL_B" "$FLOWS/assert_text_visible.yaml" TEXT="$MSG_A"; then
+  MSG_AB=1; log "A->B message delivered"
+else
+  log "A->B message NOT delivered"
 fi
+if maestro_run "$SERIAL_B" "$FLOWS/open_chat.yaml" CONTACT_NAME="$NAME_A" \
+  && maestro_run "$SERIAL_B" "$FLOWS/send_message.yaml" TEXT="$MSG_B" \
+  && maestro_run "$SERIAL_A" "$FLOWS/open_chat.yaml" CONTACT_NAME="$NAME_B" \
+  && maestro_run "$SERIAL_A" "$FLOWS/assert_text_visible.yaml" TEXT="$MSG_B"; then
+  MSG_BA=1; log "B->A message delivered"
+else
+  log "B->A message NOT delivered"
+fi
+MSG_OK=0
+if [ "$MSG_AB" = "1" ] && [ "$MSG_BA" = "1" ]; then MSG_OK=1; fi
 if [ "$MSG_OK" = "1" ]; then
   R_C="PASS"; pass "(c) messages flow both ways"
 else
