@@ -111,6 +111,8 @@ xml = open(sys.argv[1], encoding="utf-8", errors="replace").read()
 # match (the full link beats any short-link variant).
 cands = [html.unescape(m) for m in re.findall(r'text="(https?://[^"]*)"', xml)]
 cands = [cc for cc in cands if cc.startswith("http")]
+for cc in sorted(set(cands), key=len, reverse=True):
+    print(f"CAND len={len(cc)} head={cc[:45]!r} tail={cc[-25:]!r}", file=sys.stderr)
 print(max(cands, key=len) if cands else "")
 PYEXTRACT
 )" || link=""
@@ -450,6 +452,9 @@ if maestro_run "$SERIAL_A" "$FLOWS/create_invite.yaml"; then
     # B: connect via the deep-linked invitation (profile picker dialog).
     if ! maestro_run "$SERIAL_B" "$FLOWS/connect_via_invite.yaml"; then
       fail "B could not connect via invitation"
+      # Ground truth: what is B actually showing after the deep link?
+      # (loading? error alert? chat list? nothing?)
+      dump_maestro_hierarchy "$SERIAL_B" "connect-fail"
     fi
     # A: accept B's contact request.
     if maestro_run "$SERIAL_A" "$FLOWS/accept_request.yaml" CONTACT_NAME="$NAME_B"; then
