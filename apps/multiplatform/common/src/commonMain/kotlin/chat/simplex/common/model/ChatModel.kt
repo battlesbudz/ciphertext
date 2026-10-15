@@ -520,6 +520,10 @@ object ChatModel {
     }
 
     suspend fun addChatItem(rhId: Long?, chatInfo: ChatInfo, cItem: ChatItem) {
+      // Live session protocol messages never enter the UI (private fork):
+      // defense in depth behind the SimpleXAPI filters.
+      val addText = (cItem.content.msgContent as? MsgContent.MCText)?.text
+      if (addText != null && LiveSessionManager.isProtocolMessage(addText)) return
       // updates membersRequireAttention
       val cInfo = if (chatInfo is ChatInfo.Direct && chatInfo.chatDeleted) {
         // mark chat non deleted
@@ -609,6 +613,9 @@ object ChatModel {
       }
 
     suspend fun upsertChatItem(rhId: Long?, cInfo: ChatInfo, cItem: ChatItem): Boolean {
+      // Live session protocol messages never enter the UI (private fork).
+      val upText = (cItem.content.msgContent as? MsgContent.MCText)?.text
+      if (upText != null && LiveSessionManager.isProtocolMessage(upText)) return false
       var itemAdded = false
       // update chat list
       if (cInfo.groupChatScope() == null) {

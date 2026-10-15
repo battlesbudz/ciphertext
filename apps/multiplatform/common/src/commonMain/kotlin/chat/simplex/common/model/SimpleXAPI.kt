@@ -1757,6 +1757,11 @@ object ChatController {
       withContext(Dispatchers.Main) {
         chatModel.chatsContext.removeChat(chat.remoteHostId, cInfo.id)
       }
+      // Live session teardown (private fork): deleting the session contact
+      // via the UI must also stop the session, not leave it half-alive.
+      if (cInfo.chatType == ChatType.Direct) {
+        LiveSessionManager.onLocalChatDeleted(cInfo.apiId)
+      }
     }
   }
 
@@ -2800,8 +2805,15 @@ object ChatController {
     when (r) {
       is CR.ContactDeletedByContact -> {
         if (active(r.user) && r.contact.directOrUsed) {
-          withContext(Dispatchers.Main) {
-            chatModel.chatsContext.updateContact(rhId, r.contact)
+          // Live session peer wipe (private fork): if the peer deleted our
+          // live-session contact, wipe our side too (local only) instead of
+          // leaving a "contact deleted" shell with stale history.
+          if (LiveSessionManager.isLiveSessionContact(r.contact.apiId)) {
+            LiveSessionManager.onContactDeletedByPeer(r.contact.apiId)
+          } else {
+            withContext(Dispatchers.Main) {
+              chatModel.chatsContext.updateContact(rhId, r.contact)
+            }
           }
         }
       }
@@ -2956,6 +2968,10 @@ object ChatController {
         r.chatItems.forEach { chatItem ->
           val cInfo = chatItem.chatInfo
           val cItem = chatItem.chatItem
+          // Live session protocol filter (private fork): status updates for
+          // protocol messages must not re-insert them into the UI.
+          val stText = (cItem.content.msgContent as? MsgContent.MCText)?.text
+          if (stText != null && LiveSessionManager.isProtocolMessage(stText)) return@forEach
           if (!cItem.isDeletedContent && active(r.user)) {
             withContext(Dispatchers.Main) {
               chatModel.chatsContext.upsertChatItem(rhId, cInfo, cItem)
@@ -3625,6 +3641,11 @@ object ChatController {
   private suspend fun chatItemUpdateNotify(rh: Long?, user: UserLike, aChatItem: AChatItem) {
     val cInfo = aChatItem.chatInfo
     val cItem = aChatItem.chatItem
+    // Live session protocol filter (private fork): updates for protocol
+    // messages (e.g. sent-status changes) must not re-insert them into
+    // the UI. The NewChatItems filter already handled + deleted them.
+    val upText = (cItem.content.msgContent as? MsgContent.MCText)?.text
+    if (upText != null && LiveSessionManager.isProtocolMessage(upText)) return
     val notify = { ntfManager.notifyMessageReceived(rh, user, cInfo, cItem) }
     if (!activeUser(rh, user)) {
       notify()

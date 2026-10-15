@@ -154,12 +154,25 @@ Behavioral compliance with this spec:
   (`\u001fLIVE_HB:<sessionId>:<token>`), via the standard send-message API.
 - **Filtering**: incoming heartbeats and session invites are intercepted in
   the chat-response pipeline, never surface in the UI, and are deleted from
-  the local store immediately.
+  the local store immediately. The filter applies at EVERY UI-insertion
+  point — `NewChatItems`, `ChatItemUpdated`, `ChatItemsStatusesUpdated`,
+  plus guards in `ChatsContext.addChatItem`/`upsertChatItem` — because a
+  status update for a sent protocol message otherwise re-inserts it into
+  the chat view after the initial filter deleted it (the bug found in
+  Battles's 2026-10-15 two-phone test). Bare `LIVE_HB:` / `LIVE_INVITE:`
+  prefixes are also treated as protocol, in case any stage strips the
+  `\u001f` marker.
 - **Timeout**: a watchdog checks every 5 seconds; if no peer heartbeat
   arrives within 30 seconds, the session is declared dead.
 - **Wipe**: on session end the contact is fully deleted
   (`ChatDeleteMode.Full`), which destroys all messages, keys, and server
-  queues. Nothing carries over.
+  queues. Nothing carries over. The wipe also removes the chat from the
+  UI model and clears the open chat view — the core delete alone leaves
+  stale history on screen. Leaving the app (Android `onStop`, except
+  rotation) ends the session and wipes it immediately; the 30 s timeout
+  alone is not enough, since a seconds-long backgrounding never trips
+  it. If the peer deleted the session contact, the local side wipes too
+  (without notifying back).
 - **Reconnect**: next-session invitations are exchanged at session start
   (marked `\u001fLIVE_INVITE:` messages). On timeout, the smaller token
   initiates a new contact via the stored invitation; the waiter auto-accepts.

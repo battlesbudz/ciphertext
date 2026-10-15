@@ -81,7 +81,12 @@ object LiveSessionManager {
   )
 
   fun isProtocolMessage(text: String): Boolean =
-    text.startsWith(HEARTBEAT_PREFIX) || text.startsWith(INVITE_PREFIX)
+    text.startsWith(HEARTBEAT_PREFIX) || text.startsWith(INVITE_PREFIX) ||
+    // Fallback: if any pipeline stage strips the \u001f control char,
+    // the bare prefixes still identify protocol messages. These prefixes
+    // are reserved by the live-session protocol; ordinary user text
+    // starting with them is treated as protocol, by design.
+    text.startsWith("LIVE_HB:") || text.startsWith("LIVE_INVITE:")
 
   private fun randomSessionId(): String =
     Random.nextBytes(16).joinToString("") { "%02x".format(it) }
@@ -237,6 +242,10 @@ object LiveSessionManager {
       // Best effort: state is already cleared.
     }
 
+    // Remove the chat from the UI model and clear the open chat view:
+    // the core delete alone leaves stale history on screen.
+    removeSessionChatFromUI(s.contactId)
+
     if (userInitiated) {
       pendingReconnect = null
       reconnecting.value = false
@@ -340,6 +349,65 @@ object LiveSessionManager {
     reconnecting.value = false
     reconnectTimeoutJob?.cancel()
     reconnectTimeoutJob = null
+  }
+
+  // True if this contact is the current live-session contact.
+  fun isLiveSessionContact(contactId: Long): Boolean =
+    sessionState.value?.contactId == contactId
+
+  // Called when the app is backgrounded (Android MainActivity.onStop).
+  // Leaving the app kills the session and wipes it — the 30 s timeout
+  // alone is not enough, since a brief backgrounding never trips it.
+  // Fire-and-forget: if the process dies before the delete lands, the
+  // peer's watchdog (no heartbeats) wipes the peer side anyway.
+  fun onAppBackgrounded() {
+    scope.launch {
+      try { endSession(userInitiated = true) } catch (e: Exception) { /* best effort */ }
+    }
+  }
+
+  // Called when the peer deleted our live-session contact (we received
+  // ContactDeletedByContact). Wipe our side too, WITHOUT notifying the
+  // peer back — the peer is already gone, so a notify would ping-pong.
+  suspend fun onContactDeletedByPeer(contactId: Long) {
+    val s = sessionState.value ?: return
+    if (s.contactId != contactId) return
+    stopTimers()
+    sessionState.value = null
+    clearReconnectState()
+    try {
+      ChatController.apiDeleteChat(null, ChatType.Direct, contactId, ChatDeleteMode.Full(notify = false))
+    } catch (e: Exception) {
+      // Best effort: state is already cleared.
+    }
+    removeSessionChatFromUI(contactId)
+    statusText.value = "Peer left — all messages wiped"
+  }
+
+  // Called when the live-session contact was deleted locally (e.g. manual
+  // UI delete). The core delete already happened — just tear down the
+  // session state and UI, no re-delete, no reconnect.
+  suspend fun onLocalChatDeleted(contactId: Long) {
+    val s = sessionState.value ?: return
+    if (s.contactId != contactId) return
+    stopTimers()
+    sessionState.value = null
+    clearReconnectState()
+    removeSessionChatFromUI(contactId)
+    statusText.value = "Live session ended — all messages wiped"
+  }
+
+  // Remove the session chat from the UI model and clear the open chat
+  // view (navigating back to the list). The core delete does not do this.
+  private suspend fun removeSessionChatFromUI(contactId: Long) {
+    withContext(Dispatchers.Main) {
+      val chat = ChatController.chatModel.getContactChat(contactId) ?: return@withContext
+      ChatController.chatModel.chatsContext.removeChat(chat.remoteHostId, chat.id)
+      if (ChatController.chatModel.chatId.value == chat.id) {
+        ChatController.chatModel.chatsContext.chatItems.clearAndNotify()
+        ChatController.chatModel.chatId.value = null
+      }
+    }
   }
 
   private fun startTimers() {

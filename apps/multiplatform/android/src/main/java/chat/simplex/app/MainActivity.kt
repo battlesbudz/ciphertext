@@ -86,6 +86,12 @@ class MainActivity: FragmentActivity() {
     super.onStop()
     VideoPlayerHolder.stopAll()
     AppLock.appWasHidden()
+    // Live session wipe on exit (private fork): leaving the app kills the
+    // live session and wipes it. Skip on rotation (config change) — the
+    // activity restarts but the user never left.
+    if (!isChangingConfigurations) {
+      LiveSessionManager.onAppBackgrounded()
+    }
   }
 
   override fun onBackPressed() {
