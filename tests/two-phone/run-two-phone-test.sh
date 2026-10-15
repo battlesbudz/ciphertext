@@ -82,23 +82,52 @@ maestro_run() {
 }
 
 # --- QR decode: screenshot one device, return the invitation link. ---
-# Capture the invitation QR from a device screenshot and decode it.
-# Stdout is RESERVED for the decoded link (this function is called inside
-# $(...)): every diagnostic here goes to stderr explicitly, or a log line
-# becomes the "link" (run 24). Retries 3x: adb capture is flaky.
+# Extract the invitation link from a device's screen.
+# Stdout is RESERVED for the link (this function is called inside
+# $(...)): every diagnostic here goes to stderr explicitly, or a log
+# line becomes the "link" (run 24).
+# PRIMARY (run 28): read the link text from the UI hierarchy. The
+# invite screen renders the full link in a BasicTextField
+# (LinkTextView in NewChatView.kt - a text field, so no ellipsis
+# truncation), and `uiautomator dump` exposes it as a node text.
+# This needs no screenshot at all.
+# FALLBACK: screenshot + QR decode (kept in case the text field ever
+# truncates). `adb screencap` is broken on this emulator (runs 26-27:
+# both methods produce empty output with empty adb error logs).
 get_invite_link() {
   local serial="$1"
+  local xml="$OUT_DIR/ui-invite-${serial}.xml"
   local png="$OUT_DIR/invite-${serial}.png"
   local attempt link
+  # --- Primary: UI hierarchy text ---
+  timeout 60 adb -s "$serial" shell uiautomator dump /sdcard/ui-invite.xml >"$OUT_DIR/uidump-${serial}.log" 2>&1 || true
+  timeout 60 adb -s "$serial" pull /sdcard/ui-invite.xml "$xml" >"$OUT_DIR/uipull-${serial}.log" 2>&1 || true
+  if [ -s "$xml" ]; then
+    link="$(python3 - "$xml" <<'PYEXTRACT'
+import re, sys, html
+xml = open(sys.argv[1], encoding="utf-8", errors="replace").read()
+# text="..." attributes; the link is the only http(s) text on the
+# invite screen. Unescape XML entities (&amp; -> &). Take the longest
+# match (the full link beats any short-link variant).
+cands = [html.unescape(m) for m in re.findall(r'text="(https?://[^"]*)"', xml)]
+cands = [cc for cc in cands if cc.startswith("http")]
+print(max(cands, key=len) if cands else "")
+PYEXTRACT
+)" || link=""
+    case "$link" in
+      http*) log "invite link from UI hierarchy (${#link} chars)" >&2; printf '%s' "$link"; return 0 ;;
+      *) log "UI hierarchy had no invite link for $serial" >&2 ;;
+    esac
+  else
+    log "uiautomator dump produced no file for $serial" >&2
+  fi
+  # --- Fallback: screenshot + QR decode ---
   for attempt in 1 2 3; do
     rm -f "$png"
-    # Wake the screen first: screencap of a sleeping device fails/empties.
     timeout 30 adb -s "$serial" shell input keyevent KEYCODE_WAKEUP >/dev/null 2>&1 || true
     sleep 2
-    # Method 1: on-device screencap + pull (avoids binary-stdout mangling).
     timeout 60 adb -s "$serial" shell screencap -p /sdcard/invite.png >"$OUT_DIR/screencap-${serial}.log" 2>&1 || true
     timeout 60 adb -s "$serial" pull /sdcard/invite.png "$png" >"$OUT_DIR/pull-${serial}.log" 2>&1 || true
-    # Method 2 (fallback): exec-out binary stream.
     if [ ! -s "$png" ]; then
       timeout 60 adb -s "$serial" exec-out screencap -p > "$png" 2>"$OUT_DIR/execout-${serial}.log" || true
     fi
@@ -115,13 +144,7 @@ get_invite_link() {
     fi
     sleep 5
   done
-  log "invite screenshot failed for $serial after 3 attempts" >&2
-  # Surface the adb errors in the job log (the .log files are only in
-  # the artifact, which is not downloadable with Contents-scope).
-  for f in "$OUT_DIR/screencap-${serial}.log" "$OUT_DIR/pull-${serial}.log" "$OUT_DIR/execout-${serial}.log"; do
-    echo "--- $f ---" >&2
-    tail -n 5 "$f" 2>/dev/null | sed 's/^/    /' >&2 || true
-  done
+  log "invite link extraction failed for $serial (UI hierarchy + screenshot)" >&2
   return 1
 }
 
