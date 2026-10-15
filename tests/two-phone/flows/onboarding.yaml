@@ -10,11 +10,16 @@
 # AND accessibilityText (Android contentDescription). Long waits use
 # extendedWaitUntil (no per-command timeout in 1.39.0).
 # Stage transitions run Haskell API calls under houdini translation and can
-# take 60-120s, so transition waits are generous (150-180s). Each action
-# button gets a retry tap (optional) in case the first tap landed while the
-# button was still disabled during recomposition; the retry is a no-op once
-# the screen has changed. The "___settle___" extendedWaitUntil is a 3s
-# sleep (never-matching text + optional).
+# take 60-120s, so transition waits are generous (150-180s).
+# Two modal dialogs can appear and must be dismissed, or the next screen
+# never shows:
+#   - After "Create profile": a "Duplicate display name!" alert if the
+#     creation was somehow submitted twice (dismiss with "OK"; the first
+#     submission already created the profile).
+#   - After "Continue": an "Instant notifications" info dialog explaining
+#     background running (dismiss with "OK"; the stage then advances).
+# NO retry taps: profile creation / Continue / Accept are NOT idempotent,
+# and a second tap can double-submit (run 21: duplicate-name alert).
 appId: chat.simplex.app
 ---
 - launchApp
@@ -40,11 +45,11 @@ appId: chat.simplex.app
     text: "Create profile"
 - extendedWaitUntil:
     visible:
-      text: "___settle___"
-    timeout: 3000
+      text: "Duplicate display name!"
+    timeout: 15000
     optional: true
 - tapOn:
-    text: "Create profile"
+    text: "OK"
     optional: true
 - extendedWaitUntil:
     visible:
@@ -56,11 +61,11 @@ appId: chat.simplex.app
     text: "Continue"
 - extendedWaitUntil:
     visible:
-      text: "___settle___"
-    timeout: 3000
+      text: "Instant notifications"
+    timeout: 30000
     optional: true
 - tapOn:
-    text: "Continue"
+    text: "OK"
     optional: true
 - extendedWaitUntil:
     visible:
@@ -70,14 +75,6 @@ appId: chat.simplex.app
     text: ".*Network commitments.*"
 - tapOn:
     text: "Accept"
-- extendedWaitUntil:
-    visible:
-      text: "___settle___"
-    timeout: 3000
-    optional: true
-- tapOn:
-    text: "Accept"
-    optional: true
 - extendedWaitUntil:
     visible:
       text: ".*Tap to start a new chat.*"
