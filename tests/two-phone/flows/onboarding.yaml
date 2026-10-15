@@ -1,10 +1,14 @@
 # Onboarding: first launch -> profile created -> chat list.
 # Env: PROFILE_NAME (e.g. PhoneA / PhoneB)
-# Maestro 1.39.0 syntax:
-# - text: is matched as a FULL regex against text, hintText, AND
-#   accessibilityText (Android contentDescription). So text: "Send Message"
-#   matches a button whose contentDescription is "Send Message".
-# - No per-command timeout in 1.39.0: long waits use extendedWaitUntil.
+# TRUE sequence (verified against app source, App.kt stage dispatch):
+#   Step1 welcome ("Private and secure messaging." / "Get started")
+#   Step2 profile ("Your profile" / field "Enter profile name…" / "Create profile")
+#   Step3 network ("Your network" / "Continue")
+#   Step4 commitments ("Network commitments" / "Accept")
+#   -> chat list ("Tap to start a new chat")
+# Maestro 1.39.0: text: is a FULL regex matched against text, hintText,
+# AND accessibilityText (Android contentDescription). Long waits use
+# extendedWaitUntil (no per-command timeout in 1.39.0).
 appId: chat.simplex.app
 ---
 - launchApp
@@ -18,26 +22,31 @@ appId: chat.simplex.app
     text: "Get started"
 - extendedWaitUntil:
     visible:
-      text: ".*Create your profile.*"
+      text: ".*Your profile.*"
     timeout: 90000
 - assertVisible:
-    text: ".*Create your profile.*"
+    text: ".*Your profile.*"
 - tapOn:
     text: "Enter profile name.*"
 - inputText: "${PROFILE_NAME}"
 - tapOn:
-    text: "Create"
-# Server operators / conditions screen (defaults pre-selected)
+    text: "Create profile"
+- extendedWaitUntil:
+    visible:
+      text: ".*Your network.*"
+    timeout: 90000
+- assertVisible:
+    text: ".*Your network.*"
 - tapOn:
     text: "Continue"
-    optional: true
-# Network / notifications screen
+- extendedWaitUntil:
+    visible:
+      text: ".*Network commitments.*"
+    timeout: 90000
+- assertVisible:
+    text: ".*Network commitments.*"
 - tapOn:
-    text: "Continue"
-    optional: true
-- tapOn:
-    text: "Make private connection"
-    optional: true
+    text: "Accept"
 - extendedWaitUntil:
     visible:
       text: ".*Tap to start a new chat.*"
