@@ -9,6 +9,12 @@
 # Maestro 1.39.0: text: is a FULL regex matched against text, hintText,
 # AND accessibilityText (Android contentDescription). Long waits use
 # extendedWaitUntil (no per-command timeout in 1.39.0).
+# Stage transitions run Haskell API calls under houdini translation and can
+# take 60-120s, so transition waits are generous (150-180s). Each action
+# button gets a retry tap (optional) in case the first tap landed while the
+# button was still disabled during recomposition; the retry is a no-op once
+# the screen has changed. The "___settle___" extendedWaitUntil is a 3s
+# sleep (never-matching text + optional).
 appId: chat.simplex.app
 ---
 - launchApp
@@ -29,27 +35,52 @@ appId: chat.simplex.app
 - tapOn:
     text: "Enter profile name.*"
 - inputText: "${PROFILE_NAME}"
+- waitForAnimationToEnd
 - tapOn:
     text: "Create profile"
 - extendedWaitUntil:
     visible:
+      text: "___settle___"
+    timeout: 3000
+    optional: true
+- tapOn:
+    text: "Create profile"
+    optional: true
+- extendedWaitUntil:
+    visible:
       text: ".*Your network.*"
-    timeout: 90000
+    timeout: 150000
 - assertVisible:
     text: ".*Your network.*"
 - tapOn:
     text: "Continue"
 - extendedWaitUntil:
     visible:
+      text: "___settle___"
+    timeout: 3000
+    optional: true
+- tapOn:
+    text: "Continue"
+    optional: true
+- extendedWaitUntil:
+    visible:
       text: ".*Network commitments.*"
-    timeout: 90000
+    timeout: 150000
 - assertVisible:
     text: ".*Network commitments.*"
 - tapOn:
     text: "Accept"
 - extendedWaitUntil:
     visible:
+      text: "___settle___"
+    timeout: 3000
+    optional: true
+- tapOn:
+    text: "Accept"
+    optional: true
+- extendedWaitUntil:
+    visible:
       text: ".*Tap to start a new chat.*"
-    timeout: 120000
+    timeout: 180000
 - assertVisible:
     text: ".*Tap to start a new chat.*"
