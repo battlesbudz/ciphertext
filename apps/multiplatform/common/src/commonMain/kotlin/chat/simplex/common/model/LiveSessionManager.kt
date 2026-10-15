@@ -405,9 +405,14 @@ object LiveSessionManager {
   // view (navigating back to the list). The core delete does not do this.
   private suspend fun removeSessionChatFromUI(contactId: Long) {
     withContext(Dispatchers.Main) {
-      val chat = ChatController.chatModel.getContactChat(contactId) ?: return@withContext
-      ChatController.chatModel.chatsContext.removeChat(chat.remoteHostId, chat.id)
-      if (ChatController.chatModel.chatId.value == chat.id) {
+      val chat = ChatController.chatModel.getContactChat(contactId)
+      if (chat != null) {
+        ChatController.chatModel.chatsContext.removeChat(chat.remoteHostId, chat.id)
+      }
+      // The open chat view may still show the session chat even if it was
+      // already removed from the list (e.g. manual UI delete) — clear it.
+      // ChatId for a direct contact is "@<contactId>".
+      if (ChatController.chatModel.chatId.value == "@$contactId") {
         ChatController.chatModel.chatsContext.chatItems.clearAndNotify()
         ChatController.chatModel.chatId.value = null
       }
