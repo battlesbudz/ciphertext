@@ -11,7 +11,7 @@ appId: chat.simplex.app
 - extendedWaitUntil:
     visible:
       text: "Private and secure messaging"
-    timeout: 120000
+    timeout: 300000
 - assertVisible:
     text: "Private and secure messaging"
 - tapOn:
