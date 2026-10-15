@@ -6,14 +6,21 @@
 #     "Connection request sent!" alert.
 #   - SHORT-LINK data present: showPrepareContactAlert -> dialog shows
 #     the inviter's profile name ("PhoneA") with "Open new chat" /
-#     "Cancel". Tapping "Open new chat" calls apiPrepareContact and
-#     opens the chat.
+#     "Cancel". Tapping "Open new chat" calls apiPrepareContact, which
+#     PREPARES a pending contact (nextConnectPrepared) and opens the
+#     chat — but does NOT send the request yet.
 # The test ALWAYS uses the short link (the InviteView only ever shows
 # the short link — showShortLink defaults true, and the toggle only
 # renders with developerTools on). The short link carries the inviter's
-# profile, so contactSLinkData_ is non-null, so B ALWAYS shows
-# "Open new chat" (run 29 proved it: B sat on "PhoneA / Open new
-# chat / Cancel"). This flow handles the short-link path.
+# profile, so contactSLinkData_ is non-null, so B ALWAYS takes the
+# prepare path (run 29 proved the dialog; run 30 proved the prepare
+# opens a pending-contact chat).
+# The pending-contact chat shows the banner "Tap Connect to chat"
+# (ChatView.kt, nextConnectPrepared + ConnectionMode.Inv) and a
+# "Connect" button (no message input until connected — run 30 proved
+# "Message" is NOT visible here). Tapping "Connect" sends the
+# connection request; A then sees B's request and accepts it
+# (driver runs accept_request on A next).
 appId: chat.simplex.app
 ---
 - extendedWaitUntil:
@@ -24,11 +31,19 @@ appId: chat.simplex.app
     text: "Open new chat"
 - tapOn:
     text: "Open new chat"
-# Prepare completes and the chat opens: the compose input placeholder
-# ("Message") confirms B is inside the chat with A.
+# Prepared contact chat: banner "Tap Connect to chat" + "Connect" button.
 - extendedWaitUntil:
     visible:
-      text: "Message"
+      text: "Connect"
     timeout: 120000
 - assertVisible:
-    text: "Message"
+    text: "Connect"
+- tapOn:
+    text: "Connect"
+# Request sent: the "Connect" button goes away (contact is connecting).
+- extendedWaitUntil:
+    notVisible:
+      text: "Connect"
+    timeout: 120000
+- assertNotVisible:
+    text: "Connect"
