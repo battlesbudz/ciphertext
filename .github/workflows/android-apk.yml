@@ -68,6 +68,8 @@ jobs:
 
       - name: Build fossRelease APK
         working-directory: apps/multiplatform
+        env:
+          GRADLE_OPTS: "-Xmx6g"
         run: |
           chmod +x gradlew
           ./gradlew :android:assembleFossRelease --no-daemon
