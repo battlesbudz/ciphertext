@@ -93,6 +93,15 @@ jobs:
           fi
           printf '%s' "${ANDROID_KEYSTORE_BASE64}" | base64 -d > /tmp/release.p12
 
+          # The three secrets are present at this point (the empty check above
+          # passed), but the decoded bytes must actually be a PKCS12 keystore.
+          # Validate before apksigner so a corrupt stored value fails here
+          # with a precise message instead of an opaque DER parse error.
+          if ! keytool -list -keystore /tmp/release.p12 -storetype PKCS12 -storepass "${ANDROID_KEYSTORE_PASSWORD}" >/dev/null 2>&1; then
+            echo "ERROR: stored ANDROID_KEYSTORE_BASE64 does not decode to an openable PKCS12 keystore (corrupt value, or wrong ANDROID_KEYSTORE_PASSWORD). Re-set the secret in repo Settings > Secrets and variables > Actions." >&2
+            exit 1
+          fi
+
           SDK="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
           BUILD_TOOLS="$(ls -d "${SDK}"/build-tools/* | sort -V | tail -n 1)"
           ZIPALIGN="${BUILD_TOOLS}/zipalign"
