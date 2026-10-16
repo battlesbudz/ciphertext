@@ -109,25 +109,29 @@ jobs:
           # DIAG: SHA-256 of the received base64 value (hash only, never the secret).
           # Compare with the SHA-256 computed locally before pasting to prove
           # the exact value that landed in GitHub Secrets.
-          echo "DIAG keystore_b64_sha256=12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+          echo "DIAG keystore_b64_sha256=$(printf '%s' "$ANDROID_KEYSTORE_BASE64" | sha256sum | cut -d' ' -f1)"
 
           # Decisive diagnostic: separate wrong-password from format incompatibility.
           # keytool stderr is printed (it names the failure, never the password).
           # openssl is tried with the same stored password as a second opinion.
+          # asn1parse identifies the container type (PKCS#12 vs cert vs PKCS#7).
+          openssl asn1parse -inform DER -in /tmp/release.p12 2>&1 | head -n 12 | sed 's/^/DIAG asn1: /'
+          KEYTOOL_BIN="${JAVA_HOME:-/usr/lib/jvm/default-java}/bin/keytool"
+          if [ ! -x "$KEYTOOL_BIN" ]; then KEYTOOL_BIN="keytool"; fi
           set +e
-          KEYTOOL_OUT="/bin/bash: line 1: keytool: command not found"
-          KEYTOOL_RC=127
+          KEYTOOL_OUT="$("$KEYTOOL_BIN" -list -keystore /tmp/release.p12 -storetype PKCS12 -storepass "$ANDROID_KEYSTORE_PASSWORD" 2>&1)"
+          KEYTOOL_RC=$?
           set -e
-          if [ "" -ne 0 ]; then
+          if [ "$KEYTOOL_RC" -ne 0 ]; then
             echo "DIAG keytool_error:"
-            echo ""
+            echo "$KEYTOOL_OUT"
           fi
-          if openssl pkcs12 -info -noout -in /tmp/release.p12 -passin "pass:" >/dev/null 2>&1; then
+          if openssl pkcs12 -info -noout -in /tmp/release.p12 -passin "pass:$ANDROID_KEYSTORE_PASSWORD" >/dev/null 2>&1; then
             echo "DIAG openssl_opens_keystore=yes"
           else
             echo "DIAG openssl_opens_keystore=no"
           fi
-          if [ "" -ne 0 ]; then
+          if [ "$KEYTOOL_RC" -ne 0 ]; then
             echo "ERROR: stored ANDROID_KEYSTORE_BASE64 does not decode to an openable PKCS12 keystore (corrupt value, or wrong ANDROID_KEYSTORE_PASSWORD). Re-set the secret in repo Settings > Secrets and variables > Actions." >&2
             exit 1
           fi
