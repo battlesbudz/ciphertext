@@ -93,6 +93,13 @@ jobs:
           fi
           printf '%s' "${ANDROID_KEYSTORE_BASE64}" | base64 -d > /tmp/release.p12
 
+          # Diagnostics: lengths + DER magic bytes ONLY, never secret material.
+          # Distinguishes truncated/wrong value (small len, non-DER magic)
+          # from wrong password (plausible len, DER magic 30 82).
+          echo "DIAG keystore_b64_len=${#ANDROID_KEYSTORE_BASE64}"
+          echo "DIAG decoded_bytes=$(stat -c%s /tmp/release.p12)"
+          echo "DIAG first_bytes=$(head -c 4 /tmp/release.p12 | od -An -tx1 | tr -d ' \n')"
+
           # The three secrets are present at this point (the empty check above
           # passed), but the decoded bytes must actually be a PKCS12 keystore.
           # Validate before apksigner so a corrupt stored value fails here
