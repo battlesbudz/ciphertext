@@ -1055,7 +1055,7 @@ private fun BoxScope.ChatList(searchText: MutableState<TextFieldValue>, listStat
 // session's INVITE exchange stores a fresh entry, replacing this one.
 // On failure the entry stays for retry; Dismiss clears it.
 @Composable
-private fun LiveSessionReconnectRow(entry: ReconnectEntry) {
+private fun LiveSessionReconnectRow(entry: LiveSessionManager.ReconnectEntry) {
   val scope = rememberCoroutineScope()
   val reconnecting = LiveSessionManager.reconnecting.value
   val reconnectError = LiveSessionManager.reconnectError.value

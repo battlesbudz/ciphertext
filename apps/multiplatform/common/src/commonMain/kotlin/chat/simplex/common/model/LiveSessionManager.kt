@@ -120,7 +120,7 @@ object LiveSessionManager {
   private fun saveReconnectEntry(entry: ReconnectEntry?) {
     try {
       ChatController.appPrefs.liveSessionReconnectEntry.set(
-        if (entry == null) null else reconnectJson.encodeToString(entry)
+        if (entry == null) null else reconnectJson.encodeToString(ReconnectEntry.serializer(), entry)
       )
     } catch (e: Exception) {
       Log.d(TAG, "saveReconnectEntry failed: $e")
