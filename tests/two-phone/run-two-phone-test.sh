@@ -708,3 +708,4 @@ if [ $FAILURES -gt 0 ]; then
 fi
 log "RESULT: ALL CHECKS PASSED"
 exit 0
+# Trigger run on stable head 53e63ba1 (Reconnect serializer fix); no harness changes.
