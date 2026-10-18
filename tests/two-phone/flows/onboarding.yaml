@@ -81,12 +81,13 @@ appId: chat.ciphertext.app
 # Do NOT add a Back tap here. Run 25's one-off "Connect to desktop"
 # modal (absent in run 26) must be handled in the driver if it ever
 # recurs, gated on the modal actually being present.
+# The FAB ("Start new chat") assertion lives in assert_chat_list.yaml,
+# run by the driver AFTER dismissing a possible "Connect to desktop"
+# modal (see run-two-phone-test.sh Phase 1). Two reasons it cannot stay
+# here: (1) the Connect-to-desktop modal can cover the chat list after
+# Accept (runs 25, 39094051187) and Maestro cannot conditionally dismiss
+# it from inside a flow; (2) the FAB only renders once the chat backend
+# is running, which can take minutes on the houdini emulator.
 # Post-onboarding chat list shows onboarding cards ("Talk to someone",
 # etc.), not the "Tap to start a new chat" empty-state hint. The FAB
 # ("Start new chat") is the stable chat-list signal — and Phase 2 taps it.
-- extendedWaitUntil:
-    visible:
-      text: "Start new chat"
-    timeout: 180000
-- assertVisible:
-    text: "Start new chat"

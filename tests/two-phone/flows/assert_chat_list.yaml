@@ -1,0 +1,16 @@
+# Chat list reached: the "Start new chat" FAB is visible.
+# Run by the driver AFTER onboarding.yaml, once a possible
+# "Connect to desktop" modal has been dismissed (see
+# run-two-phone-test.sh Phase 1). The FAB only renders once the chat
+# backend is running, which can take minutes on the houdini emulator,
+# so the wait is generous (300s). Maestro 1.39.0: text: is a FULL regex
+# matched against text, hintText, AND accessibilityText.
+appId: chat.ciphertext.app
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      text: "Start new chat"
+    timeout: 300000
+- assertVisible:
+    text: "Start new chat"

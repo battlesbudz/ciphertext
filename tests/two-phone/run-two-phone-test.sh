@@ -414,6 +414,25 @@ if [ "$WELCOME_SEEN" != "1" ]; then
   exit 1
 fi
 
+# Dismiss the "Connect to desktop" modal if it is covering the chat list.
+# The modal can appear after onboarding Accept (runs 25, 39094051187) and
+# covers the "Start new chat" FAB, so the FAB assert fails. Gated on the
+# modal actually being present in Maestro's hierarchy (cf. onboarding.yaml
+# note: an unconditional Back tap proved harmful in run 26). ModalView
+# registers a BackHandler, so system Back dismisses it. If the modal is
+# not present, do nothing. Safe either way: assert_chat_list.yaml starts
+# with launchApp, so even if Back exits the app, the assert re-launches it.
+dismiss_connect_desktop_if_present() {
+  local serial="$1"
+  local hier="$OUT_DIR/maestro-hierarchy-${serial}-modal-check.txt"
+  timeout 120 maestro --device "$serial" hierarchy >"$hier" 2>&1 || true
+  if grep -q "Connect to desktop" "$hier" 2>/dev/null; then
+    log "Connect to desktop modal present on $serial; dismissing with Back"
+    timeout 30 adb -s "$serial" shell input keyevent 4 >/dev/null 2>&1 || true
+    sleep 5
+  fi
+}
+
 # =====================================================================
 # Phase 1: onboarding on both (SEQUENTIAL)
 # =====================================================================
@@ -424,7 +443,12 @@ fi
 log "=== Phase 1: onboarding ==="
 RC_A=0; RC_B=0
 maestro_run "$SERIAL_A" "$FLOWS/onboarding.yaml" PROFILE_NAME="$NAME_A" || RC_A=$?
+# The FAB ("Start new chat") check is a separate step: the
+# "Connect to desktop" modal can cover the chat list after Accept, so
+# dismiss it first if present, then assert the chat list.
+if [ $RC_A -eq 0 ]; then dismiss_connect_desktop_if_present "$SERIAL_A"; maestro_run "$SERIAL_A" "$FLOWS/assert_chat_list.yaml" || RC_A=$?; fi
 maestro_run "$SERIAL_B" "$FLOWS/onboarding.yaml" PROFILE_NAME="$NAME_B" || RC_B=$?
+if [ $RC_B -eq 0 ]; then dismiss_connect_desktop_if_present "$SERIAL_B"; maestro_run "$SERIAL_B" "$FLOWS/assert_chat_list.yaml" || RC_B=$?; fi
 if [ $RC_A -eq 0 ] && [ $RC_B -eq 0 ]; then
   R_A="PASS"; pass "(a) both phones onboarded"
 else
