@@ -45,6 +45,9 @@ class MainActivity: FragmentActivity() {
       processNotificationIntent(intent)
       processIntent(intent)
       processExternalIntent(intent)
+      // In-app updater: check GitHub for a newer Ciphertext release and offer
+      // a one-tap update. Runs in the background and never blocks launch.
+      AppUpdateChecker.checkForUpdates(this)
     }
     if (ChatController.appPrefs.privacyProtectScreen.get()) {
       Log.d(TAG, "onCreate: set FLAG_SECURE")

@@ -20,6 +20,11 @@ android {
         // skip version code after release to F-Droid, as it uses two version codes
         versionCode = (extra["android.version_code"] as String).toInt()
         versionName = extra["android.version_name"] as String
+        // Build number of this Ciphertext release (the GitHub Actions run number),
+        // embedded so the in-app updater can tell newer builds of the same
+        // version apart. Local and dev builds default to 0.
+        val ciphertextBuildNumber = (project.findProperty("ciphertext.build_number") as String?)?.toIntOrNull() ?: 0
+        buildConfigField("int", "CIPHERTEXT_BUILD_NUMBER", "$ciphertextBuildNumber")
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables {

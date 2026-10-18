@@ -76,13 +76,21 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Run Android unit tests
+        working-directory: apps/multiplatform
+        env:
+          GRADLE_OPTS: "-Xmx6g"
+        run: |
+          chmod +x gradlew
+          ./gradlew :android:testFossReleaseUnitTest --no-daemon
+
       - name: Build fossRelease APK
         working-directory: apps/multiplatform
         env:
           GRADLE_OPTS: "-Xmx6g"
         run: |
           chmod +x gradlew
-          ./gradlew :android:assembleFossRelease --no-daemon
+          ./gradlew :android:assembleFossRelease -Pciphertext.build_number=${{ github.run_number }} --no-daemon
 
       - name: Sign, align and rename APK
         env:
