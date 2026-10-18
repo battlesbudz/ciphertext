@@ -15,6 +15,7 @@ import chat.ciphertext.app.BuildConfig
 import chat.simplex.common.platform.Log
 import chat.simplex.common.views.helpers.AlertManager
 import kotlinx.coroutines.*
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.net.HttpURLConnection
@@ -24,7 +25,10 @@ import java.net.URL
  * In-app updater for Ciphertext.
  *
  * On every cold start the app asks GitHub for the newest release
- * (https://api.github.com/repos/battlesbudz/ciphertext/releases/latest).
+ * (https://api.github.com/repos/battlesbudz/ciphertext/releases?per_page=1)
+ * and takes the first (newest) entry. The /releases/latest endpoint is NOT
+ * used: it only returns non-prereleases, and every Ciphertext release is a
+ * prerelease, so it 404s.
  * Release tags look like v7.0.4-ciphertext.58. When the release is newer
  * than the installed build an update dialog is shown with a one-tap Update
  * button: the release APK is downloaded with DownloadManager and installed
@@ -34,11 +38,11 @@ import java.net.URL
  * the update check never blocks app launch.
  */
 object AppUpdateChecker {
-  private const val RELEASES_LATEST_URL = "https://api.github.com/repos/battlesbudz/ciphertext/releases/latest"
+  private const val RELEASES_LIST_URL = "https://api.github.com/repos/battlesbudz/ciphertext/releases?per_page=1"
   private const val APK_FILE_NAME = "ciphertext-update.apk"
   private const val APK_MIME_TYPE = "application/vnd.android.package-archive"
 
-  private data class ReleaseInfo(
+  internal data class ReleaseInfo(
     val tag: String,
     val versionName: String,
     val buildNumber: Int,
@@ -94,8 +98,44 @@ object AppUpdateChecker {
     }
   }
 
+  /**
+   * Parses a GET /repos/{owner}/{repo}/releases response body (a JSON array,
+   * newest first) and returns the newest usable release, or null when the
+   * list is empty, unparsable, or the newest entry has no Ciphertext tag or
+   * no arm64 APK asset.
+   *
+   * Pure function with no Android dependencies: covered by local unit tests.
+   */
+  internal fun parseReleaseListResponse(body: String): ReleaseInfo? {
+    val releases = try {
+      JSONArray(body)
+    } catch (e: Exception) {
+      return null
+    }
+    if (releases.length() == 0) return null
+    val json = try {
+      releases.getJSONObject(0)
+    } catch (e: Exception) {
+      return null
+    }
+    val tag = json.optString("tag_name", "")
+    val parsed = AppUpdateVersion.parseReleaseTag(tag) ?: return null
+    val assets = json.optJSONArray("assets") ?: return null
+    var apkUrl: String? = null
+    for (i in 0 until assets.length()) {
+      val asset = assets.optJSONObject(i) ?: continue
+      val name = asset.optString("name", "")
+      if (name.endsWith(".apk") && "arm64" in name) {
+        apkUrl = asset.optString("browser_download_url", "").ifEmpty { null }
+        break
+      }
+    }
+    if (apkUrl == null) return null
+    return ReleaseInfo(tag, parsed.versionName, parsed.buildNumber, apkUrl)
+  }
+
   private fun fetchLatestRelease(): ReleaseInfo? {
-    val conn = (URL(RELEASES_LATEST_URL).openConnection() as HttpURLConnection).apply {
+    val conn = (URL(RELEASES_LIST_URL).openConnection() as HttpURLConnection).apply {
       connectTimeout = 8000
       readTimeout = 8000
       setRequestProperty("Accept", "application/vnd.github+json")
@@ -107,27 +147,11 @@ object AppUpdateChecker {
         return null
       }
       val body = conn.inputStream.bufferedReader().readText()
-      val json = JSONObject(body)
-      val tag = json.optString("tag_name", "")
-      val parsed = AppUpdateVersion.parseReleaseTag(tag) ?: run {
-        Log.d(TAG, "AppUpdateChecker: not a Ciphertext release tag: $tag")
-        return null
+      val release = parseReleaseListResponse(body)
+      if (release == null) {
+        Log.d(TAG, "AppUpdateChecker: no usable release in GitHub response")
       }
-      val assets = json.optJSONArray("assets") ?: return null
-      var apkUrl: String? = null
-      for (i in 0 until assets.length()) {
-        val asset = assets.getJSONObject(i)
-        val name = asset.optString("name", "")
-        if (name.endsWith(".apk") && "arm64" in name) {
-          apkUrl = asset.optString("browser_download_url", "").ifEmpty { null }
-          break
-        }
-      }
-      if (apkUrl == null) {
-        Log.d(TAG, "AppUpdateChecker: no arm64 APK asset in release $tag")
-        return null
-      }
-      return ReleaseInfo(tag, parsed.versionName, parsed.buildNumber, apkUrl)
+      return release
     } finally {
       conn.disconnect()
     }

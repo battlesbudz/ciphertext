@@ -191,6 +191,8 @@ dependencies {
     //implementation("androidx.compose.ui:ui-util:$compose_version")
 
     testImplementation("junit:junit:4.13.2")
+    // Real org.json for local unit tests (android.jar's stubs throw "not mocked").
+    testImplementation("org.json:json:20240303")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     //androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
