@@ -12,10 +12,10 @@ appId: chat.ciphertext.app
     text: ".*LIVE_HB.*"
 - assertNotVisible:
     text: ".*LIVE_INVITE.*"
-# Scroll both ways: loads older/newer history through the loader.
-- scroll:
+# Swipe both ways: loads older/newer history through the loader.
+- swipe:
     direction: DOWN
-- scroll:
+- swipe:
     direction: UP
 - assertNotVisible:
     text: ".*LIVE_HB.*"
