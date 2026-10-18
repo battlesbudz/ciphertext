@@ -1,5 +1,5 @@
 # Assert a specific text IS visible. Env: TEXT
-appId: chat.simplex.app
+appId: chat.ciphertext.app
 ---
 # Delivery can take ~2 min under houdini (run 34); wait up to 5 min.
 # Substring match: chat item node is "text + timestamp".

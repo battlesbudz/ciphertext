@@ -6,7 +6,7 @@
 # up a not-yet-deleted protocol message (loader race), so this flow
 # scrolls (exercises Before/After pagination loads), re-opens the chat
 # (exercises the Initial load), and re-asserts after each step.
-appId: chat.simplex.app
+appId: chat.ciphertext.app
 ---
 - assertNotVisible:
     text: ".*LIVE_HB.*"

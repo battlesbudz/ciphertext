@@ -1,5 +1,5 @@
 # Assert the live-session banner is visible (session active on this phone).
-appId: chat.simplex.app
+appId: chat.ciphertext.app
 ---
 - extendedWaitUntil:
     visible:

@@ -1,6 +1,6 @@
 # Assert a contact is GONE from the chat list (session wiped).
 # Env: CONTACT_NAME
-appId: chat.simplex.app
+appId: chat.ciphertext.app
 ---
 - launchApp
 # Substring match: a row node carrying extra text must still count

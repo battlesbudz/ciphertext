@@ -1,6 +1,6 @@
 # Open a 1:1 chat from the chat list.
 # Env: CONTACT_NAME
-appId: chat.simplex.app
+appId: chat.ciphertext.app
 ---
 - launchApp
 - extendedWaitUntil:

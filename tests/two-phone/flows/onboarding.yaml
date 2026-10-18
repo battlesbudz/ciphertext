@@ -20,7 +20,7 @@
 #     background running (dismiss with "OK"; the stage then advances).
 # NO retry taps: profile creation / Continue / Accept are NOT idempotent,
 # and a second tap can double-submit (run 21: duplicate-name alert).
-appId: chat.simplex.app
+appId: chat.ciphertext.app
 ---
 - launchApp
 - extendedWaitUntil:

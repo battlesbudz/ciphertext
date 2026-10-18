@@ -3,7 +3,7 @@
 # to get the invitation link (no clipboard tapping needed).
 # The FAB has no visible text; matched via its contentDescription
 # ("Start new chat") through the text: selector (accessibilityText).
-appId: chat.simplex.app
+appId: chat.ciphertext.app
 ---
 - launchApp
 - tapOn:

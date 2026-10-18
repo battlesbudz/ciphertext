@@ -6,7 +6,7 @@
 # dialog titled "Accept contact request" with "Accept" / "Accept incognito"
 # / "Cancel". Handle both branches: tap bar Accept, then (optionally)
 # wait for + tap the dialog Accept.
-appId: chat.simplex.app
+appId: chat.ciphertext.app
 ---
 - launchApp
 - extendedWaitUntil:

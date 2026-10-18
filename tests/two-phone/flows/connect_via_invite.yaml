@@ -21,7 +21,7 @@
 # "Message" is NOT visible here). Tapping "Connect" sends the
 # connection request; A then sees B's request and accepts it
 # (driver runs accept_request on A next).
-appId: chat.simplex.app
+appId: chat.ciphertext.app
 ---
 - extendedWaitUntil:
     visible:

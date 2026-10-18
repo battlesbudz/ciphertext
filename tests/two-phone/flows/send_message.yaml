@@ -7,7 +7,7 @@
 # momentarily not sndReady after session start), so "Message" may
 # take a while to reappear. If it never reappears, the session
 # permanently breaks sending (app bug) — the tap then fails.
-appId: chat.simplex.app
+appId: chat.ciphertext.app
 ---
 - extendedWaitUntil:
     visible:

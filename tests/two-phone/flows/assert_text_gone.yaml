@@ -1,5 +1,5 @@
 # Assert a specific text is NOT visible. Env: TEXT
-appId: chat.simplex.app
+appId: chat.ciphertext.app
 ---
 # Substring match: a carried-over message node is "text + timestamp";
 # exact match would pass vacuously and hide carryover (g).

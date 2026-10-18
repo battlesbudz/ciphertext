@@ -30,7 +30,11 @@ SERIAL_A="${SERIAL_A:-emulator-5554}"
 SERIAL_B="${SERIAL_B:-emulator-5556}"
 AVD_A="${AVD_A:-phoneA}"
 AVD_B="${AVD_B:-phoneB}"
-APP_ID="chat.simplex.app"
+APP_ID="chat.ciphertext.app"
+# Activity class lives in the Kotlin package chat.simplex.app
+# (same split as the .51 manifest fix: applicationId is
+# chat.ciphertext.app, classes stay in chat.simplex.app).
+ACTIVITY="chat.simplex.app.MainActivity"
 
 NAME_A="PhoneA"
 NAME_B="PhoneB"
@@ -154,7 +158,7 @@ PYEXTRACT
 deliver_invite() {
   local serial="$1" link="$2"
   # Target MainActivity explicitly: avoids the browser/chooser for https links.
-  timeout 60 adb -s "$serial" shell am start -n "$APP_ID/$APP_ID.MainActivity" \
+  timeout 60 adb -s "$serial" shell am start -n "$APP_ID/$ACTIVITY" \
     -a android.intent.action.VIEW -d "'$link'" >"$OUT_DIR/deeplink-${serial}.log" 2>&1
   sleep 5
 }
@@ -335,8 +339,8 @@ diag_app_stuck() {
   if [ -n "$pid" ]; then
     log "proc stat (state + utime/stime ticks):"
     timeout 30 adb -s "$serial" shell cat "/proc/$pid/stat" 2>/dev/null | awk '{print "    state="$3" utime="$14" stime="$15}' || true
-    log "top snapshot (simplex lines):"
-    timeout 30 adb -s "$serial" shell top -n 1 -b 2>/dev/null | grep -i simplex | sed 's/^/    /' || true
+    log "top snapshot (ciphertext lines):"
+    timeout 30 adb -s "$serial" shell top -n 1 -b 2>/dev/null | grep -i ciphertext | sed 's/^/    /' || true
     log "SIGQUIT thread dump (kill -3 $pid):"
     timeout 30 adb -s "$serial" shell kill -3 "$pid" >/dev/null 2>&1 || true
     sleep 5
@@ -351,7 +355,7 @@ diag_app_stuck() {
   timeout 60 adb -s "$serial" logcat -d 2>/dev/null | grep -i "fatal\|exception\|has died\|killing\|force finishing\|tombstone\|signal\|lowmemorykiller\|ANR\|chat.simplex" | grep -v "uiautomator" | tail -n 40 | sed 's/^/    /' || true
 }
 log "=== Phase 0.5: launch app on A, watch first screen (up to 450s) ==="
-timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$APP_ID.MainActivity" >"$OUT_DIR/firstlaunch-a.log" 2>&1 || true
+timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$ACTIVITY" >"$OUT_DIR/firstlaunch-a.log" 2>&1 || true
 log "first-launch am start output:"
 sed 's/^/    /' "$OUT_DIR/firstlaunch-a.log" || true
 WELCOME_SEEN=0
@@ -396,7 +400,7 @@ for i in $(seq 1 15); do
     log "RELAUNCH RETRY (round 5): app process gone; force-stop + relaunch once"
     timeout 60 adb -s "$SERIAL_A" shell am force-stop "$APP_ID" >/dev/null 2>&1 || true
     sleep 5
-    timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$APP_ID.MainActivity" >"$OUT_DIR/relaunch-a.log" 2>&1 || true
+    timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$ACTIVITY" >"$OUT_DIR/relaunch-a.log" 2>&1 || true
     log "relaunch am start output:"
     sed 's/^/    /' "$OUT_DIR/relaunch-a.log" || true
     RELAUNCHED=1
@@ -578,7 +582,7 @@ fi
 # Phase 6: relaunch A, reconnect (auto if B initiated, else manual)
 # =====================================================================
 log "=== Phase 6: relaunch A, reconnect ==="
-timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$APP_ID.MainActivity" >"$OUT_DIR/relaunch-a.log" 2>&1
+timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$ACTIVITY" >"$OUT_DIR/relaunch-a.log" 2>&1
 sleep 10
 RECON_OK=0
 # Case 1: B was the token-smaller initiator -> a contact request is waiting on A.

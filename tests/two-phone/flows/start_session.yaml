@@ -2,7 +2,7 @@
 # toolbar menu -> "Start live session", then assert the session banner.
 # The toolbar menu button has no visible text; matched via its
 # contentDescription ("More") through the text: selector (accessibilityText).
-appId: chat.simplex.app
+appId: chat.ciphertext.app
 ---
 - tapOn:
     text: "More"
