@@ -3,6 +3,8 @@ package chat.simplex.common.model
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import chat.simplex.common.platform.Log
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import kotlinx.coroutines.*
 import kotlinx.datetime.Clock
 import kotlin.random.Random
@@ -20,9 +22,10 @@ import kotlin.random.Random
 // - Incoming protocol messages are filtered before reaching the UI and deleted
 //   from the store (hooked in SimpleXAPI.processChatResponse).
 // - If no peer heartbeat arrives within 30 seconds, the session is dead:
-//   the contact is fully deleted (messages, keys, queues), all state is wiped,
-//   and both sides automatically start a brand-new session (token race:
-//   the smaller token initiates using the stored next-session invitation).
+//   the contact is fully deleted (messages, keys, queues), all state is wiped.
+//   There is NO automatic reconnect. The chat list keeps one retained
+//   Reconnect entry (peer display name + single-use next-session
+//   invitation); tapping Reconnect starts a brand-new session.
 // - Nothing carries over between sessions: new session ID, new tokens,
 //   new contact, new invitations, no history.
 //
@@ -53,8 +56,13 @@ object LiveSessionManager {
 
   // UI-observable session state. Null = no active live session.
   val sessionState: MutableState<LiveSessionState?> = mutableStateOf(null)
-  // UI-observable: true while automatically reconnecting to a new session.
+  // UI-observable: true while a Reconnect-button attempt is in flight.
   val reconnecting: MutableState<Boolean> = mutableStateOf(false)
+  // UI-observable retained Reconnect entry. Null = no one to reconnect with.
+  // Loaded from durable storage on first access; updated on save/clear.
+  val reconnectEntry: MutableState<ReconnectEntry?> = mutableStateOf(loadReconnectEntry())
+  // UI-observable: last Reconnect-button failure, shown in the chat-list row.
+  val reconnectError: MutableState<String?> = mutableStateOf(null)
   // UI-observable: human-readable status for the banner.
   val statusText: MutableState<String?> = mutableStateOf(null)
 
@@ -64,10 +72,11 @@ object LiveSessionManager {
   private var reconnectTimeoutJob: Job? = null
   private var backgroundWipeJob: Job? = null
 
-  // Set when a session died and we are establishing a brand-new one.
-  // Visible for the auto-accept / auto-start hooks in SimpleXAPI.
-  var pendingReconnect: PendingReconnect? = null
-    private set
+  // Pending outgoing reconnect: display name of the peer we are
+  // reconnecting to via the Reconnect button. Set on tap; cleared when
+  // the new contact connects (the session starts), on failure, or on
+  // timeout. No automatic reconnect is ever attempted from this state.
+  private var pendingOutgoingReconnect: String? = null
 
   data class LiveSessionState(
     val sessionId: String,
@@ -81,12 +90,102 @@ object LiveSessionManager {
     val lastPeerHeartbeatMillis: Long
   )
 
-  data class PendingReconnect(
-    val myToken: ULong,
-    val peerToken: ULong,
-    val peerNextInvitation: String,
-    val iAmInitiator: Boolean
+  // Reconnect entry: the ONLY live-session record persisted durably.
+  // Holds the peer's display name + the peer's single-use next-session
+  // invitation. No session ID, tokens, keys, messages, or history are
+  // ever persisted. Saved when a session's INVITE exchange completes
+  // (so it survives process death), retained across session end, and
+  // replaced when the next session exchanges fresh invitations. On
+  // failure it stays for retry; the user can dismiss it from the chat list.
+  @Serializable
+  data class ReconnectEntry(
+    val displayName: String,
+    val invitation: String
   )
+
+  // Lazy: loadReconnectEntry() runs during reconnectEntry init, so the
+  // codec must not depend on property-declaration order.
+  private val reconnectJson by lazy { Json { ignoreUnknownKeys = true } }
+
+  private fun loadReconnectEntry(): ReconnectEntry? {
+    return try {
+      val raw = ChatController.appPrefs.liveSessionReconnectEntry.get() ?: return null
+      reconnectJson.decodeFromString<ReconnectEntry>(raw)
+    } catch (e: Exception) {
+      Log.d(TAG, "loadReconnectEntry failed: $e")
+      null
+    }
+  }
+
+  private fun saveReconnectEntry(entry: ReconnectEntry?) {
+    try {
+      ChatController.appPrefs.liveSessionReconnectEntry.set(
+        if (entry == null) null else reconnectJson.encodeToString(entry)
+      )
+    } catch (e: Exception) {
+      Log.d(TAG, "saveReconnectEntry failed: $e")
+    }
+    reconnectEntry.value = entry
+  }
+
+  // Dismiss the retained entry (user action in the chat list).
+  fun clearReconnectEntry() {
+    saveReconnectEntry(null)
+    reconnectError.value = null
+  }
+
+  // Re-read the retained entry from durable storage (e.g. first chat-list
+  // composition, after the app was killed mid-session).
+  fun refreshReconnectEntry() {
+    reconnectEntry.value = loadReconnectEntry()
+  }
+
+  // One-tap reconnect: consume the retained single-use invitation and
+  // start a brand-new live session with that peer — new session ID,
+  // tokens, keys, zero carryover. The new session's INVITE exchange
+  // stores a fresh entry, replacing this one. On failure the entry
+  // stays for retry. The peer accepts the incoming contact request
+  // manually; there is no automatic acceptance.
+  suspend fun reconnect() {
+    if (sessionState.value != null) return
+    if (pendingOutgoingReconnect != null) return
+    val entry = reconnectEntry.value ?: return
+    reconnectError.value = null
+    reconnecting.value = true
+    pendingOutgoingReconnect = entry.displayName
+    statusText.value = "Reconnecting…"
+    // Give up after 90s if the peer never accepts / connects.
+    reconnectTimeoutJob?.cancel()
+    reconnectTimeoutJob = scope.launch {
+      delay(90_000L)
+      if (pendingOutgoingReconnect != null) {
+        pendingOutgoingReconnect = null
+        reconnecting.value = false
+        reconnectError.value = "Could not reconnect - peer unavailable"
+        statusText.value = "Could not reconnect - peer unavailable"
+      }
+    }
+    try {
+      val connLink = CreatedConnLink(entry.invitation, null)
+      val connection = ChatController.apiConnect(null, incognito = false, connLink = connLink)
+      if (connection == null) {
+        pendingOutgoingReconnect = null
+        reconnecting.value = false
+        reconnectTimeoutJob?.cancel()
+        reconnectTimeoutJob = null
+        reconnectError.value = "Could not reconnect - peer unavailable"
+        statusText.value = "Could not reconnect - peer unavailable"
+      }
+      // On CR.ContactConnected, onContactConnected starts the new session.
+    } catch (e: Exception) {
+      pendingOutgoingReconnect = null
+      reconnecting.value = false
+      reconnectTimeoutJob?.cancel()
+      reconnectTimeoutJob = null
+      reconnectError.value = "Could not reconnect - peer unavailable"
+      statusText.value = "Could not reconnect - peer unavailable"
+    }
+  }
 
   fun isProtocolMessage(text: String): Boolean =
     text.startsWith(HEARTBEAT_PREFIX) || text.startsWith(INVITE_PREFIX) ||
@@ -110,16 +209,23 @@ object LiveSessionManager {
 
   private fun currentUserId(): Long? = ChatController.chatModel.currentUser.value?.userId
 
-  // Start a live session with an existing 1:1 contact. Called from the UI.
+  // Start a live session with an existing 1:1 contact. Called from the UI
+  // or from onContactConnected after a Reconnect-button tap.
   suspend fun startSession(contactId: Long, contactName: String) {
     if (sessionState.value != null) return
     currentUserId() ?: return
+    // A fresh manual start abandons any in-flight Reconnect attempt.
+    pendingOutgoingReconnect = null
+    reconnectTimeoutJob?.cancel()
+    reconnectTimeoutJob = null
+    reconnecting.value = false
+    reconnectError.value = null
 
     val sessionId = randomSessionId()
     val myToken = Random.nextLong().toULong()
     val initiatorId = randomSessionId()
 
-    // One-time invitation for the NEXT session (used on auto-reconnect).
+    // One-time invitation for the NEXT session (used by the Reconnect button).
     val (invPair, _) = ChatController.apiAddContact(null, incognito = false)
     val myLink = invPair?.first?.connFullLink ?: return
 
@@ -196,6 +302,9 @@ object LiveSessionManager {
     if (current != null && current.peerToken == null && current.sessionId == sessionId) {
       // Peer's response to our INVITE: complete the session setup.
       sessionState.value = current.copy(peerToken = peerToken, peerNextInvitation = peerLink)
+      // The peer's invitation is the Reconnect entry: persist it now so it
+      // survives process death and session end.
+      saveReconnectEntry(ReconnectEntry(current.contactName, peerLink))
       statusText.value = "Live session active — everything wipes on exit"
       return
     }
@@ -240,20 +349,29 @@ object LiveSessionManager {
       startedAtMillis = now,
       lastPeerHeartbeatMillis = now
     )
-    pendingReconnect = null
+    // Persist the peer's invitation as the Reconnect entry so it survives
+    // process death and session end.
+    saveReconnectEntry(ReconnectEntry(contactName, peerLink))
+    // Abandon any outgoing Reconnect attempt of our own (both sides tapped):
+    // the peer's INVITE wins, so we proceed as waiter on this contact.
+    pendingOutgoingReconnect = null
     reconnecting.value = false
     reconnectTimeoutJob?.cancel()
     reconnectTimeoutJob = null
+    reconnectError.value = null
     statusText.value = "Live session active — everything wipes on exit"
     startTimers()
   }
 
-  // End the session. If userInitiated, do not auto-reconnect.
-  // Otherwise (timeout), wipe everything and automatically start a new session.
+  // End the session. The contact is fully deleted (messages, keys, queues).
+  // The retained Reconnect entry (display name + single-use invitation)
+  // SURVIVES the wipe so the user can reconnect with one tap. There is
+  // no automatic reconnect: the Reconnect button is the only reconnect path.
   suspend fun endSession(userInitiated: Boolean) {
     val s = sessionState.value ?: return
     stopTimers()
     sessionState.value = null
+    clearReconnectState()
 
     // Wipe: full delete destroys the contact, all messages, keys, and queues.
     // Nothing carries over: no messages, no keys, no relay state, no history.
@@ -267,106 +385,32 @@ object LiveSessionManager {
     // the core delete alone leaves stale history on screen.
     removeSessionChatFromUI(s.contactId)
 
-    if (userInitiated) {
-      pendingReconnect = null
-      reconnecting.value = false
-      statusText.value = "Live session ended — all messages wiped"
+    statusText.value = if (userInitiated) {
+      "Live session ended — all messages wiped"
     } else {
-      val peerToken = s.peerToken
-      val peerLink = s.peerNextInvitation
-      if (peerToken != null && peerLink != null) {
-        val iAmInitiator = s.myToken < peerToken
-        pendingReconnect = PendingReconnect(s.myToken, peerToken, peerLink, iAmInitiator)
-        reconnecting.value = true
-        statusText.value = "Session lost — starting a brand-new session…"
-        // Give up on the reconnect after 90s if the peer never comes back.
-        reconnectTimeoutJob?.cancel()
-        reconnectTimeoutJob = scope.launch {
-          delay(90_000L)
-          if (pendingReconnect != null) {
-            pendingReconnect = null
-            reconnecting.value = false
-            statusText.value = "Could not reconnect — peer unavailable"
-          }
-        }
-        if (iAmInitiator) {
-          initiateReconnect()
-        } else {
-          // Waiter: auto-accept hook handles incoming contact requests.
-          // Also catch a request that arrived before we timed out (race).
-          acceptPendingContactRequest()
-        }
-      } else {
-        // Session died before the invitation exchange completed: cannot reconnect.
-        pendingReconnect = null
-        reconnecting.value = false
-        statusText.value = "Live session lost — all messages wiped"
-      }
+      "Live session lost — all messages wiped"
     }
   }
 
-  private suspend fun initiateReconnect() {
-    val pending = pendingReconnect ?: return
-    if (!pending.iAmInitiator) return
-    try {
-      val connLink = CreatedConnLink(pending.peerNextInvitation, null)
-      val connection = ChatController.apiConnect(null, incognito = false, connLink = connLink)
-      if (connection == null) {
-        // Reconnect failed: stop.
-        pendingReconnect = null
-        reconnecting.value = false
-        statusText.value = "Could not reconnect — peer unavailable"
-      }
-      // On CR.ContactConnected, the hook below starts the new session.
-    } catch (e: Exception) {
-      pendingReconnect = null
-      reconnecting.value = false
-      statusText.value = "Could not reconnect — peer unavailable"
-    }
-  }
-
-  // Called from SimpleXAPI when a contact request arrives. Auto-accepts if we
-  // are the waiter in a pending reconnect.
-  suspend fun onContactRequest(contactReqId: Long): Boolean {
-    val pending = pendingReconnect ?: return false
-    if (pending.iAmInitiator) return false
-    return try {
-      ChatController.apiAcceptContactRequest(null, incognito = false, contactReqId = contactReqId) != null
-    } catch (e: Exception) { false }
-  }
-
-  // Accept the most recent pending contact request, if any (race: the
-  // initiator's reconnect request may have arrived before we timed out).
-  private suspend fun acceptPendingContactRequest() {
-    try {
-      val reqChat = ChatController.chatModel.chatsContext.chats.value
-        .filter { it.chatInfo is ChatInfo.ContactRequest }
-        .maxByOrNull { (it.chatInfo as ChatInfo.ContactRequest).contactRequest.createdAt }
-      val reqId = (reqChat?.chatInfo as? ChatInfo.ContactRequest)?.contactRequest?.apiId
-      if (reqId != null) {
-        ChatController.apiAcceptContactRequest(null, incognito = false, contactReqId = reqId)
-      }
-    } catch (e: Exception) { /* best effort */ }
-  }
-
-  // Called from SimpleXAPI when a contact connects. If we are the initiator in
-  // a pending reconnect, start the brand-new live session on the new contact.
+  // Called from SimpleXAPI when a contact connects. If the user tapped
+  // Reconnect and this is the expected peer, start the brand-new live
+  // session on the new contact. Otherwise do nothing: either the peer
+  // will send an INVITE (we are the waiter), or this contact is
+  // unrelated to live sessions.
   suspend fun onContactConnected(contact: Contact) {
-    val pending = pendingReconnect ?: return
-    if (!pending.iAmInitiator) return
-    pendingReconnect = null
+    val expected = pendingOutgoingReconnect ?: return
+    if (contact.localDisplayName != expected) return
+    pendingOutgoingReconnect = null
+    reconnecting.value = false
+    reconnectTimeoutJob?.cancel()
+    reconnectTimeoutJob = null
+    reconnectError.value = null
     // Fresh session: new ID, new tokens, new invitations. Nothing carries over.
     startSession(contact.apiId, contact.localDisplayName)
   }
 
-  // Called from SimpleXAPI when our auto-accepted contact (waiter) connects.
-  // The initiator will send a new INVITE; nothing to do here except clear UI.
-  fun onWaiterContactConnected() {
-    // The new session starts when the initiator's INVITE arrives.
-  }
-
   fun clearReconnectState() {
-    pendingReconnect = null
+    pendingOutgoingReconnect = null
     reconnecting.value = false
     reconnectTimeoutJob?.cancel()
     reconnectTimeoutJob = null
@@ -382,8 +426,8 @@ object LiveSessionManager {
   // survive: onAppForegrounded() cancels the pending wipe. If the app
   // is still backgrounded when the delay elapses, the session is wiped.
   // The wipe only applies to the session that was active when the app
-  // backgrounded (session-ID check) — if a timeout reconnect already
-  // started a brand-new session, the stale pending wipe is a no-op.
+  // backgrounded (session-ID check) — if a new session already started,
+  // the stale pending wipe is a no-op.
   // Fire-and-forget: if the process dies before the delete lands, the
   // peer's 30 s watchdog (no heartbeats) wipes the peer side anyway.
   fun onAppBackgrounded() {

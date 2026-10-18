@@ -1,0 +1,14 @@
+# Tap the Dismiss button on the retained live-session Reconnect entry.
+# Used when the test needs the incoming contact request to be the only
+# row showing the peer's name (e.g. before accepting a reconnect request).
+appId: chat.ciphertext.app
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      text: "Dismiss"
+    timeout: 120000
+- assertVisible:
+    text: "Dismiss"
+- tapOn:
+    text: "Dismiss"

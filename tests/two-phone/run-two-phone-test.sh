@@ -3,7 +3,8 @@
 #
 # Boots two arm64 emulators, installs the signed APK on both, and drives
 # them through: onboarding, 1:1 connect, message exchange, live-session
-# start, heartbeat invisibility, kill + wipe, reconnect, zero carryover.
+# start, heartbeat invisibility, kill + wipe, Reconnect-button reconnect,
+# zero carryover.
 #
 # Usage: run-two-phone-test.sh <path-to-signed-apk>
 # Exit 0 only if every required check passes. A full per-check report is
@@ -603,25 +604,34 @@ else
 fi
 
 # =====================================================================
-# Phase 6: relaunch A, reconnect (auto if B initiated, else manual)
+# Phase 6: relaunch A, reconnect via the Reconnect button
 # =====================================================================
-log "=== Phase 6: relaunch A, reconnect ==="
+# B holds a retained Reconnect entry (A's display name + A's single-use
+# next-session invitation from the wiped session). B taps Reconnect,
+# which consumes the invitation and sends A a contact request. A
+# accepts it manually; B starts the brand-new session on connect, and
+# A joins as waiter when B's INVITE arrives. No automatic reconnect.
+log "=== Phase 6: relaunch A, reconnect via Reconnect button ==="
 timeout 60 adb -s "$SERIAL_A" shell am start -n "$APP_ID/$ACTIVITY" >"$OUT_DIR/relaunch-a.log" 2>&1
 sleep 10
 RECON_OK=0
-# Case 1: B was the token-smaller initiator -> a contact request is waiting on A.
-if maestro_run "$SERIAL_A" "$FLOWS/accept_request.yaml" CONTACT_NAME="$NAME_B"; then
-  RECONNECT_MODE="auto"
-  log "auto-reconnect: A accepted B's reconnect request"
-  # B starts the new session on connect; A joins as waiter. Banner on both.
-  if maestro_run "$SERIAL_B" "$FLOWS/assert_banner.yaml" \
+# A may hold its own Reconnect entry (B's invitation) — dismiss it so the
+# incoming request is the only "PhoneB" row when A accepts below.
+# Best effort: if A has no entry, this fails harmlessly.
+maestro_run "$SERIAL_A" "$FLOWS/tap_dismiss.yaml" || log "A had no Reconnect entry to dismiss (continuing)"
+# Case 1: B taps Reconnect -> A accepts the incoming request.
+if maestro_run "$SERIAL_B" "$FLOWS/tap_reconnect.yaml"; then
+  RECONNECT_MODE="button"
+  log "button reconnect: B tapped Reconnect; A accepts the request"
+  if maestro_run "$SERIAL_A" "$FLOWS/accept_request.yaml" CONTACT_NAME="$NAME_B" \
+    && maestro_run "$SERIAL_B" "$FLOWS/assert_banner.yaml" \
     && maestro_run "$SERIAL_A" "$FLOWS/assert_banner.yaml"; then
     RECON_OK=1
   else
-    fail "auto-reconnect: new session banner missing"
+    fail "button reconnect: new session banner missing"
   fi
 else
-  log "no reconnect request on A: B is the waiter (token race). Manual recovery."
+  log "Reconnect button not available on B. Manual recovery."
   RECONNECT_MODE="manual"
   # A still holds the stale contact; create a fresh invitation instead.
   if maestro_run "$SERIAL_A" "$FLOWS/create_invite.yaml"; then
@@ -648,11 +658,11 @@ else
   fi
 fi
 if [ "$RECON_OK" = "1" ]; then
-  if [ "$RECONNECT_MODE" = "auto" ]; then
-    R_F="PASS"; pass "(f) brand-new session re-established AUTOMATICALLY"
+  if [ "$RECONNECT_MODE" = "button" ]; then
+    R_F="PASS"; pass "(f) brand-new session re-established via Reconnect button"
   else
-    R_F="PARTIAL (manual recovery; auto-reconnect stalled on waiter/token race)"
-    log "NOTE (f): auto-reconnect stalled (B was waiter); manual recovery used."
+    R_F="PARTIAL (manual recovery; Reconnect button path did not complete)"
+    log "NOTE (f): Reconnect button path did not complete; manual recovery used."
   fi
 else
   R_F="FAIL"; fail "(f) no new session established"

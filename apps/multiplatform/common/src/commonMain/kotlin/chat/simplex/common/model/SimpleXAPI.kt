@@ -188,6 +188,10 @@ class AppPreferences {
   val networkTCPKeepCnt = mkIntPreference(SHARED_PREFS_NETWORK_TCP_KEEP_CNT, KeepAliveOpts.defaults.keepCnt)
   val incognito = mkBoolPreference(SHARED_PREFS_INCOGNITO, false)
   val liveMessageAlertShown = mkBoolPreference(SHARED_PREFS_LIVE_MESSAGE_ALERT_SHOWN, false)
+  // Live (ephemeral) session Reconnect entry (private fork): JSON-encoded
+  // ReconnectEntry (peer display name + single-use next-session invitation).
+  // The ONLY live-session record persisted durably.
+  val liveSessionReconnectEntry = mkStrPreference(SHARED_PREFS_LIVE_SESSION_RECONNECT_ENTRY, null)
   val signMessageAlertShown = mkBoolPreference(SHARED_PREFS_SIGN_MESSAGE_ALERT_SHOWN, false)
   val showHiddenProfilesNotice = mkBoolPreference(SHARED_PREFS_SHOW_HIDDEN_PROFILES_NOTICE, true)
   val oneHandUICardShown = mkBoolPreference(SHARED_PREFS_ONE_HAND_UI_CARD_SHOWN, false)
@@ -460,6 +464,7 @@ class AppPreferences {
     private const val SHARED_PREFS_NETWORK_TCP_KEEP_CNT = "NetworkTCPKeepCnt"
     private const val SHARED_PREFS_INCOGNITO = "Incognito"
     private const val SHARED_PREFS_LIVE_MESSAGE_ALERT_SHOWN = "LiveMessageAlertShown"
+    private const val SHARED_PREFS_LIVE_SESSION_RECONNECT_ENTRY = "LiveSessionReconnectEntry"
     private const val SHARED_PREFS_SIGN_MESSAGE_ALERT_SHOWN = "SignMessageAlertShown"
     private const val SHARED_PREFS_SHOW_HIDDEN_PROFILES_NOTICE = "ShowHiddenProfilesNotice"
     private const val SHARED_PREFS_ONE_HAND_UI_CARD_SHOWN = "OneHandUICardShown"
@@ -2829,8 +2834,9 @@ object ChatController {
         if (r.contact.directOrUsed) {
           ntfManager.notifyContactConnected(r.user, r.contact)
         }
-        // Live session auto-reconnect (private fork): if we initiated a
-        // reconnect, start the brand-new session on this new contact.
+        // Live session Reconnect button (private fork): if the user tapped
+        // Reconnect for this peer, start the brand-new session on this
+        // new contact.
         if (active(r.user)) {
           LiveSessionManager.onContactConnected(r.contact)
         }
@@ -2861,11 +2867,6 @@ object ChatController {
       }
       is CR.ReceivedContactRequest -> {
         val contactRequest = r.contactRequest
-        // Live session auto-reconnect (private fork): auto-accept if we are
-        // the waiter in a pending reconnect; skip the normal request UI.
-        if (active(r.user) && LiveSessionManager.onContactRequest(contactRequest.apiId)) {
-          return
-        }
         if (active(r.user)) {
           withContext(Dispatchers.Main) {
             if (r.chat_ != null) { // means contact request was created with contact, so we need to add/update contact chat

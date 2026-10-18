@@ -16,6 +16,20 @@ preserved. Both parties automatically reconnect to a **new** session. They get
 the reconnect, but nothing is preserved and there is nothing to connect back
 to, because once a disconnection happens the old session is gone forever.
 
+SUPERSEDED 2026-10-18 (Battles): auto-reconnect is replaced by the explicit
+Reconnect button (see below). There is no resume, and no automatic reconnect:
+the user taps Reconnect to start a brand-new session with the same peer.
+
+## Design decision (Battles, 2026-10-18) — Reconnect button
+
+Do NOT persist session state to resume. Instead, a Reconnect button opens a
+fully fresh chat with the same person: new session, new keys, new tokens, no
+history. The only persisted record is the peer's display name + a single-use
+next-session invitation (the Reconnect entry). Tapping Reconnect consumes
+that invitation to start a brand-new live session; the new session
+pre-exchanges a fresh invitation, replacing the consumed one. On failure the
+entry stays for retry; the user can dismiss it from the chat list.
+
 ## Haskell API
 
 ### Starting a session
@@ -74,6 +88,10 @@ End reasons:
 - `LSEndUserEnded` — local user ended the session
 
 ### Auto-reconnect
+
+Note (2026-10-18): the Android app no longer implements auto-reconnect; it
+uses the explicit Reconnect button (see Implementation Notes). The Haskell
+flow below remains the reference.
 
 On `CRLiveSessionEnded`:
 
@@ -188,10 +206,27 @@ Behavioral compliance with this spec:
   peer watchdog remains the backup if the process dies before the
   delayed delete lands. If the peer deleted the session contact, the
   local side wipes too (without notifying back).
-- **Reconnect**: next-session invitations are exchanged at session start
-  (marked `\u001fLIVE_INVITE:` messages). On timeout, the smaller token
-  initiates a new contact via the stored invitation; the waiter auto-accepts.
-  A brand-new session starts with fresh IDs, tokens, and invitations.
+- **Reconnect (button, replaces auto-reconnect)**: next-session invitations
+  are exchanged at session start (marked `\u001fLIVE_INVITE:` messages).
+  When the peer's invitation arrives, the app persists ONE Reconnect entry
+  (peer display name + the peer's single-use invitation) in app storage —
+  the only live-session record persisted durably. No session ID, tokens,
+  keys, messages, or history are ever persisted. On session end (wipe,
+  kill, timeout) all session state is deleted but the entry is retained.
+  Tapping Reconnect in the chat list consumes the invitation (`APIConnect`)
+  and starts a brand-new session: new ID, tokens, keys, zero carryover.
+  The peer accepts the incoming contact request manually; there is no
+  automatic acceptance and no automatic reconnect. The new session's
+  INVITE exchange stores a fresh entry, replacing the consumed one. On
+  failure the entry stays for retry; the user can dismiss it. Edge case:
+  if both sides tap Reconnect at the same time, two contacts are created
+  and the first INVITE wins; the duplicate contact can be deleted.
+  Ephemerality: the entry must exist so the button knows who to reach;
+  the invitation itself is a random token that reveals nothing on its own.
+  Note: the inviter's pending one-time invitation contact (created by
+  `APIAddContact`) persists in the core database until the peer uses it —
+  this is required for the peer's Reconnect button to work, and it holds
+  no session state (no session ID, tokens, keys, or messages).
 - **Relay lifecycle**: the per-contact SMP queues are the session's relay.
   They exist only while the session's contact exists and are destroyed by the
   full delete on session end. No dedicated relay server is provisioned in

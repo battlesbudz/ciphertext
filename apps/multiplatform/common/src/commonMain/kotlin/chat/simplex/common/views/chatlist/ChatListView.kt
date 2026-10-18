@@ -1000,6 +1000,17 @@ private fun BoxScope.ChatList(searchText: MutableState<TextFieldValue>, listStat
         ToggleChatListCard()
       }
     }
+    // Live session Reconnect entry (private fork): one retained entry —
+    // peer display name + single-use next-session invitation. Shown only
+    // when no live session is active and no search filter is applied.
+    // Tapping Reconnect starts a brand-new session: new ID, tokens, keys.
+    val reconnectEntry = LiveSessionManager.reconnectEntry.value
+    val liveSessionActive = LiveSessionManager.sessionState.value != null
+    if (reconnectEntry != null && !liveSessionActive && searchText.value.text.isEmpty()) {
+      item {
+        LiveSessionReconnectRow(reconnectEntry)
+      }
+    }
     itemsIndexed(chats, key = { _, chat -> chat.remoteHostId to chat.id }) { index, chat ->
       val nextChatSelected = remember(chat.id, chats) { derivedStateOf {
         chatModel.chatId.value != null && chats.getOrNull(index + 1)?.id == chatModel.chatId.value
@@ -1035,6 +1046,59 @@ private fun BoxScope.ChatList(searchText: MutableState<TextFieldValue>, listStat
 
   LaunchedEffect(activeFilter.value) {
     searchText.value = TextFieldValue("")
+  }
+}
+
+// Retained live-session Reconnect entry (private fork). Tapping Reconnect
+// consumes the single-use invitation and starts a brand-new live session
+// with that peer: new session ID, tokens, keys, zero carryover. The new
+// session's INVITE exchange stores a fresh entry, replacing this one.
+// On failure the entry stays for retry; Dismiss clears it.
+@Composable
+private fun LiveSessionReconnectRow(entry: ReconnectEntry) {
+  val scope = rememberCoroutineScope()
+  val reconnecting = LiveSessionManager.reconnecting.value
+  val reconnectError = LiveSessionManager.reconnectError.value
+  Row(
+    Modifier
+      .fillMaxWidth()
+      .padding(horizontal = DEFAULT_PADDING, vertical = DEFAULT_PADDING_HALF),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    Icon(
+      painterResource(MR.images.ic_lock),
+      null,
+      Modifier.size(20.dp),
+      tint = MaterialTheme.colors.primary
+    )
+    Spacer(Modifier.width(8.dp))
+    Column(Modifier.weight(1f)) {
+      Text(entry.displayName, style = MaterialTheme.typography.body1)
+      Text(
+        reconnectError ?: stringResource(MR.strings.live_session_reconnect_ended),
+        style = MaterialTheme.typography.caption,
+        color = if (reconnectError != null) MaterialTheme.colors.error else MaterialTheme.colors.secondary
+      )
+    }
+    if (reconnecting) {
+      Text(
+        stringResource(MR.strings.live_session_reconnecting),
+        color = MaterialTheme.colors.secondary
+      )
+    } else {
+      TextButton(
+        onClick = { scope.launch { LiveSessionManager.reconnect() } },
+        contentPadding = PaddingValues(horizontal = 8.dp)
+      ) {
+        Text(stringResource(MR.strings.live_session_reconnect))
+      }
+      TextButton(
+        onClick = { LiveSessionManager.clearReconnectEntry() },
+        contentPadding = PaddingValues(horizontal = 8.dp)
+      ) {
+        Text(stringResource(MR.strings.live_session_reconnect_dismiss))
+      }
+    }
   }
 }
 

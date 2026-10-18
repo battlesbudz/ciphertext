@@ -1,0 +1,15 @@
+# Tap the Reconnect button for the retained live-session entry.
+# The chat list shows one Reconnect row (peer display name + Reconnect
+# button) when a previous live session ended but a single-use reconnect
+# invitation remains. Tapping it starts a brand-new live session.
+appId: chat.ciphertext.app
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      text: "Reconnect"
+    timeout: 120000
+- assertVisible:
+    text: "Reconnect"
+- tapOn:
+    text: "Reconnect"
