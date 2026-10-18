@@ -159,10 +159,18 @@ Behavioral compliance with this spec:
   the chat-response pipeline, never surface in the UI, and are deleted from
   the local store immediately. The filter applies at EVERY UI-insertion
   point — `NewChatItems`, `ChatItemUpdated`, `ChatItemsStatusesUpdated`,
-  plus guards in `ChatsContext.addChatItem`/`upsertChatItem` — because a
-  status update for a sent protocol message otherwise re-inserts it into
-  the chat view after the initial filter deleted it (the bug found in
-  Battles's 2026-10-15 two-phone test). Bare `LIVE_HB:` / `LIVE_INVITE:`
+  guards in `ChatsContext.addChatItem`/`upsertChatItem`, the history
+  loader (`ChatItemsLoader.processLoadedChat`, which filters every
+  pagination branch), and the chat-list refresh
+  (`ChatsContext.updateChats`, which filters each chat's preview items) —
+  because a status update for a sent protocol message otherwise re-inserts
+  it into the chat view after the initial filter deleted it (the bug found
+  in Battles's 2026-10-15 two-phone test), and because a history load can
+  scoop up a protocol message in the window before the async delete lands
+  (the loader-race leak found in Battles's 2026-10-17 .51 test: a wall of
+  `live, HB` + ciphertext in the visible chat). The protocol-message
+  delete is verified (return value checked, one retry on failure) so a
+  failed delete no longer fails silently. Bare `LIVE_HB:` / `LIVE_INVITE:`
   prefixes are also treated as protocol, in case any stage strips the
   `\u001f` marker.
 - **Timeout**: a watchdog checks every 5 seconds; if no peer heartbeat

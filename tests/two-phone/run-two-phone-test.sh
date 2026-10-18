@@ -543,8 +543,8 @@ if [ "$SESS_OK" = "1" ]; then
   # product question — see the final report. Do NOT re-add a
   # send_message step to Phase 4 without resolving it.
   HB_OK=0
-  if maestro_run "$SERIAL_A" "$FLOWS/assert_no_protocol_text.yaml" \
-    && maestro_run "$SERIAL_B" "$FLOWS/assert_no_protocol_text.yaml"; then
+  if maestro_run "$SERIAL_A" "$FLOWS/assert_no_protocol_text.yaml" CONTACT_NAME="$NAME_B" \
+    && maestro_run "$SERIAL_B" "$FLOWS/assert_no_protocol_text.yaml" CONTACT_NAME="$NAME_A"; then
     HB_OK=1
   fi
   if [ "$HB_OK" = "1" ]; then

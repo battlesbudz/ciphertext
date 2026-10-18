@@ -1,8 +1,38 @@
 # Assert no live-protocol text is ever visible in the chat UI.
 # Heartbeats (LIVE_HB) and invites (LIVE_INVITE) are filtered before
 # reaching the UI and deleted from the store.
+# Env: CONTACT_NAME (contact to re-open the chat with)
+# A single visible-screen check is NOT enough: a history load can scoop
+# up a not-yet-deleted protocol message (loader race), so this flow
+# scrolls (exercises Before/After pagination loads), re-opens the chat
+# (exercises the Initial load), and re-asserts after each step.
 appId: chat.simplex.app
 ---
+- assertNotVisible:
+    text: ".*LIVE_HB.*"
+- assertNotVisible:
+    text: ".*LIVE_INVITE.*"
+# Scroll both ways: loads older/newer history through the loader.
+- scroll:
+    direction: DOWN
+- scroll:
+    direction: UP
+- assertNotVisible:
+    text: ".*LIVE_HB.*"
+- assertNotVisible:
+    text: ".*LIVE_INVITE.*"
+# Re-open the chat: back to the list, tap the contact, fresh Initial load.
+- back
+- extendedWaitUntil:
+    visible:
+      text: "${CONTACT_NAME}"
+    timeout: 60000
+- tapOn:
+    text: "${CONTACT_NAME}"
+- extendedWaitUntil:
+    visible:
+      text: "Live session.*wipes on exit"
+    timeout: 120000
 - assertNotVisible:
     text: ".*LIVE_HB.*"
 - assertNotVisible:

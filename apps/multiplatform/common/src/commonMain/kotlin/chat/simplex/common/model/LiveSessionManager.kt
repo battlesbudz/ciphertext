@@ -2,6 +2,7 @@ package chat.simplex.common.model
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import chat.simplex.common.platform.Log
 import kotlinx.coroutines.*
 import kotlinx.datetime.Clock
 import kotlin.random.Random
@@ -48,6 +49,7 @@ object LiveSessionManager {
   // the 30 s timeout, so session liveness is unaffected.
   const val HEARTBEAT_JITTER_MS = 2_000L
   const val WATCHDOG_INTERVAL_MS = 5_000L
+  private const val TAG = "LiveSessionManager"
 
   // UI-observable session state. Null = no active live session.
   val sessionState: MutableState<LiveSessionState?> = mutableStateOf(null)
@@ -93,6 +95,15 @@ object LiveSessionManager {
     // are reserved by the live-session protocol; ordinary user text
     // starting with them is treated as protocol, by design.
     text.startsWith("LIVE_HB:") || text.startsWith("LIVE_INVITE:")
+
+  // True if this chat item carries a live-session protocol message
+  // (heartbeat or invite). UI-insertion paths filter such items out:
+  // a history load can scoop one up before the async delete lands,
+  // and nothing removes it afterwards.
+  fun isProtocolChatItem(item: ChatItem): Boolean {
+    val text = (item.content.msgContent as? MsgContent.MCText)?.text ?: return false
+    return isProtocolMessage(text)
+  }
 
   private fun randomSessionId(): String =
     Random.nextBytes(16).joinToString("") { "%02x".format(it) }
@@ -486,10 +497,18 @@ object LiveSessionManager {
   }
 
   private suspend fun deleteProtocolMessage(contactId: Long, chatItemId: Long) {
-    try {
-      ChatController.apiDeleteChatItems(null, ChatType.Direct, contactId, null, listOf(chatItemId), CIDeleteMode.cidmInternal)
-    } catch (e: Exception) {
-      // Best effort: the session-end wipe removes everything anyway.
+    // The delete is verified: a failed delete leaves a protocol message
+    // in the store, where a later history load can surface it in the UI.
+    // Retry once after a short delay; the session-end wipe is the backstop.
+    for (attempt in 0..1) {
+      try {
+        val deleted = ChatController.apiDeleteChatItems(null, ChatType.Direct, contactId, null, listOf(chatItemId), CIDeleteMode.cidmInternal)
+        if (deleted != null) return
+        Log.d(TAG, "deleteProtocolMessage: core returned null (attempt $attempt)")
+      } catch (e: Exception) {
+        Log.d(TAG, "deleteProtocolMessage failed (attempt $attempt): $e")
+      }
+      if (attempt == 0) delay(500L)
     }
   }
 }

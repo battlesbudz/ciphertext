@@ -52,6 +52,18 @@ suspend fun processLoadedChat(
   val (splits, unreadAfterItemId, totalAfter, unreadTotal, unreadAfter, unreadAfterNewestLoaded) = chatState
   val oldItems = chatsCtx.chatItems.value
   val newItems = SnapshotStateList<ChatItem>()
+  // Live session protocol messages must never reach the visible chat list
+  // (private fork): a history load can scoop up a protocol message in the
+  // window before the async delete lands, and nothing would remove it
+  // after (the delete comes back as a sync command response, not an
+  // async event). Filter once here so all five pagination branches are
+  // covered, including the split/unread markers derived from
+  // chat.chatItems below. A page that filters down to nothing carries no
+  // displayable items, so the Before/After/Around branches (which assume
+  // a non-empty page when they index .last()) skip it; Initial/Last
+  // handle empty pages.
+  val chat = chat.copy(chatItems = chat.chatItems.filterNot { LiveSessionManager.isProtocolChatItem(it) })
+  if (chat.chatItems.isEmpty() && pagination !is ChatPagination.Initial && pagination !is ChatPagination.Last) return
   when (pagination) {
     is ChatPagination.Initial -> {
       val newSplits = if (chat.chatItems.isNotEmpty() && navInfo.afterTotal > 0) listOf(chat.chatItems.last().id) else emptyList()

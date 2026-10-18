@@ -465,18 +465,28 @@ object ChatModel {
       }
     }
 
+    // Drop live-session protocol messages from a chat's preview items:
+    // they must never reach the chat-list UI.
+    private fun withoutProtocolItems(chat: Chat): Chat =
+      chat.copy(chatItems = chat.chatItems.filterNot { LiveSessionManager.isProtocolChatItem(it) })
+
     fun updateChats(newChats: List<Chat>, keepingChatId: String? = null) {
+      // Live session protocol messages must never reach the chat-list
+      // preview (private fork): a history load can scoop one up before
+      // the async delete lands, so drop protocol items from every chat's
+      // preview list before the list is replaced.
+      val filteredChats = newChats.map { withoutProtocolItems(it) }
       if (keepingChatId != null) {
-        val chatToKeep = getChat(keepingChatId)
-        val indexToRemove = newChats.indexOfFirst { it.id == keepingChatId }
+        val chatToKeep = getChat(keepingChatId)?.let { withoutProtocolItems(it) }
+        val indexToRemove = filteredChats.indexOfFirst { it.id == keepingChatId }
         if (chatToKeep != null && indexToRemove != -1) {
-          val remainingNewChats = newChats.toMutableList().apply { removeAt(indexToRemove) }
+          val remainingNewChats = filteredChats.toMutableList().apply { removeAt(indexToRemove) }
           chats.replaceAll(listOf(chatToKeep) + remainingNewChats)
         } else {
-          chats.replaceAll(newChats)
+          chats.replaceAll(filteredChats)
         }
       } else {
-        chats.replaceAll(newChats)
+        chats.replaceAll(filteredChats)
       }
       popChatCollector.clear()
 
